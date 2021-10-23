@@ -5,5 +5,9 @@
   <%= @user.name %>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<p>
+  <strong>Gift Ideas:</strong>
+</p>
+<% @user.ideas.each do |idea| %>
+  <p><%= idea %></p>
+<% end %>

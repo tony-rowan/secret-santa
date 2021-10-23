@@ -15,5 +15,15 @@
 
 <%= link_to "Create a new group", new_group_path %>
 
+<p>
+  <strong>Your Gift Ideas:</strong>
+</p>
+<% Current.user.ideas.each do |idea| %>
+  <p><%= idea.idea %></p>
+<% end %>
+
+<%= link_to "Add an Idea", new_idea_path %>
+
+
 <%= link_to "Log Out", sessions_path, method: :delete %>
 
