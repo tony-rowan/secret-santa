@@ -6,7 +6,7 @@ Rails.application.config.generators do |g|
     routing_specs: false,
     request_specs: false,
     controller_specs: false
-  g.stylesheets :false
-  g.helper :false
+  g.stylesheets false
+  g.helper false
   g.factory_bot suffix: 'factory'
 end
