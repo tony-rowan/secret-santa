@@ -25,7 +25,6 @@ module Authentication
     return unless authenticated_user
 
     Current.user = authenticated_user
-    Current.group = authenticated_user.groups.last
   end
 
   def authenticated_user

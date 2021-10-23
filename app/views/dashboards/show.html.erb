@@ -9,7 +9,7 @@
     <%= group.users.count%> members
   </p>
   <p>
-    You have <%= Current.user.pair.name %>
+    You have <%= Current.user.pairs.find_by(group: group).other.name %>
   </p>
 <% end %>
 
