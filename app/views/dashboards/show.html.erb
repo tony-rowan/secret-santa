@@ -2,8 +2,8 @@
 <p>Hello <%= Current.user.name %></p>
 
 <% Current.user.groups.each do |group| %>
-  <p class="<%= "font-bold" if group == Current.group %>">
-    <%= group.name %>
+  <p>
+    <%= link_to group.name, group %>
   </p>
   <p>
     <%= group.users.count%> members

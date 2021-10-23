@@ -38,6 +38,18 @@ class GroupsController < ApplicationController
     redirect_to groups_url, notice: 'Group was successfully destroyed.'
   end
 
+  def join
+    @group = Group.find(params[:group_id])
+    @group.join(Current.user)
+    redirect_to @group, notice: 'Group was successfully joined'
+  end
+
+  def shuffle
+    @group = Group.find(params[:group_id])
+    @group.shuffle
+    redirect_to @group, notice: 'Group pairings have been assigned'
+  end
+
   private
 
   def group_params
