@@ -22,16 +22,10 @@ module Authentication
   private
 
   def authenticate
-    if authenticated_user
-      Current.user = authenticated_user
-      Current.group = authenticated_user.groups.last
-    else
-      redirect_to new_session_path
-    end
-  end
+    return unless authenticated_user
 
-  def rediect_to_app_if_authenticated
-    redirect_to root_path if authenticated_user
+    Current.user = authenticated_user
+    Current.group = authenticated_user.groups.last
   end
 
   def authenticated_user

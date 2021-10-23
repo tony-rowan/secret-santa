@@ -1,3 +1,19 @@
 <h1>Secret Santa</h1>
+<p>Hello <%= Current.user.name %></p>
 
-<p>Hello <%= Current.user.name %>, you are paired with <%= Current.user.pair.name %></p>
+<% Current.user.groups.each do |group| %>
+  <p class="<%= "font-bold" if group == Current.group %>">
+    <%= group.name %>
+  </p>
+  <p>
+    <%= group.users.count%> members
+  </p>
+  <p>
+    You have <%= Current.user.pair.name %>
+  </p>
+<% end %>
+
+<%= link_to "Create a new group", new_group_path %>
+
+<%= link_to "Log Out", sessions_path, method: :delete %>
+
