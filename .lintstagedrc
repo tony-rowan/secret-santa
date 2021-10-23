@@ -1,0 +1,6 @@
+{
+  "**/*": [
+    "bin/yarn prettier --write --ignore-unknown",
+    "bin/bundle exec rubocop --auto-correct --only-recognized-file-types --force-exclusion"
+  ]
+}
