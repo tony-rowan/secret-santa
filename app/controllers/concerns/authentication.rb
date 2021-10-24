@@ -11,6 +11,10 @@ module Authentication
     redirect_to(new_sessions_path) unless logged_in?
   end
 
+  def require_logged_out
+    redirect_to(root_path) unless logged_out?
+  end
+
   def logged_in?
     Current.user
   end
@@ -29,5 +33,9 @@ module Authentication
 
   def authenticated_user
     @authenticated_user ||= User.find_by(id: cookies.encrypted[:user_id])
+  end
+
+  def authenticate_user(user)
+    cookies.encrypted[:user_id] = user.id
   end
 end

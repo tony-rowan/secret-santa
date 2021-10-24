@@ -4,9 +4,8 @@
 
 <h2>Members</h2>
 <% @group.users.each do |user| %>
-  <%= link_to user.name, user %>
+  <p>
+    <%= link_to user.name, user %>
+    <%= link_to "Invite Link", invite_path(user.invite_token) if user.invite_token %>
+  </p>
 <% end %>
-
-<%= link_to "Invite Link", group_join_path(@group), method: :post %>
-
-<%= link_to "Secret Santa!", group_shuffle_path(@group), method: :post %>

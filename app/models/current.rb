@@ -1,3 +1,8 @@
 class Current < ActiveSupport::CurrentAttributes
-  attribute :user
+  attribute :user, :group
+
+  def user=(user)
+    super
+    Current.group = user.groups.last
+  end
 end

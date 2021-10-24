@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  before_action :require_logged_in, except: :update
+  before_action :require_logged_in_or_invite_token, only: :update
+
   def show
     @user = User.find(params[:id])
   end
@@ -15,7 +18,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to new_sessions_path
+      authenticate_user(@user)
+      redirect_to root_path, notice: 'User was successfully created.'
     else
       render :new
     end
@@ -25,7 +29,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     if @user.update(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
+      authenticate_user(@user)
+      redirect_to root_path, notice: 'User was successfully updated.'
     else
       render :edit
     end
@@ -41,6 +46,11 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :password)
+    params.require(:user).permit(:name, :password).merge(invite_token: nil)
+  end
+
+  def require_logged_in_or_invite_token
+    user = Current.user || User.find_by(params.require(:user).permit(:invite_token))
+    redirect_to(new_sessions_path) unless user
   end
 end

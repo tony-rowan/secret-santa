@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
   root 'dashboards#show'
 
-  resource :sessions
-  resources :users
-  resources :ideas
-  resources :groups do
-    post 'join', to: 'groups#join'
-    post 'shuffle', to: 'groups#shuffle'
-  end
+  resource :sessions, only: %i[new create destroy]
+
+  resources :users, only: %i[new create show edit update destroy]
+  resources :ideas, only: %i[new create destroy]
+  resources :groups, only: %i[new create show edit update destroy]
+  resources :invites, only: [:show]
 end

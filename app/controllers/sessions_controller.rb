@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   def create
     if (user = User.find_by(name: name)&.authenticate(password))
-      cookies.encrypted[:user_id] = user.id
+      authenticate_user(user)
       redirect_to(root_path)
     else
       flash[:error] = t('sessions.create.error')
