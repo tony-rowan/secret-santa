@@ -14,4 +14,8 @@ class User < ApplicationRecord
       invite_token: SecureRandom.hex
     )
   end
+
+  def ideas_in_current_group
+    ideas.where(group: Current.group)
+  end
 end

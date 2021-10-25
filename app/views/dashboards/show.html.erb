@@ -1,25 +1,42 @@
-<h1>Secret Santa</h1>
-<p>Hello <%= Current.user.name %></p>
-
-<p>
-  You have <%= link_to @pair.name, @pair %> for Secret Santa!
+<p class="text-xl mb-20 text-center">
+  Hello
+  <span class="font-bold text-lg"><%= Current.user.name %></span>,
+  you have
+  <span class="font-bold text-2xl"><%= @pair.name %></span>
+  for Secret Santa!
 </p>
 
-<p>
-  Some ideas for them:
-</p>
-<% Current.user.ideas.each do |idea| %>
-  <p><%= idea.idea %></p>
-<% end %>
+<div class="text-center mb-32">
+  <% if @pair.ideas_in_current_group.empty? %>
+    <p>
+      They haven't added any gift ideas yet...
+    </p>
+  <% else %>
+    <p>
+      You could get them...
+    </p>
+    <% Current.user.ideas.each do |idea| %>
+      <p><%= idea.idea %></p>
+    <% end %>
+  <% end %>
+</div>
 
-<p>
-  <strong>Your Gift Ideas:</strong>
-</p>
-<% Current.user.ideas.each do |idea| %>
-  <p><%= idea.idea %></p>
-<% end %>
+<div class="text-center">
+  <% if @pair.ideas_in_current_group.empty? %>
+    <p class="mb-4">
+      You haven't added any gift ideas yet...
+    </p>
+  <% else %>
+    <p class="mb-4">
+      The ideas you have listed...
+    </p>
+    <% Current.user.ideas.each do |idea| %>
+      <p><%= idea.idea %></p>
+    <% end %>
+  <% end %>
+</div>
 
-<%= link_to "Add an Idea", new_idea_path %>
+<%= link_to "Add an Idea", new_idea_path, class: "text-center block mb-8 text-blue-400" %>
 
-<%= link_to "Log Out", sessions_path, method: :delete %>
+<%= link_to "Log Out", sessions_path, method: :delete, class: "text-center block text-blue-400" %>
 

@@ -10,7 +10,11 @@
     <%= javascript_pack_tag 'application' %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-indigo-900 text-white">
+    <div class="flex justify-center content-center items-center w-screen h-screen">
+      <div>
+        <%= yield %>
+      </div>
+    </div>
   </body>
 </html>
