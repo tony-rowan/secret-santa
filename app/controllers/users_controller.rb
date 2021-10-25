@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  before_action :require_logged_in, except: :update
-  before_action :require_logged_in_or_invite_token, only: :update
+  before_action :require_logged_in, except: %i[new create]
+  before_action :require_owner, except: %i[show new create]
 
   def show
-    @user = User.find(params[:id])
+    @user = user
   end
 
   def new
@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user = user
   end
 
   def create
@@ -26,10 +26,9 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = user
 
     if @user.update(user_params)
-      authenticate_user(@user)
       redirect_to root_path, notice: 'User was successfully updated.'
     else
       render :edit
@@ -37,20 +36,21 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id])
-
-    @user.destroy
-    redirect_to users_url, notice: 'User was successfully destroyed.'
+    user.destroy
+    redirect_to root_path, notice: 'User was successfully destroyed.'
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:name, :password).merge(invite_token: nil)
+    params.require(:user).permit(:name, :login, :password)
   end
 
-  def require_logged_in_or_invite_token
-    user = Current.user || User.find_by(params.require(:user).permit(:invite_token))
-    redirect_to(new_sessions_path) unless user
+  def require_owner
+    redirect_to root_path if Current.user != user
+  end
+
+  def user
+    @user ||= User.find(params[:id])
   end
 end

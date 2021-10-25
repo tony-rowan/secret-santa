@@ -9,6 +9,7 @@ class User < ApplicationRecord
   def self.new_user_for_invite(name)
     User.new(
       name: name,
+      login: name.downcase.gsub(/\W/, ''),
       password: SecureRandom.hex,
       invite_token: SecureRandom.hex
     )

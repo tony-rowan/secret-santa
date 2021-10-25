@@ -2,10 +2,11 @@
 <p>Add a password to see who you got and what they want</p>
 <p>You can also add gift ideas for the person who got you</p>
 
-<%= form_with(model: @user) do |f| %>
-  <%= f.hidden_field :invite_token %>
-  <%= f.text_field :name, readonly: true %>
+<%= form_with(url: invite_path(@user.invite_token), method: :patch) do |f| %>
+  <%= f.text_field :name, value: @user.name, readonly: true %>
+
   <%= f.label :password %>
-  <%= f.text_field :password %>
+  <%= f.password_field :password %>
+
   <%= f.submit "Join In" %>
 <% end %>
