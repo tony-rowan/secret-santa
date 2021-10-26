@@ -1,3 +1,4 @@
+<p class="text-center text-3xl">🎄<p>
 <p class="text-lg mb-20 text-center">
   Hello
   <span class="font-bold text-xl"><%= Current.user.name %></span>,
@@ -6,6 +7,7 @@
   for Secret Santa!
 </p>
 
+<p class="text-center text-3xl">🎁<p>
 <div class="text-center mb-32">
   <% if @pair.ideas_in_current_group.empty? %>
     <p>
@@ -21,6 +23,7 @@
   <% end %>
 </div>
 
+<p class="text-center text-3xl">❤️<p>
 <div class="text-center">
   <% if @pair.ideas_in_current_group.empty? %>
     <p class="mb-4">
