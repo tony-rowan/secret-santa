@@ -12,3 +12,8 @@
     @apply cursor-pointer;
   }
 }
+
+body {
+  @apply bg-indigo-900;
+  @apply text-white;
+}

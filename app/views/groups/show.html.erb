@@ -1,11 +1,31 @@
-<h1>
-  <%= @group.name %>
-</h1>
+<p class="text-xl text-center mb-8">
+  Manage your group
+  <span class="text-2xl font-bold"><%= @group.name %></span>
+  here
+</p>
 
-<h2>Members</h2>
-<% @group.users.each do |user| %>
-  <p>
-    <%= link_to user.name, user %>
-    <%= link_to "Invite Link", invite_path(user.invite_token) if user.invite_token %>
+<div class="mb-4">
+  <h3 class="text-xl mb-2">Rules</h3>
+  <% if @group.rules %>
+    <p><%= @group.rules %>
+  <% else %>
+    <p>The only rule is ... there are no rules!</p>
+  <% end %>
+</div>
+
+<div class="mb-4">
+  <h3 class="text-xl mb-2">Members</h3>
+
+  <% @group.users.each do |user| %>
+    <p>
+      <%= user.name %>
+      <%= "(You)" if Current.user == user %>
+    </p>
+  <% end %>
+
+  <h4 class="text-lg my-2">Add People</h4>
+  <p class="mb-2">
+    Right click to copy this link and share it to invite people to your group
   </p>
-<% end %>
+  <%= link_to "Invite Link", @group, class: "button w-max" %>
+</div>

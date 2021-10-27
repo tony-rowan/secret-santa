@@ -10,9 +10,12 @@
     <%= javascript_pack_tag 'application' %>
   </head>
 
-  <body class="bg-indigo-900 text-white">
-    <div class="flex justify-center content-center items-center w-screen h-screen">
+  <body>
+    <div class="flex justify-center content-center items-center w-screen min-h-screen p-8">
       <div>
+        <p class="text-4xl text-center mb-2">🎅🎁🎄</p>
+        <h1 class="text-4xl text-center mb-4">Secret Santa</h1>
+
         <%= yield %>
       </div>
     </div>

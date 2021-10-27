@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    user.groups.build
   end
 
   def edit
@@ -19,7 +20,7 @@ class UsersController < ApplicationController
 
     if @user.save
       authenticate_user(@user)
-      redirect_to root_path, notice: "User was successfully created."
+      redirect_to user.groups.last
     else
       render :new
     end
@@ -43,7 +44,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :login, :password)
+    params.require(:user).permit(:name, :login, :password, groups_attributes: [:name, :rules])
   end
 
   def require_owner

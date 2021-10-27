@@ -18,7 +18,7 @@ RSpec.feature "Homepage" do
     expect(page).to have_field("user[name]")
     expect(page).to have_field("user[login]")
     expect(page).to have_field("user[password]")
-    expect(page).to have_field("user[group][name]")
-    expect(page).to have_field("user[group][rules]")
+    expect(page).to have_field("user[groups_attributes][0][name]")
+    expect(page).to have_field("user[groups_attributes][0][rules]")
   end
 end
