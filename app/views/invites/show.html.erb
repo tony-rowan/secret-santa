@@ -1,12 +1,16 @@
-<h1>Join Secret Santa!</h1>
-<p>Add a password to see who you got and what they want</p>
-<p>You can also add gift ideas for the person who got you</p>
+<h2 class="text-center text-lg">
+  Join
+  <span class="text-2xl font-bold"><%= @group.owner.name %></span>'s
+  Secret Santa group
+  <span class="text-3xl font-bold"><%= @group.name %></span>
+</h2>
 
-<%= form_with(url: invite_path(@user.invite_token), method: :patch) do |f| %>
-  <%= f.text_field :name, value: @user.name, readonly: true %>
-
-  <%= f.label :password %>
-  <%= f.password_field :password %>
-
-  <%= f.submit "Join In" %>
+<% if logged_in? %>
+  <%= button_to "Join Group", invite_path(@group.invite_token), method: :patch, class: "button" %>
+<% else %>
+  <div class="flex content-center items-center gap-4">
+    <%= link_to "Log In", new_session_path(invite: @group.invite_token), class: "button" %>
+    <span>or</span>
+    <%= link_to "Create an Account", new_user_path(@group.invite_token), class: "button" %>
+  </div>
 <% end %>

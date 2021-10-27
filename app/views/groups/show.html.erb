@@ -27,5 +27,5 @@
   <p class="mb-2">
     Right click to copy this link and share it to invite people to your group
   </p>
-  <%= link_to "Invite Link", @group, class: "button w-max" %>
+  <%= link_to "Invite Link", invite_path(@group.invite_token), class: "button w-max" %>
 </div>
