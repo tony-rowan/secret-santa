@@ -4,6 +4,8 @@ class Group < ApplicationRecord
   has_many :users, through: :user_groups
   has_many :pairs
 
+  before_create :set_invite_token
+
   def join(user)
     user_groups.find_or_create_by!(user: user)
   end
@@ -20,5 +22,11 @@ class Group < ApplicationRecord
     end
 
     pairings.each { |p| pairs.create!(user_id: p[0], other_id: p[1]) }
+  end
+
+  private
+
+  def set_invite_token
+    self.invite_token = invite_token || SecureRandom.hex(3).upcase
   end
 end
