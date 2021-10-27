@@ -20,7 +20,7 @@ class GroupsController < ApplicationController
     if @group.save
       Current.group = @group
       @group.shuffle
-      redirect_to @group, notice: 'Group was successfully created.'
+      redirect_to @group, notice: "Group was successfully created."
     else
       render :new
     end
@@ -30,7 +30,7 @@ class GroupsController < ApplicationController
     @group = group
 
     if @group.update(update_group_params)
-      redirect_to @group, notice: 'Group was successfully updated.'
+      redirect_to @group, notice: "Group was successfully updated."
     else
       render :edit
     end
@@ -39,7 +39,7 @@ class GroupsController < ApplicationController
   def destroy
     group.destroy
     Current.group = Current.user.groups.last
-    redirect_to root_url, notice: 'Group was successfully destroyed.'
+    redirect_to root_url, notice: "Group was successfully destroyed."
   end
 
   private
@@ -53,7 +53,7 @@ class GroupsController < ApplicationController
   end
 
   def users_from_params
-    params[:group][:names].split(',').map(&:strip).map { User.new_user_for_invite(_1) }
+    params[:group][:names].split(",").map(&:strip).map { User.new_user_for_invite(_1) }
   end
 
   def update_group_params

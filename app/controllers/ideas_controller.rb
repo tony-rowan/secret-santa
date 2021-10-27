@@ -7,7 +7,7 @@ class IdeasController < ApplicationController
     @idea = Idea.new(idea_params)
 
     if @idea.save
-      redirect_to root_path, notice: 'Your idea has been saved'
+      redirect_to root_path, notice: "Your idea has been saved"
     else
       render :new
     end

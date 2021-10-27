@@ -8,5 +8,5 @@ Rails.application.config.generators do |g|
     controller_specs: false
   g.stylesheets false
   g.helper false
-  g.factory_bot suffix: 'factory'
+  g.factory_bot suffix: "factory"
 end

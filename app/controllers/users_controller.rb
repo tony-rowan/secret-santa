@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
     if @user.save
       authenticate_user(@user)
-      redirect_to root_path, notice: 'User was successfully created.'
+      redirect_to root_path, notice: "User was successfully created."
     else
       render :new
     end
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     @user = user
 
     if @user.update(user_params)
-      redirect_to root_path, notice: 'User was successfully updated.'
+      redirect_to root_path, notice: "User was successfully updated."
     else
       render :edit
     end
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
 
   def destroy
     user.destroy
-    redirect_to root_path, notice: 'User was successfully destroyed.'
+    redirect_to root_path, notice: "User was successfully destroyed."
   end
 
   private

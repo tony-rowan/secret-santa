@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
       authenticate_user(user)
       redirect_to(root_path)
     else
-      flash[:error] = t('sessions.create.error')
+      flash[:error] = t("sessions.create.error")
       render(:new, status: :unprocessable_entity)
     end
   end
