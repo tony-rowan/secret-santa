@@ -1,5 +1,5 @@
 <div class="p-8 text-center">
-  <%= form_with(url: sessions_path) do |form| %>
+  <%= form_with(url: session_path) do |form| %>
     <% if flash[:error] %>
       <div class="text-center bg-red-700 text-white p-3 rounded-lg shadow mb-8">
         <%= flash[:error] %>
@@ -7,15 +7,14 @@
     <% end %>
 
     <%= form.text_field(
-      :name,
-      placeholder: "Name",
+      :login,
+      placeholder: "Login",
       required: true,
       class: "text-field mb-8"
     ) %>
 
-    <%= form.text_field(
+    <%= form.password_field(
       :password,
-      type: :password,
       placeholder: "Password",
       required: true,
       class: "text-field mb-4"
