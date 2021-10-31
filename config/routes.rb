@@ -6,5 +6,5 @@ Rails.application.routes.draw do
   resources :users, only: %i[new create show edit update destroy]
   resources :ideas, only: %i[new create destroy]
   resources :groups, only: %i[new create show edit update destroy]
-  resources :invites, only: %i[show]
+  resources :invites, only: %i[show update]
 end

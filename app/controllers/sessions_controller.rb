@@ -1,10 +1,10 @@
 class SessionsController < ApplicationController
   def create
-    if (user = User.find_by(name: name)&.authenticate(password))
+    if (user = User.find_by(login: login)&.authenticate(password))
       authenticate_user(user)
       redirect_to(root_path)
     else
-      flash[:error] = t("sessions.create.error")
+      flash[:error] = "Username or password incorrect"
       render(:new, status: :unprocessable_entity)
     end
   end
@@ -16,8 +16,8 @@ class SessionsController < ApplicationController
 
   private
 
-  def name
-    params.require(:name)
+  def login
+    params.require(:login)
   end
 
   def password
