@@ -8,7 +8,8 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    user.groups.build
+    @user.groups.build
+    @group = invited_group(params)
   end
 
   def edit
@@ -17,10 +18,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @group = invited_group(user_params)
 
     if @user.save
       authenticate_user(@user)
-      redirect_to user.groups.last
+      redirect_to @user.groups.last
     else
       render :new
     end
@@ -44,7 +46,9 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :login, :password, groups_attributes: [:name, :rules])
+    params.require(:user).permit(
+      :name, :login, :password, :invite_token, groups_attributes: [:name, :rules]
+    )
   end
 
   def require_owner
@@ -53,5 +57,9 @@ class UsersController < ApplicationController
 
   def user
     @user ||= User.find(params[:id])
+  end
+
+  def invited_group(params)
+    Group.find_by(invite_token: params[:invite_token])
   end
 end

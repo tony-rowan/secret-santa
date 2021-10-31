@@ -6,6 +6,8 @@ class Group < ApplicationRecord
 
   before_create :set_invite_token
 
+  validates :name, presence: true
+
   def join(user)
     user_groups.find_or_create_by!(user: user)
   end

@@ -2,12 +2,11 @@
 
 <%= form_with(model: @user) do |form| %>
   <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
+    <div class="bg-red-700 rounded p-8 mb-8">
+      <h2>Could not create account becuase: </h2>
       <ul>
         <% @user.errors.each do |error| %>
-          <li><%= @error.full_message %></li>
+          <li><span class="mr-2">·</span><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
@@ -33,20 +32,29 @@
   </div>
 
   <div class="mb-4">
-    <h3 class="text-xl mb-2">Create Your Group</h3>
+    <% if @group %>
+      <%= form.hidden_field :invite_token, value: @group.invite_token %>
 
-    <%= form.fields_for(:groups) do |form| %>
-      <div class="mb-4">
-        <%= form.label :name, class: "block mb-2" %>
-        <%= form.text_field :name, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
-      </div>
+      <h3 class="text-xl mb-2">
+        Join Group
+        <span class="text-3xl font-bold"><%= @group.name %></span>
+      </h3>
+    <% else %>
+      <h3 class="text-xl mb-2">Create Your Group</h3>
 
-      <div class="mb-4">
-        <%= form.label :rules, class: "block mb-2" %>
-        <%= form.text_area :rules, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
-      </div>
+      <%= form.fields_for(:groups) do |form| %>
+        <div class="mb-4">
+          <%= form.label :name, class: "block mb-2" %>
+          <%= form.text_field :name, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+        </div>
+
+        <div class="mb-4">
+          <%= form.label :rules, class: "block mb-2" %>
+          <%= form.text_area :rules, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 
-  <%= form.submit "Get Started", class: "button w-full" %>
+  <%= form.submit @group ? "Join" : "Get Started", class: "button w-full" %>
 <% end %>

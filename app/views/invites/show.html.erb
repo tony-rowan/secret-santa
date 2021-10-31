@@ -1,4 +1,4 @@
-<h2 class="text-center text-lg">
+<h2 class="text-center text-lg mb-4">
   Join
   <span class="text-2xl font-bold"><%= @group.owner.name %></span>'s
   Secret Santa group
@@ -8,9 +8,9 @@
 <% if logged_in? %>
   <%= button_to "Join Group", invite_path(@group.invite_token), method: :patch, class: "button" %>
 <% else %>
-  <div class="flex content-center items-center gap-4">
+  <div class="flex content-center items-center justify-center gap-4">
     <%= link_to "Log In", new_session_path(invite: @group.invite_token), class: "button" %>
     <span>or</span>
-    <%= link_to "Create an Account", new_user_path(@group.invite_token), class: "button" %>
+    <%= link_to "Create an Account", new_user_path(invite_token: @group.invite_token), class: "button" %>
   </div>
 <% end %>
