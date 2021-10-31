@@ -1,9 +1,7 @@
 module.exports = {
   purge: ["./app/helpers/**/*", "./app/views/**/*"],
   darkMode: false, // or 'media' or 'class'
-  theme: {
-    extend: {},
-  },
+  theme: {},
   variants: {
     extend: {
       borderColor: ["hover"],
