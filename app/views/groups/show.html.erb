@@ -5,7 +5,7 @@
 </p>
 
 <div class="mb-4">
-  <h3 class="text-xl mb-2">Rules</h3>
+  <h3 class="text-xl mb-2">📏 Rules</h3>
   <% if @group.rules %>
     <p><%= @group.rules %>
   <% else %>
@@ -14,18 +14,29 @@
 </div>
 
 <div class="mb-4">
-  <h3 class="text-xl mb-2">Members</h3>
+  <h3 class="text-xl mb-2">👨‍👩‍👧‍👦 Members</h3>
 
-  <% @group.users.each do |user| %>
-    <p>
-      <%= user.name %>
-      <%= "(You)" if Current.user == user %>
-    </p>
-  <% end %>
+  <div class="mb-2">
+    <% @group.users.each do |user| %>
+      <p>
+        <%= user.name %>
+        <%= "(You)" if Current.user == user %>
+      </p>
+    <% end %>
+  </div>
 
-  <h4 class="text-lg my-2">Add People</h4>
   <p class="mb-2">
     Right click to copy this link and share it to invite people to your group
   </p>
   <%= link_to "Invite Link", invite_path(@group.invite_token), class: "button w-max" %>
 </div>
+
+<div class="mb-4">
+  <h3 class="text-xl mb-2">🎯 Group Status</h3>
+  <% if @group.pairs.any? %>
+    <p>Secret Santa partners have been assigned</p>
+  <% else %>
+    <p class="mb-2">Secret Santa partners haven't been assigned yet</p>
+    <%= button_to "Assign Secret Santa Partners", group_path(@group), params: { assign_partners: true }, method: :patch, class: "button mb-4" %>
+  <% end %>
+

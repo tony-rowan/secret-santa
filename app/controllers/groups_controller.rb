@@ -19,8 +19,7 @@ class GroupsController < ApplicationController
 
     if @group.save
       Current.group = @group
-      @group.shuffle
-      redirect_to @group, notice: "Group was successfully created."
+      redirect_to @group
     else
       render :new
     end
@@ -29,8 +28,13 @@ class GroupsController < ApplicationController
   def update
     @group = group
 
+    if params[:assign_partners]
+      @group.assign_partners
+      return redirect_to dashboard_path, notice: "Secret Santa partners assigned!"
+    end
+
     if @group.update(update_group_params)
-      redirect_to @group, notice: "Group was successfully updated."
+      redirect_to @group
     else
       render :edit
     end
@@ -39,25 +43,17 @@ class GroupsController < ApplicationController
   def destroy
     group.destroy
     Current.group = Current.user.groups.last
-    redirect_to root_url, notice: "Group was successfully destroyed."
+    redirect_to root_url
   end
 
   private
 
   def create_group_params
-    {
-      name: params[:group][:name],
-      users: users_from_params + [Current.user],
-      owner: Current.user
-    }
-  end
-
-  def users_from_params
-    params[:group][:names].split(",").map(&:strip).map { User.new_user_for_invite(_1) }
+    params.require(:group).permit(:name, :rules).merge(users: [Current.user], owner: Current.user)
   end
 
   def update_group_params
-    params.require(:group).permit(:name)
+    params.require(:group).permit(:name, :rules)
   end
 
   def require_owner

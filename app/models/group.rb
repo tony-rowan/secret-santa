@@ -12,7 +12,7 @@ class Group < ApplicationRecord
     user_groups.find_or_create_by!(user: user)
   end
 
-  def shuffle
+  def assign_partners
     pairs.destroy_all
 
     ids = users.pluck(:id)
