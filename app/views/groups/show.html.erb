@@ -1,21 +1,20 @@
-<p class="text-xl text-center mb-8">
-  Manage your group
-  <span class="text-2xl font-bold"><%= @group.name %></span>
-  here
-</p>
+<%= render "section" do %>
+  <h2 class="text-xl text-center">
+    Manage your group
+    <span class="text-2xl font-bold"><%= @group.name %></span>
+    here
+  </h2>
+<% end %>
 
-<div class="mb-4">
-  <h3 class="text-xl mb-2">📏 Rules</h3>
+<%= render "section", title: "📏 Rules" do %>
   <% if @group.rules %>
     <p><%= @group.rules %>
   <% else %>
     <p>The only rule is ... there are no rules!</p>
   <% end %>
-</div>
+<% end %>
 
-<div class="mb-4">
-  <h3 class="text-xl mb-2">👨‍👩‍👧‍👦 Members</h3>
-
+<%= render "section", title: "👨‍👩‍👧‍👦 Members" do %>
   <div class="mb-2">
     <% @group.users.each do |user| %>
       <p>
@@ -28,15 +27,16 @@
   <p class="mb-2">
     Right click to copy this link and share it to invite people to your group
   </p>
-  <%= link_to "Invite Link", invite_path(@group.invite_token), class: "button w-max" %>
-</div>
 
-<div class="mb-4">
-  <h3 class="text-xl mb-2">🎯 Group Status</h3>
+  <%= link_to "Invite Link", invite_path(@group.invite_token), class: "button w-max" %>
+<% end %>
+
+<%= render "section", title: "🎯 Group Status" do %>
   <% if @group.pairs.any? %>
     <p>Secret Santa partners have been assigned</p>
   <% else %>
     <p class="mb-2">Secret Santa partners haven't been assigned yet</p>
     <%= button_to "Assign Secret Santa Partners", group_path(@group), params: { assign_partners: true }, method: :patch, class: "button mb-4" %>
   <% end %>
+<% end %>
 

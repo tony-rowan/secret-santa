@@ -1,5 +1,5 @@
-<div class="mb-12">
-  <p class="text-2xl mb-12 text-center">
+<%= render "section" do %>
+  <p class="text-2xl text-center">
     Hello
     <span class="font-bold text-3xl"><%= Current.user.name %></span>,
     <% if @pair %>
@@ -10,18 +10,16 @@
       Secret Santa partners have not been set yet
     <% end %>
   </p>
-</div>
+<% end %>
 
 <% if Current.group.rules %>
-  <div class="mb-12">
-    <h3 class="text-2xl mb-2">📏 Group Rules</h3>
+  <%= render "section", title: "📏 Group Rules" do %>
     <p><%= Current.group.rules %></p>
-  </div>
+  <% end %>
 <% end %>
 
 <% if @pair %>
-  <div class="mb-12">
-    <h3 class="text-2xl mb-2">🎁 Their Ideas</h3>
+  <%= render "section", title: "🎁 Their Ideas" do %>
     <% if @pair.other.ideas_in_current_group.empty? %>
       <p>
         They haven't added any gift ideas yet...
@@ -34,11 +32,10 @@
         <p><%= idea.idea %></p>
       <% end %>
     <% end %>
-  </div>
+  <% end %>
 <% end %>
 
-<div class="mb-12">
-  <h3 class="text-2xl mb-2">🎁 Your Ideas</h3>
+<%= render "section", title: "🎁 Your Ideas" do %>
   <% Current.user.ideas.each do |idea| %>
     <p class="text-lg mb-2"><%= idea.idea %></p>
   <% end %>
@@ -61,5 +58,5 @@
 
     <%= form.submit "Add", class: "button" %>
   <% end %>
-</div>
+<% end %>
 
