@@ -7,6 +7,7 @@ gem "rails"
 
 gem "bcrypt"
 gem "bootsnap", require: false
+gem "inline_svg"
 gem "pg"
 gem "puma"
 gem "turbolinks"

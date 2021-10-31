@@ -1,10 +1,4 @@
 <%= form_with(url: session_path) do |form| %>
-  <% if flash[:error] %>
-    <div class="bg-red-700 p-8 rounded mb-8">
-      <%= flash[:error] %>
-    </div>
-  <% end %>
-
   <div class="mb-4">
     <%= form.label :login, "Username", class: "block mb-2" %>
     <%= form.text_field :login, required: true, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>

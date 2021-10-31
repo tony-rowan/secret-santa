@@ -28,21 +28,30 @@
       <p>
         You could get them...
       </p>
-      <% Current.user.ideas.each do |idea| %>
-        <p><%= idea.idea %></p>
+      <% @pair.other.ideas_in_current_group.each do |idea| %>
+        <div class="text-lg mb-2">
+          <%= idea.idea %>
+        </div>
       <% end %>
     <% end %>
   <% end %>
 <% end %>
 
 <%= render "section", title: "🎁 Your Ideas" do %>
-  <% Current.user.ideas.each do |idea| %>
-    <p class="text-lg mb-2"><%= idea.idea %></p>
+  <% Current.user.ideas_in_current_group.each do |idea| %>
+    <div class="text-lg mb-2 flex items-center gap-2 group">
+      <%= idea.idea %>
+      <%= button_to idea, method: :delete do %>
+        <%= inline_svg_pack_tag("media/images/delete.svg",
+          class: "w-3 h-3 text-white hover:text-red-300 opacity-30 group-hover:opacity-100"
+        ) %>
+      <% end %>
+    </div>
   <% end %>
   <%= form_with(model: @idea) do |form| %>
     <% if @idea.errors.any? %>
       <div class="bg-red-700 rounded p-8 mb-8">
-        <h2>Could not save idea becuase: </h2>
+        <h2>Could not save idea becuase:</h2>
         <ul>
           <% @idea.errors.each do |error| %>
             <li><span class="mr-2">·</span><%= error.full_message %></li>
