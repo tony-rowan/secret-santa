@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 
     if @user.save
       authenticate_user(@user)
-      redirect_to @user.groups.last
+      redirect_to_after_create_account
     else
       render :new
     end
@@ -61,5 +61,13 @@ class UsersController < ApplicationController
 
   def invited_group(params)
     Group.find_by(invite_token: params[:invite_token])
+  end
+
+  def redirect_to_after_create_account
+    if @group
+      redirect_to root_path, notice: "Welcome to the Secret Santa group #{@group.name}"
+    else
+      redirect_to @user.owned_groups.last
+    end
   end
 end

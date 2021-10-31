@@ -1,45 +1,60 @@
-<p class="text-center text-3xl">🎄<p>
-<p class="text-lg mb-20 text-center">
+<p class="text-2xl mb-12 text-center">
   Hello
-  <span class="font-bold text-xl"><%= Current.user.name %></span>,
-  you have
-  <span class="font-bold text-2xl"><%= @pair.name %></span>
-  for Secret Santa!
+  <span class="font-bold text-3xl"><%= Current.user.name %></span>,
+  <% if @pair %>
+    you have
+    <span class="font-bold text-4xl"><%= @pair.name %></span>
+    for Secret Santa!
+  <% else %>
+    Secret Santa partners have not been set yet
+  <% end %>
 </p>
 
-<p class="text-center text-3xl">🎁<p>
-<div class="text-center mb-32">
-  <% if @pair.ideas_in_current_group.empty? %>
-    <p>
-      They haven't added any gift ideas yet...
-    </p>
-  <% else %>
-    <p>
-      You could get them...
-    </p>
-    <% Current.user.ideas.each do |idea| %>
-      <p><%= idea.idea %></p>
-    <% end %>
+<% if Current.group.rules %>
+  <h3 class="text-2xl mb-2">📏 Group Rules</h3>
+  <p class="mb-12"><%= Current.group.rules %></p>
+<% end %>
+
+
+<% if @pair %>
+  <h3 class="text-2xl mb-2">🎁 Their Ideas</h3>
+    <div class="mb-32">
+      <% if @pair.ideas_in_current_group.empty? %>
+        <p>
+          They haven't added any gift ideas yet...
+        </p>
+      <% else %>
+        <p>
+          You could get them...
+        </p>
+        <% Current.user.ideas.each do |idea| %>
+          <p><%= idea.idea %></p>
+        <% end %>
+      <% end %>
+  </div>
+<% end %>
+
+<h3 class="text-2xl mb-2">🎁 Your Ideas</h3>
+<% Current.user.ideas.each do |idea| %>
+  <p class="text-lg mb-2"><%= idea.idea %></p>
+<% end %>
+<%= form_with(model: @idea) do |form| %>
+  <% if @idea.errors.any? %>
+    <div class="bg-red-700 rounded p-8 mb-8">
+      <h2>Could not save idea becuase: </h2>
+      <ul>
+        <% @idea.errors.each do |error| %>
+          <li><span class="mr-2">·</span><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
-</div>
 
-<p class="text-center text-3xl">❤️<p>
-<div class="text-center">
-  <% if @pair.ideas_in_current_group.empty? %>
-    <p class="mb-4">
-      You haven't added any gift ideas yet...
-    </p>
-  <% else %>
-    <p class="mb-4">
-      The ideas you have listed...
-    </p>
-    <% Current.user.ideas.each do |idea| %>
-      <p><%= idea.idea %></p>
-    <% end %>
-  <% end %>
-</div>
+  <div class="mb-4">
+    <%= form.label :idea, "Add an idea to help your Secret Santa partner", class: "block mb-2" %>
+    <%= form.text_field :idea, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+  </div>
 
-<%= link_to "Add an Idea", new_idea_path, class: "text-center block mb-8 text-blue-400" %>
-
-<%= link_to "Log Out", sessions_path, method: :delete, class: "text-center block text-blue-400" %>
+  <%= form.submit "Add", class: "button" %>
+<% end %>
 

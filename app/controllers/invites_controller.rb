@@ -8,6 +8,7 @@ class InvitesController < ApplicationController
 
   def update
     Current.user.groups << group
+    Current.group = group
     redirect_to group
   end
 

@@ -3,7 +3,8 @@ class DashboardsController < ApplicationController
   before_action :require_group
 
   def show
-    @pair = Current.user.pairs.find_by(group: Current.group).other
+    @pair = Current.user.pairs.find_by(group: Current.group)
+    @idea = Idea.new
   end
 
   private

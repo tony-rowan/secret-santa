@@ -1,21 +1,19 @@
 class IdeasController < ApplicationController
-  def new
-    @idea = Idea.new(user: @user)
-  end
+  before_action :require_logged_in
 
   def create
     @idea = Idea.new(idea_params)
 
     if @idea.save
-      redirect_to root_path, notice: "Your idea has been saved"
+      redirect_to root_path
     else
-      render :new
+      render "dashboards/show"
     end
   end
 
   private
 
   def idea_params
-    params.require(:idea).permit(:idea).merge(user: Current.user)
+    params.require(:idea).permit(:idea).merge(user: Current.user, group: Current.group)
   end
 end
