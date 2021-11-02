@@ -1,12 +1,12 @@
 <%= form_with(url: session_path) do |form| %>
   <div class="mb-4">
     <%= form.label :login, "Username", class: "block mb-2" %>
-    <%= form.text_field :login, required: true, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+    <%= form.text_field :login, required: true, class: "input-field" %>
   </div>
 
   <div class="mb-4">
     <%= form.label :password, "Password", class: "block mb-2" %>
-    <%= form.password_field :password, required: true, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+    <%= form.password_field :password, required: true, class: "input-field" %>
   </div>
 
   <%= form.submit(

@@ -12,6 +12,17 @@
     @apply cursor-pointer;
     @apply text-center;
   }
+
+  .input-field {
+    @apply block;
+    @apply w-full;
+    @apply p-2;
+    @apply rounded;
+    @apply bg-blue-300;
+    @apply bg-opacity-25;
+    @apply border-2;
+    @apply border-blue-300;
+  }
 }
 
 body {

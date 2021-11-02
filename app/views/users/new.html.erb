@@ -19,17 +19,17 @@
   <%= render "section", title: "Create Your Account" do %>
     <div class="mb-4">
       <%= form.label :name, "Display Name", class: "block mb-2" %>
-      <%= form.text_field :name, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+      <%= form.text_field :name, class: "input-field" %>
     </div>
 
     <div class="mb-4">
       <%= form.label :login, "Username", class: "block mb-2" %>
-      <%= form.text_field :login, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+      <%= form.text_field :login, class: "input-field" %>
     </div>
 
     <div class="mb-4">
       <%= form.label :password, class: "block mb-2" %>
-      <%= form.password_field :password, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+      <%= form.password_field :password, class: "input-field" %>
     </div>
   <% end %>
 
@@ -47,12 +47,12 @@
       <%= form.fields_for(:groups) do |form| %>
         <div class="mb-4">
           <%= form.label :name, class: "block mb-2" %>
-          <%= form.text_field :name, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+          <%= form.text_field :name, class: "input-field" %>
         </div>
 
         <div class="mb-4">
           <%= form.label :rules, class: "block mb-2" %>
-          <%= form.text_area :rules, class: "block w-full p-2 rounded bg-blue-300 bg-opacity-25 border-2 border-blue-300" %>
+          <%= form.text_area :rules, class: "input-field" %>
         </div>
       <% end %>
     <% end %>
