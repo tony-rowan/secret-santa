@@ -12,7 +12,7 @@
   </p>
 <% end %>
 
-<% if Current.group.rules %>
+<% if Current.group.rules.present? %>
   <%= render "section", title: "📏 Group Rules" do %>
     <p><%= Current.group.rules %></p>
   <% end %>
@@ -25,9 +25,6 @@
         They haven't added any gift ideas yet...
       </p>
     <% else %>
-      <p>
-        You could get them...
-      </p>
       <% @pair.other.ideas_in_current_group.each do |idea| %>
         <div class="text-lg mb-2">
           <%= idea.idea %>
