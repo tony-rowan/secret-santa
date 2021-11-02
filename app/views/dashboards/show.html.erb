@@ -39,9 +39,7 @@
     <div class="text-lg mb-2 flex items-center gap-2 group">
       <%= idea.idea %>
       <%= button_to idea, method: :delete do %>
-        <%= inline_svg_pack_tag("media/images/delete.svg",
-          class: "w-3 h-3 text-white hover:text-red-300 opacity-30 group-hover:opacity-100"
-        ) %>
+        <span class="p-1">🚮</span>
       <% end %>
     </div>
   <% end %>
