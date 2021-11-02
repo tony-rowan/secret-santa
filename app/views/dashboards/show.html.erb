@@ -57,10 +57,7 @@
       </div>
     <% end %>
 
-    <div class="mb-4">
-      <%= form.label :idea, "Add an idea to help your Secret Santa partner", class: "block mb-2" %>
-      <%= form.text_field :idea, class: "input-field" %>
-    </div>
+    <%= render "input_field", form: form, name: :idea, type: :text_field, label: "Add an idea to help your Secret Santa partner" %>
 
     <%= form.submit "Add", class: "button" %>
   <% end %>

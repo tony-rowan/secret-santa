@@ -17,20 +17,9 @@
   <% end %>
 
   <%= render "section", title: "Create Your Account" do %>
-    <div class="mb-4">
-      <%= form.label :name, "Display Name", class: "block mb-2" %>
-      <%= form.text_field :name, class: "input-field" %>
-    </div>
-
-    <div class="mb-4">
-      <%= form.label :login, "Username", class: "block mb-2" %>
-      <%= form.text_field :login, class: "input-field" %>
-    </div>
-
-    <div class="mb-4">
-      <%= form.label :password, class: "block mb-2" %>
-      <%= form.password_field :password, class: "input-field" %>
-    </div>
+    <%= render "input_field", form: form, name: :name, type: :text_field, label: "Display Name" %>
+    <%= render "input_field", form: form, name: :login, type: :text_field, label: "Username" %>
+    <%= render "input_field", form: form, name: :password, type: :password_field, label: "Display Name" %>
   <% end %>
 
   <%= render "section" do %>
@@ -45,15 +34,8 @@
       <h3 class="text-xl mb-2">Create Your Group</h3>
 
       <%= form.fields_for(:groups) do |form| %>
-        <div class="mb-4">
-          <%= form.label :name, class: "block mb-2" %>
-          <%= form.text_field :name, class: "input-field" %>
-        </div>
-
-        <div class="mb-4">
-          <%= form.label :rules, class: "block mb-2" %>
-          <%= form.text_area :rules, class: "input-field" %>
-        </div>
+        <%= render "input_field", form: form, name: :name, type: :text_field, label: "Name" %>
+        <%= render "input_field", form: form, name: :rules, type: :text_field, label: "Rules" %>
       <% end %>
     <% end %>
   <% end %>
