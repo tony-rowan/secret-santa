@@ -1,24 +1,34 @@
-# README
+# Secret Santa
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+An to help run a secret santa group.
 
-Things you may want to cover:
+## Requirements
 
-* Ruby version
+You will need Docker, `docker-compose` and `asdf` to install the project
+dependencies and backing services.
 
-* System dependencies
+## Getting Set Up
 
-* Configuration
+Setup is very simple at the moment, just install the project dependencies
 
-* Database creation
+```bash
+asdf install
+```
 
-* Database initialization
+and then run
 
-* How to run the test suite
+```bash
+bin/setup
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+and you're good to go!
 
-* Deployment instructions
+## Tests
 
-* ...
+Tests are written and run by RSpec.
+
+Run all the tests with:
+
+```bash
+bin/rspec
+```
