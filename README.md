@@ -1,6 +1,6 @@
 # Secret Santa
 
-An to help run a secret santa group.
+An app to help you run a secret santa group.
 
 ## Requirements
 
@@ -9,7 +9,7 @@ dependencies and backing services.
 
 ## Getting Set Up
 
-Setup is very simple at the moment, just install the project dependencies
+Setup is very simple at the moment, just install the project dependencies with
 
 ```bash
 asdf install
@@ -25,7 +25,7 @@ and you're good to go!
 
 ## Tests
 
-Tests are written and run by RSpec.
+Tests are written and run by RSpec. With a preference for feature specs.
 
 Run all the tests with:
 
