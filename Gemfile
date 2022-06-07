@@ -11,6 +11,7 @@ gem "importmap-rails"
 gem "pg"
 gem "puma"
 gem "sprockets-rails"
+gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "turbolinks"
 

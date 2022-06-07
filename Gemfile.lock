@@ -239,6 +239,8 @@ GEM
       rubocop-performance (= 1.13.3)
     standardrb (1.0.1)
       standard
+    stimulus-rails (1.0.4)
+      railties (>= 6.0.0)
     strscan (3.0.3)
     tailwindcss-rails (2.0.8-x86_64-darwin)
       railties (>= 6.0.0)
@@ -294,6 +296,7 @@ DEPENDENCIES
   spring
   sprockets-rails
   standardrb
+  stimulus-rails
   tailwindcss-rails
   turbolinks
   web-console
