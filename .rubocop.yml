@@ -1,2 +1,0 @@
-inherit_from:
-  - https://raw.githubusercontent.com/tony-rowan/.rubocop.yml/main/.rubocop.yml
