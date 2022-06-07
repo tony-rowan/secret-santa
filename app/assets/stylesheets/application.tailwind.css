@@ -1,6 +1,13 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-indigo-900;
+    @apply text-white;
+  }
+}
 
 @layer components {
   .button {
@@ -23,9 +30,4 @@
     @apply border-2;
     @apply border-blue-300;
   }
-}
-
-body {
-  @apply bg-indigo-900;
-  @apply text-white;
 }

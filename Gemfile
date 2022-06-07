@@ -7,10 +7,12 @@ gem "rails"
 
 gem "bcrypt"
 gem "bootsnap", require: false
+gem "importmap-rails"
 gem "pg"
 gem "puma"
+gem "sprockets-rails"
+gem "tailwindcss-rails"
 gem "turbolinks"
-gem "webpacker"
 
 group :development, :test do
   gem "byebug"
