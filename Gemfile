@@ -33,7 +33,7 @@ group :test do
 end
 
 group :development do
+  gem "lefthook"
   gem "listen"
-  gem "spring"
   gem "web-console"
 end

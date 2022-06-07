@@ -1,6 +1,0 @@
-{
-  "**/*": [
-    "bin/yarn prettier --write --ignore-unknown",
-    "bin/bundle exec standardrb --fix --only-recognized-file-types --force-exclusion"
-  ]
-}
