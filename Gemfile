@@ -10,10 +10,11 @@ gem "bootsnap", require: false
 gem "importmap-rails"
 gem "pg"
 gem "puma"
+gem "redis"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "tailwindcss-rails"
-gem "turbolinks"
+gem "turbo-rails"
 
 group :development, :test do
   gem "byebug"
