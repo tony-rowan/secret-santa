@@ -29,7 +29,6 @@ group :test do
   gem "ffaker"
   gem "launchy"
   gem "selenium-webdriver"
-  gem "shoulda-matchers"
   gem "webdrivers"
 end
 
