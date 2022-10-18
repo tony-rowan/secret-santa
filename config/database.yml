@@ -84,6 +84,6 @@ test:
 #
 production:
   <<: *default
-  database: secret-santa
-  username: secret-santa
+  database: secret_santa_production
+  username: secret_santa
   host: <%= ENV['DATABASE_URL'] %>

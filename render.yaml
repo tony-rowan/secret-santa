@@ -1,7 +1,7 @@
 databases:
   - name: secret-santa
-    databaseName: secret-santa
-    user: secret-santa
+    databaseName: secret_santa_production
+    user: secret_santa
 
 services:
   - type: web
