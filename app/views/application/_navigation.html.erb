@@ -1,0 +1,14 @@
+<nav>
+  <ul class="flex gap-x-4 justify-end">
+    <% if Current.group %>
+      <li class="rounded py-6 py-1 bg-opacity-50 bg-black">
+        <%= link_to Current.group.name, Current.group, class: "" %>
+      </li>
+    <% end %>
+    <% if Current.user %>
+      <li class="">
+        <%= button_to "Log Out", session_path, method: :delete, class: "" %>
+      </li>
+    <% end %>
+  </ul>
+</nav>
