@@ -17,10 +17,16 @@
 <%= render "section", title: "👨‍👩‍👧‍👦 Members" do %>
   <div class="mb-2">
     <% @group.users.each do |user| %>
-      <p>
-        <%= user.name %>
-        <%= "(You)" if Current.user == user %>
-      </p>
+      <div class="flex gap-x-2 items-center">
+        <span><%= user.name %></span>
+        <span><%= "(You)" if Current.user == user %></span>
+        <% if Current.group.owner?(Current.user) %>
+          <%= button_to "🥾",
+            @group,
+            method: :patch,
+            params: { kick_user_id: user.id } %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 

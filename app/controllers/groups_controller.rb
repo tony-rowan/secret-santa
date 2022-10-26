@@ -33,6 +33,12 @@ class GroupsController < ApplicationController
       return redirect_to dashboard_path, notice: "Secret Santa partners assigned!"
     end
 
+    if params[:kick_user_id]
+      user = User.find(params[:kick_user_id])
+      @group.kick(user)
+      return redirect_to @group, notice: "User removed from group!"
+    end
+
     if @group.update(update_group_params)
       redirect_to @group
     else

@@ -16,6 +16,10 @@ class Group < ApplicationRecord
     user_groups.find_or_create_by!(user: user)
   end
 
+  def kick(user)
+    user_groups.find_by(user: user).destroy
+  end
+
   def assign_partners
     pairs.destroy_all
 
