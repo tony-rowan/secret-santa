@@ -1,12 +1,12 @@
 <nav>
-  <ul class="flex gap-x-4 justify-end">
+  <ul class="max-w-screen-md mx-auto flex items-center justify-end p-4">
     <% if Current.group %>
-      <li class="rounded py-6 py-1 bg-opacity-50 bg-black">
+      <li class="rounded px-4 py-1 hover:bg-opacity-20 hover:bg-black">
         <%= link_to Current.group.name, Current.group, class: "" %>
       </li>
     <% end %>
     <% if Current.user %>
-      <li class="">
+      <li class="rounded px-4 py-1 hover:bg-opacity-20 hover:bg-black">
         <%= button_to "Log Out", session_path, method: :delete, class: "" %>
       </li>
     <% end %>

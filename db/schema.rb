@@ -10,16 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2021_11_07_174825) do
-
+ActiveRecord::Schema[7.0].define(version: 2021_11_07_174825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "groups", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "owner_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "rules"
     t.string "invite_token"
     t.index ["owner_id"], name: "index_groups_on_owner_id"
@@ -29,8 +28,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_07_174825) do
     t.bigint "user_id", null: false
     t.bigint "group_id", null: false
     t.string "idea", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_ideas_on_group_id"
     t.index ["user_id"], name: "index_ideas_on_user_id"
   end
@@ -39,8 +38,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_07_174825) do
     t.bigint "user_id", null: false
     t.bigint "other_id", null: false
     t.bigint "group_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_pairs_on_group_id"
     t.index ["other_id"], name: "index_pairs_on_other_id"
     t.index ["user_id"], name: "index_pairs_on_user_id"
@@ -49,8 +48,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_07_174825) do
   create_table "user_groups", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "group_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_user_groups_on_group_id"
     t.index ["user_id"], name: "index_user_groups_on_user_id"
   end
@@ -59,8 +58,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_07_174825) do
     t.string "login", null: false
     t.string "password_digest", null: false
     t.string "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["login"], name: "index_users_on_login", unique: true
   end
 
