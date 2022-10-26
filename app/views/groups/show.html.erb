@@ -36,7 +36,12 @@
     <p>Secret Santa partners have been assigned</p>
   <% else %>
     <p class="mb-2">Secret Santa partners haven't been assigned yet</p>
-    <%= button_to "Assign Secret Santa Partners", group_path(@group), params: { assign_partners: true }, method: :patch, class: "button mb-4" %>
+    <% if Current.group.owner?(Current.user) %>
+      <%= button_to "Assign Secret Santa Partners",
+        group_path(@group),
+        params: { assign_partners: true },
+        method: :patch,
+        class: "button mb-4" %>
+    <% end %>
   <% end %>
 <% end %>
-

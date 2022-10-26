@@ -8,6 +8,10 @@ class Group < ApplicationRecord
 
   validates :name, presence: true
 
+  def owner?(user)
+    user == owner
+  end
+
   def join(user)
     user_groups.find_or_create_by!(user: user)
   end
