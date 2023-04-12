@@ -37,3 +37,5 @@ group :development do
   gem "listen"
   gem "web-console"
 end
+
+gem "dockerfile-rails", ">= 1.2", :group => :development

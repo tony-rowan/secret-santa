@@ -92,6 +92,8 @@ GEM
     connection_pool (2.3.0)
     crass (1.0.6)
     diff-lcs (1.5.0)
+    dockerfile-rails (1.2.5)
+      rails
     erubi (1.11.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -134,6 +136,10 @@ GEM
     net-smtp (0.3.2)
       net-protocol
     nio4r (2.5.8)
+    nokogiri (1.13.8-aarch64-linux)
+      racc (~> 1.4)
+    nokogiri (1.13.8-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.13.8-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.8-x86_64-linux)
@@ -239,6 +245,10 @@ GEM
       standard
     stimulus-rails (1.1.0)
       railties (>= 6.0.0)
+    tailwindcss-rails (2.0.14-aarch64-linux)
+      railties (>= 6.0.0)
+    tailwindcss-rails (2.0.14-arm64-darwin)
+      railties (>= 6.0.0)
     tailwindcss-rails (2.0.14-x86_64-darwin)
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.14-x86_64-linux)
@@ -270,6 +280,8 @@ GEM
     zeitwerk (2.6.1)
 
 PLATFORMS
+  aarch64-linux
+  arm64-darwin-22
   x86_64-darwin-19
   x86_64-darwin-21
   x86_64-linux
@@ -280,6 +292,7 @@ DEPENDENCIES
   byebug
   capybara
   capybara-screenshot
+  dockerfile-rails (>= 1.2)
   factory_bot_rails
   ffaker
   importmap-rails
@@ -304,4 +317,4 @@ RUBY VERSION
    ruby 3.1.2p20
 
 BUNDLED WITH
-   2.3.9
+   2.4.10
