@@ -60,7 +60,7 @@ class UsersController < ApplicationController
   end
 
   def invited_group(params)
-    Group.find_by(invite_token: params[:invite_token])
+    Group.find_by_invite_token(params[:invite_token])
   end
 
   def redirect_to_after_create_account

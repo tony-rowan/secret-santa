@@ -21,7 +21,7 @@ class User < ApplicationRecord
   end
 
   def invite_token=(invite_token)
-    group = Group.find_by(invite_token: invite_token)
+    group = Group.find_by_invite_token(invite_token)
     groups << group if group
   end
 

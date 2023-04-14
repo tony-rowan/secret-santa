@@ -19,6 +19,6 @@ class InvitesController < ApplicationController
   end
 
   def group
-    @group ||= Group.find_by!(invite_token: params[:id])
+    @group ||= Group.find_by_invite_token!(params[:id])
   end
 end
