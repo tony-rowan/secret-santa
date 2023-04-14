@@ -1,4 +1,4 @@
 <div class="mb-4">
   <%= form.label name, local_assigns[:label], class: "block mb-2" %>
-  <%= form.send type, name, class: "input-field" %>
+  <%= form.send type, name, class: "input-field", **(local_assigns[:field_extra] || {})  %>
 </div>

@@ -35,7 +35,7 @@
 
       <%= form.fields_for(:groups) do |form| %>
         <%= render "input_field", form: form, name: :name, type: :text_field, label: "Name" %>
-        <%= render "input_field", form: form, name: :rules, type: :text_field, label: "Rules" %>
+        <%= render "input_field", form: form, name: :rules, type: :text_area, label: "Rules", field_extra: { rows: 6 } %>
       <% end %>
     <% end %>
   <% end %>
