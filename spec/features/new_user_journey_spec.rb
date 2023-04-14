@@ -26,7 +26,7 @@ RSpec.feature "New User Journey" do
     expect(page).to have_text("AIM, no wait, The 10 Rings")
     expect(page).to have_text("No limit, I know you guys can afford it!")
     expect(page).to have_text("Trevor Slattery")
-    expect(page).to have_text("Right click to copy this link and share it to invite people to your group")
+    expect(page).to have_text("Click to copy a link that you can share to invite people to your group")
   end
 
   scenario "Joining a Group" do

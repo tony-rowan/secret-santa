@@ -31,10 +31,15 @@
   </div>
 
   <p class="mb-2">
-    Right click to copy this link and share it to invite people to your group
+    Click to copy a link that you can share to invite people to your group
   </p>
 
-  <%= link_to "Invite Link", invite_path(@group.invite_token), class: "button w-max" %>
+  <div class="flex gap-2 items-center" data-controller="clipboard" data-clipboard-data-value="<%= invite_url(@group.invite_token) %>">
+    <%= link_to "Invite Link", invite_path(@group.invite_token), class: "button w-max", data: { action: "clipboard#copy" } %>
+    <div class="text-green-200 text-sm font-semibold invisible" data-clipboard-target="confirmation">
+      ✅ Copied!
+    </div>
+  </div>
 <% end %>
 
 <%= render "section", title: "🎯 Group Status" do %>
