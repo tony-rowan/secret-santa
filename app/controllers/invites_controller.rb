@@ -15,7 +15,7 @@ class InvitesController < ApplicationController
   private
 
   def redirect_members
-    redirect_to group if Current.user.in?(group.users)
+    redirect_to dashboard_path if Current.user.in?(group.users)
   end
 
   def group
