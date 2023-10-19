@@ -44,7 +44,6 @@ RSpec.feature "User Joins Group" do
 
     expect(user.groups).to eq([group])
 
-    expect(page).to have_current_path(group_path(Group.last))
-    expect(page).to have_text("#{user.name} (You)")
+    expect(page).to have_current_path(dashboard_path)
   end
 end

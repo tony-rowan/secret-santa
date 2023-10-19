@@ -9,7 +9,7 @@ class InvitesController < ApplicationController
   def update
     Current.user.groups << group
     Current.group = group
-    redirect_to group
+    redirect_to dashboard_path
   end
 
   private
