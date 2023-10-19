@@ -2,7 +2,7 @@ pre-commit:
   parallel: true
   commands:
     standardjs:
-      run: npx standard --fix
+      run: npx -y prettier --write .
     standardrb:
       run: ./bin/bundle exec standardrb --fix --only-recognized-file-types --force-exclusion {staged_files}
     rspec:
