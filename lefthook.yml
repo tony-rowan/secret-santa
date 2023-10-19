@@ -1,9 +1,12 @@
 pre-commit:
   parallel: true
   commands:
-    standardjs:
-      run: npx -y prettier --write .
+    prettier:
+      run: npx -y prettier --write {staged_files}
+      stage_fixed: true
     standardrb:
       run: ./bin/bundle exec standardrb --fix --only-recognized-file-types --force-exclusion {staged_files}
+      stage_fixed: true
     rspec:
       run: ./bin/rspec --format=progress
+      stage_fixed: true
