@@ -2,7 +2,7 @@ pre-commit:
   parallel: true
   commands:
     prettier:
-      run: npx -y prettier --write {staged_files}
+      run: npx -y prettier --ignore-unknown --write {staged_files}
       stage_fixed: true
     standardrb:
       run: ./bin/bundle exec standardrb --fix --only-recognized-file-types --force-exclusion {staged_files}
