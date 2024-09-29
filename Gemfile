@@ -8,16 +8,18 @@ gem "rails"
 gem "bcrypt"
 gem "bootsnap", require: false
 gem "importmap-rails"
-gem "pg"
+# Annoying issue with silencing a warning
+gem "litestack", github: "oldmoe/litestack", branch: "master"
 gem "puma"
-gem "redis"
 gem "sprockets-rails"
+gem "sqlite3"
 gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "turbo-rails"
 
 group :development, :test do
   gem "byebug"
+  gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "rspec-rails"
   gem "standardrb"

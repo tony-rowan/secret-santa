@@ -1,0 +1,32 @@
+name: Lint
+
+on:
+  pull_request:
+
+jobs:
+  standardrb:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .tool-versions
+          bundler-cache: true
+      - name: Bundle
+        run: bundle install
+      - name: StandardRB
+        run: bundle exec standardrb
+
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".tool-versions"
+      - name: Prettier
+        run: npx prettier --check .

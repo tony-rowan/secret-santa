@@ -1,42 +1,46 @@
-# fly.toml file generated for rowan-secret-santa on 2023-04-12T12:30:05+01:00
+# fly.toml app configuration file generated for rowan-secret-santa on 2024-09-29T18:31:24+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "rowan-secret-santa"
-kill_signal = "SIGINT"
-kill_timeout = 5
-primary_region = "lhr"
-processes = []
+app = 'rowan-secret-santa'
+primary_region = 'lhr'
+console_command = '/rails/bin/rails console'
 
-[env]
+[build]
 
-[experimental]
-  auto_rollback = true
+[[mounts]]
+  source = 'data'
+  destination = '/data'
 
-[[services]]
-  http_checks = []
+[http_service]
   internal_port = 3000
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
 
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
+[checks]
+  [checks.status]
+    port = 3000
+    type = 'http'
+    interval = '10s'
+    timeout = '2s'
+    grace_period = '5s'
+    method = 'GET'
+    path = '/up'
+    protocol = 'http'
+    tls_skip_verify = false
 
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
+    [checks.status.headers]
+      X-Forwarded-Proto = 'https'
 
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
 
 [[statics]]
-  guest_path = "/rails/public"
-  url_prefix = "/"
+  guest_path = '/rails/public'
+  url_prefix = '/'
