@@ -1,4 +1,6 @@
-class RootController < ApplicationController
+class HomeController < ApplicationController
+  layout "authentication"
+
   before_action :redirect_logged_in_users_to_dashboard
 
   private

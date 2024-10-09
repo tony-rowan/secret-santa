@@ -29,27 +29,6 @@
 
     <%= render "navigation" %>
 
-    <div class="flex justify-center content-center items-center w-screen min-h-screen">
-      <div class="max-w-screen-sm w-full p-8 md:px-0">
-        <%= link_to dashboard_path do %>
-          <p class="text-4xl text-center mb-2">🎅🎁🎄</p>
-          <h1 class="text-4xl text-center mb-4">Secret Santa</h1>
-        <% end %>
-
-        <% if flash[:notice] %>
-          <div class="my-8 bg-blue-400 rounded border-2 border-blue-600 p-4">
-            <%= flash[:notice] %>
-          </div>
-        <% end %>
-
-        <% if flash[:error] %>
-          <div class="my-8 bg-red-400 rounded border-2 border-red-600 p-4">
-            <%= flash[:error] %>
-          </div>
-        <% end %>
-
-        <%= yield %>
-      </div>
-    </div>
+    <%= yield %>
   </body>
 </html>

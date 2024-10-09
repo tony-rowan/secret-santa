@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  layout "authentication"
+
   def create
     if (user = User.find_by(login: login)&.authenticate(password))
       authenticate_user(user)

@@ -1,0 +1,13 @@
+<div class="absolute -z-10 w-full h-full overflow-hidden">
+  <% 100.times do %>
+    <div class="w-1 h-1 rounded-full bg-white absolute animate-pulse"
+      style="
+        left: <%= rand(1..99) %>%;
+        top: <%= rand(1..99) %>%;
+        animation-delay: <%= rand(0.1..0.9) %>s;
+        animation-duration: <%= rand(1.5..3.5) %>s;
+        opacity: <%= rand(0..1) %>;
+      ">
+    </div>
+  <% end%>
+</div>

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "root#show"
+  root "home#show"
 
   resource :dashboard, only: %i[show]
   resource :session, only: %i[new create destroy]

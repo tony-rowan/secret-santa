@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  layout "authentication", only: %i[new]
+
   before_action :require_logged_in, except: %i[new create]
   before_action :require_owner, except: %i[show new create]
 
