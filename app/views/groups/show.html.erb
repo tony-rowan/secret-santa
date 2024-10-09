@@ -30,16 +30,18 @@
     <% end %>
   </div>
 
-  <p class="mb-2">
-    Click to copy a link that you can share to invite people to your group
-  </p>
+  <% if Current.group.owner?(Current.user) %>
+    <p class="mb-2">
+      Click to copy a link that you can share to invite people to your group
+    </p>
 
-  <div class="flex gap-2 items-center" data-controller="clipboard" data-clipboard-data-value="<%= invite_url(@group.invite_token) %>">
-    <%= link_to "Invite Link", invite_path(@group.invite_token), class: "button w-max", data: { action: "clipboard#copy" } %>
-    <div class="text-green-200 text-sm font-semibold invisible" data-clipboard-target="confirmation">
-      ✅ Copied!
+    <div class="flex gap-2 items-center" data-controller="clipboard" data-clipboard-data-value="<%= invite_url(@group.invite_token) %>">
+      <%= link_to "Invite Link", invite_path(@group.invite_token), class: "button w-max", data: { action: "clipboard#copy" } %>
+      <div class="text-green-200 text-sm font-semibold invisible" data-clipboard-target="confirmation">
+        ✅ Copied!
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
 <%= render "section", title: "🎯 Group Status" do %>
