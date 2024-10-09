@@ -1,21 +1,22 @@
-<nav class="flex gap-8">
-  <%= link_to "🎅🎁🎄Secret Santa", dashboard_path, class: "text-4xl flex gap-2" %>
+<nav class="py-8 px-4 bg-black/20">
+  <div class="max-screen-lg container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-8">
+    <%= link_to dashboard_path, class: "text-2xl sm:text-3xl md:text-4xl flex flex-col md:flex-row items-center sm:items-start gap-2" do %>
+      <span>🎅🎁🎄</span>
+      <span>Secret Santa</span>
+    <% end %>
 
-  <ul class="max-w-screen-md mx-auto flex items-center justify-end p-4">
-    <% if Current.user %>
-      <li class="rounded px-4 py-1 hover:bg-opacity-20 hover:bg-black">
-        <%= link_to "Dashboard", dashboard_path %>
-      </li>
-    <% end %>
-    <% if Current.group %>
-      <li class="rounded px-4 py-1 hover:bg-opacity-20 hover:bg-black">
-        <%= link_to Current.group.name, Current.group %>
-      </li>
-    <% end %>
-    <% if Current.user %>
-      <li class="rounded px-4 py-1 hover:bg-opacity-20 hover:bg-black">
-        <%= button_to "Log Out", session_path, method: :delete %>
-      </li>
-    <% end %>
-  </ul>
+    <div class="flex flex-wrap gap-4">
+      <% if Current.user %>
+        <%= link_to "Dashboard", dashboard_path, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-950" %>
+      <% end %>
+
+      <% if Current.group %>
+        <%= link_to "Your Group", Current.group, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-950" %>
+      <% end %>
+
+      <% if Current.user %>
+        <%= button_to "Sign Out", session_path, method: :delete, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-950" %>
+      <% end %>
+    </ul>
+  </div>
 </nav>

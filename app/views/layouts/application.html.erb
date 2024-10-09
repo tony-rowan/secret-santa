@@ -3,12 +3,12 @@
   <head>
     <title>🎅🎁🎄 Secret Santa</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
-    <%= stylesheet_link_tag 'tailwind', media: 'all' %>
-    <%= javascript_tag 'application' %>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -29,6 +29,8 @@
 
     <%= render "navigation" %>
 
-    <%= yield %>
+    <main class="max-screen-lg container mx-auto px-4 py-24">
+      <%= yield %>
+    </main>
   </body>
 </html>

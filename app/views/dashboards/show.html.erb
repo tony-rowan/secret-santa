@@ -12,6 +12,12 @@
   </p>
 <% end %>
 
+<% if Current.group %>
+  <%= render "section", title: "🪪 Group" do %>
+    <p><%= Current.group.name %></p>
+  <% end %>
+<% end %>
+
 <% if Current.group.rules.present? %>
   <%= render "section", title: "📏 Group Rules" do %>
     <p><%= Current.group.rules %></p>
@@ -60,4 +66,3 @@
     <%= form.submit "Add", class: "button" %>
   <% end %>
 <% end %>
-

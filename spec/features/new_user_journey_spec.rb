@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.feature "New User Journey" do
   scenario "Creating a Group" do
     visit(root_path)
-    click_on("Create a Group")
+    click_on("Create an Account")
     fill_in(:user_name, with: "Trevor Slattery")
     fill_in(:user_login, with: "trevor")
     fill_in(:user_password, with: "the_mandarin")
