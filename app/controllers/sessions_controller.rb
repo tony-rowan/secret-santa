@@ -4,9 +4,9 @@ class SessionsController < ApplicationController
   def create
     if (user = User.find_by(login: login)&.authenticate(password))
       authenticate_user(user)
-      redirect_to(root_path)
+      redirect_to(dashboard_path)
     else
-      flash[:error] = "Username or password incorrect"
+      flash.now[:error] = "Unknown email/password combination"
       render(:new, status: :unprocessable_entity)
     end
   end
@@ -19,10 +19,10 @@ class SessionsController < ApplicationController
   private
 
   def login
-    params.require(:login)
+    params[:login]
   end
 
   def password
-    params.require(:password)
+    params[:password]
   end
 end

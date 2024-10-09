@@ -7,10 +7,10 @@ RSpec.feature "Owner Manages Group" do
     group = create(:group, owner: user, users: [user, other_user])
 
     visit(root_path)
-    click_on("Log In")
+    click_on("Sign In")
     fill_in(:login, with: "username")
     fill_in(:password, with: "password")
-    click_on("Log In")
+    click_on("Sign In")
     visit(group_path(group))
     click_on("Assign Secret Santa Partners")
 

@@ -1,12 +1,9 @@
 <%= form_with(url: session_path) do |form| %>
-  <%= render "input_field", form: form, name: :login, type: :text_field, label: "Username" %>
-  <%= render "input_field", form: form, name: :password, type: :password_field, label: "Password" %>
+  <%= render "input_field", form: form, name: :login, type: :text_field, label: "Username", field_extra: { required: true, autocomplete: "username", autofocus: true } %>
+  <%= render "input_field", form: form, name: :password, type: :password_field, label: "Password", field_extra: { required: true, autocomplete: "off" } %>
 
   <%= form.submit(
-    value: "Log In",
-    class: "button mx-auto",
-    data: {
-      disable_with: "..."
-    }
+    value: "Sign In",
+    class: "button mx-auto"
   ) %>
 <% end %>

@@ -4,7 +4,7 @@ RSpec.feature "User manages gift ideas" do
   scenario "adding gift ideas" do
     group = create(:group)
     user = create(:user, groups: [group])
-    login(user)
+    sign_in(user)
 
     visit(dashboard_path)
     fill_in(:idea_idea, with: "Presents!")
@@ -21,7 +21,7 @@ RSpec.feature "User manages gift ideas" do
     group = create(:group)
     user = create(:user, groups: [group])
     create_list(:idea, 2, user: user, group: group)
-    login(user)
+    sign_in(user)
 
     visit(dashboard_path)
     click_on("🚮", match: :first)
@@ -33,7 +33,7 @@ RSpec.feature "User manages gift ideas" do
   scenario "attempting to add an invalid gift idea" do
     group = create(:group)
     user = create(:user, groups: [group])
-    login(user)
+    sign_in(user)
 
     visit(dashboard_path)
     click_on("Add")

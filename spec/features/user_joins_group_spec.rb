@@ -32,10 +32,10 @@ RSpec.feature "User Joins Group" do
     group = create(:group)
 
     visit(root_path)
-    click_on("Log In")
+    click_on("Sign In")
     fill_in(:login, with: "username")
     fill_in(:password, with: "password")
-    click_on("Log In")
+    click_on("Sign In")
     visit(invite_path(group.invite_token))
 
     expect(page).to have_text("Join #{group.owner.name}'s Secret Santa group #{group.name}")

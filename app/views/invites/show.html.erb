@@ -9,7 +9,7 @@
   <% if logged_in? %>
     <%= button_to "Join Group", invite_path(@group.invite_token), method: :patch, class: "button" %>
   <% else %>
-    <%= link_to "Log In", new_session_path(invite: @group.invite_token), class: "button" %>
+    <%= link_to "Sign In", new_session_path(invite: @group.invite_token), class: "button" %>
     <span>or</span>
     <%= link_to "Create an Account", new_user_path(invite_token: @group.invite_token), class: "button" %>
   <% end %>
