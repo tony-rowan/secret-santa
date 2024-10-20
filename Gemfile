@@ -28,10 +28,9 @@ end
 group :test do
   gem "capybara"
   gem "capybara-screenshot"
+  gem "cuprite"
   gem "ffaker"
   gem "launchy"
-  gem "selenium-webdriver"
-  gem "webdrivers"
 end
 
 group :development do
