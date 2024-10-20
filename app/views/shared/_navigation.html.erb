@@ -7,15 +7,15 @@
 
     <div class="flex flex-wrap gap-4">
       <% if Current.user %>
-        <%= link_to "Dashboard", dashboard_path, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-950" %>
+        <%= link_to "Dashboard", dashboard_path, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-900" %>
       <% end %>
 
       <% if Current.group %>
-        <%= link_to "Your Group", Current.group, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-950" %>
+        <%= link_to "Your Group", Current.group, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-900" %>
       <% end %>
 
       <% if Current.user %>
-        <%= button_to "Sign Out", session_path, method: :delete, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-950" %>
+        <%= button_to "Sign Out", session_path, method: :delete, class: "md:text-lg rounded px-4 py-2 bg-indigo-800 hover:bg-indigo-900" %>
       <% end %>
     </ul>
   </div>
