@@ -2,33 +2,32 @@
 
 An app to help you run a secret santa group.
 
-## Requirements
+## Development
 
-You will need Docker, `docker-compose` and `asdf` to install the project
-dependencies and backing services.
-
-## Getting Set Up
-
-Setup is very simple at the moment, just install the project dependencies with
+The app aims to be as self-contained as possible, running entirely over [litestack][litestack].
+To run the application all you need is Ruby; [asdf][asdf] is the recommended version manager.
 
 ```bash
+# Install Ruby
 asdf install
-```
 
-and then run
-
-```bash
+# Install Ruby dependencies and setup the DB
 bin/setup
-```
 
-and you're good to go!
+# Run the server and Tailwind watcher
+bin/dev
 
-## Tests
-
-Tests are written and run by RSpec. With a preference for feature specs.
-
-Run all the tests with:
-
-```bash
+# Run all tests
 bin/rspec
 ```
+
+### Linters
+
+A [lefthook] post commit hook has been configured to run [StandardRB][standardruby] for Ruby code
+and [Prettier][prettier] for Javascript code. For the latter, you need to have a running NodeJS
+environment.
+
+[litestack]: https://github.com/oldmoe/litestack
+[asdf]: https://github.com/asdf-vm/asdf
+[standardruby]: https://github.com/standardrb/standard
+[prettier]: https://github.com/prettier/prettier
