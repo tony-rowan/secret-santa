@@ -15,8 +15,6 @@ jobs:
         with:
           ruby-version: .tool-versions
           bundler-cache: true
-      - name: Bundle
-        run: bundle install
       - name: StandardRB
         run: bundle exec standardrb
 
@@ -28,6 +26,6 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: ".tool-versions"
+          node-version-file: .tool-versions
       - name: Prettier
         run: npx prettier --check .
