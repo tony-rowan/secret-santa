@@ -1,11 +1,17 @@
 <% if flash[:error] %>
-  <div class="my-8 bg-red-400 rounded border-2 border-red-600 p-4">
+  <div class="my-8 bg-red-900/80 rounded border-2 border-red-400/80 p-4 text-center">
     <%= flash[:error] %>
   </div>
 <% end %>
 
+<% if flash[:success] %>
+  <div class="my-8 bg-green-900/80 rounded border-2 border-green-400/80 p-4 text-center">
+    <%= flash[:success] %>
+  </div>
+<% end %>
+
 <% if flash[:notice] %>
-  <div class="my-8 bg-blue-400 rounded border-2 border-blue-600 p-4">
+  <div class="my-8 bg-blue-900/80 rounded border-2 border-blue-400/80 p-4 text-center">
     <%= flash[:notice] %>
   </div>
 <% end %>

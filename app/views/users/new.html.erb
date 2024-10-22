@@ -1,25 +1,22 @@
 <%= render "section" do %>
   <h2 class="text-xl text-center">
-    Get started by making an account and a group
+    Get started by making an account
   </h2>
 <% end %>
 
-<%= form_with(model: @user) do |form| %>
-  <% if @user.errors.any? %>
-    <div class="bg-red-700 rounded p-8 mb-8">
-      <h2>Could not create account becuase: </h2>
-      <ul>
-        <% @user.errors.each do |error| %>
-          <li><span class="mr-2">·</span><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<%= form_with(model: user) do |form| %>
+  <%= render "section" do %>
+    <div class="mt-4">
+      <%= form.text_field :name %>
     </div>
-  <% end %>
 
-  <%= render "section", title: "Create Your Account" do %>
-    <%= render "input_field", form: form, name: :name, type: :text_field, label: "Display Name" %>
-    <%= render "input_field", form: form, name: :login, type: :text_field, label: "Username" %>
-    <%= render "input_field", form: form, name: :password, type: :password_field, label: "Password" %>
+    <div class="mt-4">
+      <%= form.text_field :login, hint: "You'll use this to sign in" %>
+    </div>
+
+    <div class="mt-4">
+      <%= form.password_field :password %>
+    </div>
   <% end %>
 
   <%= render "section" do %>
@@ -30,15 +27,8 @@
         Join Group
         <span class="text-3xl font-bold"><%= @group.name %></span>
       </h3>
-    <% else %>
-      <h3 class="text-xl mb-2">Create Your Group</h3>
-
-      <%= form.fields_for(:groups) do |form| %>
-        <%= render "input_field", form: form, name: :name, type: :text_field, label: "Name" %>
-        <%= render "input_field", form: form, name: :rules, type: :text_area, label: "Rules", field_extra: { rows: 6 } %>
-      <% end %>
     <% end %>
   <% end %>
 
-  <%= form.submit @group ? "Join" : "Get Started", class: "button w-full" %>
+  <%= form.submit @group ? "Join" : "Get Started", class: "w-full" %>
 <% end %>

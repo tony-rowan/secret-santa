@@ -1,68 +1,146 @@
-<%= render "section" do %>
-  <p class="text-2xl text-center">
-    Hello
-    <span class="font-bold text-3xl"><%= Current.user.name %></span>,
-    <% if @pair %>
-      you have
-      <span class="font-bold text-4xl"><%= @pair.other.name %></span>
-      for Secret Santa!
-    <% else %>
-      Secret Santa partners have not been set yet
-    <% end %>
-  </p>
-<% end %>
-
 <% if Current.group %>
-  <%= render "section", title: "🪪 Group" do %>
-    <p><%= Current.group.name %></p>
-  <% end %>
-<% end %>
 
-<% if Current.group.rules.present? %>
-  <%= render "section", title: "📏 Group Rules" do %>
-    <p><%= Current.group.rules %></p>
-  <% end %>
-<% end %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <div class="rounded p-4 bg-indigo-900/80 border-2 border-indigo-400/80">
+      <h3 class="text-xl">
+        🪪 Group
+      </h3>
 
-<% if @pair %>
-  <%= render "section", title: "🎁 Their Ideas" do %>
-    <% if @pair.other.ideas_in_current_group.empty? %>
-      <p>
-        They haven't added any gift ideas yet...
+      <p class="text-2xl mt-4">
+        <%= Current.group.name %>
       </p>
-    <% else %>
-      <% @pair.other.ideas_in_current_group.each do |idea| %>
-        <div class="text-lg mb-2">
-          <%= idea.idea %>
-        </div>
-      <% end %>
-    <% end %>
-  <% end %>
-<% end %>
+    </div>
 
-<%= render "section", title: "🎁 Your Ideas" do %>
-  <% Current.user.ideas_in_current_group.each do |idea| %>
-    <div class="text-lg mb-2 flex items-center gap-2 group">
-      <%= idea.idea %>
-      <%= button_to idea, method: :delete do %>
-        <span class="p-1">🚮</span>
+    <div class="rounded p-4 bg-indigo-900/80 border-2 border-indigo-400/80">
+      <h3 class="text-xl">
+        🎯 Status
+      </h3>
+
+      <% if pair %>
+        <p class="text-xl mt-4">You got <%= pair.other.name %>! Now buy them some gifts!</p>
+      <% else %>
+        <p class="text-xl mt-4">Not Started</p>
+      <% end %>
+
+      <% if Current.group.owner?(Current.user) %>
+        <% if Current.group.pairs.any? %>
+          <p class="mt-8">Bad Matchups?</p>
+
+          <%= button_to "Shuffle Secret Santa Partners", group_path(Current.group),
+            params: { assign_partners: true },
+            method: :patch,
+            class: "button mt-2" %>
+        <% else %>
+          <%= button_to "Assign Secret Santa Partners", group_path(Current.group),
+            params: { assign_partners: true },
+            method: :patch,
+            class: "button mt-8" %>
+        <% end %>
       <% end %>
     </div>
-  <% end %>
-  <%= form_with(model: @idea) do |form| %>
-    <% if @idea.errors.any? %>
-      <div class="bg-red-700 rounded p-8 mb-8">
-        <h2>Could not save idea becuase:</h2>
-        <ul>
-          <% @idea.errors.each do |error| %>
-            <li><span class="mr-2">·</span><%= error.full_message %></li>
-          <% end %>
-        </ul>
+
+    <% if Current.group.rules.present? %>
+      <div class="rounded p-4 bg-indigo-900/80 border-2 border-indigo-400/80">
+        <h3 class="text-xl">
+          📏 Rules
+        </h3>
+
+        <p class="text-lg mt-4">
+          <%= Current.group.rules %>
+        </p>
       </div>
     <% end %>
 
-    <%= render "input_field", form: form, name: :idea, type: :text_field, label: "Add an idea to help your Secret Santa partner" %>
+    <div class="rounded p-4 bg-indigo-900/80 border-2 border-indigo-400/80">
+      <h3 class="text-xl">
+        👨‍👩‍👧‍👦 Members
+      </h3>
 
-    <%= form.submit "Add", class: "button" %>
+      <div class="mt-4">
+        <% Current.group.users.each do |user| %>
+          <div class="flex gap-x-2 items-center">
+            <span><%= user.name %></span>
+            <span><%= "(You)" if Current.user == user %></span>
+            <% if Current.group.owner?(Current.user) %>
+              <%= button_to "🥾",
+                Current.group,
+                method: :patch,
+                params: { kick_user_id: user.id } %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if Current.group.owner?(Current.user) %>
+        <p class="mt-8">
+          Click to copy a link that you can share to invite people to your group
+        </p>
+
+        <div class="flex gap-2 items-center mt-2" data-controller="clipboard" data-clipboard-data-value="<%= invite_url(Current.group.invite_token) %>">
+          <%= link_to "Invite Link", invite_path(Current.group.invite_token), class: "button w-max", data: { action: "clipboard#copy" } %>
+          <div class="text-green-200 text-sm font-semibold invisible" data-clipboard-target="confirmation">
+            ✅ Copied!
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <% if pair %>
+      <div class="rounded p-4 bg-indigo-900/80 border-2 border-indigo-400/80">
+        <h3 class="text-xl">
+          🎁 <%= pair.other.name %>'s Ideas
+        </h3>
+
+        <% if pair.other.ideas_in_current_group.empty? %>
+          <p>
+            They haven't added any gift ideas yet...
+          </p>
+        <% else %>
+          <% pair.other.ideas_in_current_group.each do |idea| %>
+            <div class="text-lg mt-2">
+              <%= idea.idea %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-8">
+    <%= render "section", title: "🎁 Your Ideas" do %>
+      <% Current.user.ideas_in_current_group.each do |idea| %>
+        <div class="text-lg mb-2 flex items-center gap-2 group">
+          <%= idea.idea %>
+          <%= button_to idea, method: :delete do %>
+            <span class="p-1">🚮</span>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= form_with(model: idea) do |form| %>
+        <%= form.text_field :idea, label: "Add a gift idea (or a few) to help out your secret santa" %>
+
+        <%= form.submit "Add", class: "mt-6" %>
+      <% end %>
+    <% end %>
+  </div>
+
+<% else %>
+
+  <%= render "section" do %>
+    <p class="text-2xl">
+      You're not part of a group
+    </p>
+
+    <p class="text-lg mt-2">
+      Secret Santa is better with friends!
+    </p>
+
+    <div class="flex flex-col sm:flex-row content-center items-center justify-center gap-4 mt-4">
+      <%= link_to "Join a Group", "#", class: "button" %>
+      <span>or</span>
+      <%= link_to "Create a Group", new_group_path, class: "button" %>
+    </div>
   <% end %>
+
 <% end %>

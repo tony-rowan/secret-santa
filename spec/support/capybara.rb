@@ -15,6 +15,7 @@ Capybara.default_driver = :cuprite
 
 Capybara::Screenshot.prune_strategy = :keep_last_run
 
+Capybara.default_normalize_ws = true
 Capybara.asset_host = "http://localhost:3000"
 Capybara.server = :puma, {Silent: true}
 

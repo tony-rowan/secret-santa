@@ -1,0 +1,22 @@
+en:
+  activerecord:
+    attributes:
+      user:
+        name: "Display Name"
+        login: "Username"
+        password: "Password"
+    errors:
+      models:
+        group:
+          attributes:
+            name:
+              blank: "Please give your group a name"
+        user:
+          attributes:
+            name:
+              blank: "Please give yourself a name others would recognise"
+            login:
+              blank: "Please enter a username"
+              taken: "Username already in use, please select another or try to sign in instead"
+            password:
+              blank: "Please enter a password"

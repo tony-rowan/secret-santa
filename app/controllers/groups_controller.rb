@@ -7,7 +7,9 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @group = Group.new
+    render locals: {
+      group: Group.new
+    }
   end
 
   def edit
@@ -15,13 +17,15 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @group = Group.new(create_group_params)
+    group = Group.new(create_group_params)
 
-    if @group.save
-      Current.group = @group
-      redirect_to @group
+    if group.save
+      Current.group = group
+      redirect_to(dashboard_path, success: "Group Created. Now invite some friends to join.")
     else
-      render :new
+      render :new, status: :unprocessable_entity, locals: {
+        group:
+      }
     end
   end
 

@@ -1,27 +1,7 @@
-<%= form_with(model: group) do |form| %>
-  <% if group.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(group.errors.count, "error") %> prohibited this group from being saved:</h2>
+<%= form_with(model: group, class: "max-w-screen-sm container mx-auto") do |form| %>
+  <%= form.text_field :name %>
 
-      <ul>
-        <% group.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form.text_area :rules, wrapper_classes: "mt-4" %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :names %>
-    <%= form.text_field :names %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= form.submit "Create Group", class: "w-full mt-6" %>
 <% end %>

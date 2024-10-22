@@ -33,6 +33,8 @@ class Group < ApplicationRecord
   end
 
   def assign_partners
+    return unless users.count > 2
+
     pairs.destroy_all
 
     ids = users.pluck(:id)
