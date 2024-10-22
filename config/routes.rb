@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   resource :dashboard, only: %i[show]
 
+  resource :join, only: %i[show create]
+
   resource :session, only: %i[new create destroy]
 
   resources :users, only: %i[new create show edit update destroy]

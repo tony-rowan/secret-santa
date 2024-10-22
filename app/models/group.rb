@@ -6,7 +6,8 @@ class Group < ApplicationRecord
   has_many :users, through: :user_groups
   has_many :pairs
 
-  validates :name, presence: true
+  before_validation :set_join_code
+  validates :name, :join_code, presence: true
 
   def self.find_by_invite_token!(invite_token)
     find_signed!(invite_token, purpose: SECURE_ID_PURPOSE_INVITE_TOKEN)
@@ -46,5 +47,13 @@ class Group < ApplicationRecord
     end
 
     pairings.each { |p| pairs.create!(user_id: p[0], other_id: p[1]) }
+  end
+
+  private
+
+  def set_join_code
+    return if join_code
+
+    self.join_code = SecureRandom.hex(6).upcase
   end
 end

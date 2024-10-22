@@ -1,0 +1,11 @@
+en:
+  activemodel:
+    attributes:
+      join_group:
+        join_code: "Join Code"
+    errors:
+      models:
+        join_group:
+          attributes:
+            join_code:
+              blank: "Please enter the code for the group you want to join"

@@ -1,0 +1,16 @@
+<%= render "section" do %>
+  <h2 class="text-xl text-center">
+    Join a Group
+  </h2>
+
+  <p class="text-md text-center mt-4">
+    Did someone share a code with you? Enter that code to join their group.
+  </p>
+<% end %>
+
+
+<%= form_with(model: form, url: join_path, class: "max-w-screen-sm container mx-auto") do |form| %>
+  <%= form.text_field :join_code %>
+
+  <%= form.submit "Join", class: "w-full mt-6" %>
+<% end %>

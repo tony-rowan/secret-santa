@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :group do
-    name { "Group Name" }
+    name { FFaker::Company.name }
 
     transient do
       owner { build(:user) }

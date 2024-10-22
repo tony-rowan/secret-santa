@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "Owner Manages Group" do
+RSpec.feature "Group Management" do
   scenario "Sets Secret Santa partners" do
     user = create(:user, login: "username", password: "password")
     other_user = create(:user)

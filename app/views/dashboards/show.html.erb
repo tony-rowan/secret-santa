@@ -128,16 +128,16 @@
 <% else %>
 
   <%= render "section" do %>
-    <p class="text-2xl">
+    <p class="text-2xl text-center">
       You're not part of a group
     </p>
 
-    <p class="text-lg mt-2">
+    <p class="text-lg mt-2 text-center">
       Secret Santa is better with friends!
     </p>
 
     <div class="flex flex-col sm:flex-row content-center items-center justify-center gap-4 mt-4">
-      <%= link_to "Join a Group", "#", class: "button" %>
+      <%= link_to "Join a Group", join_path, class: "button" %>
       <span>or</span>
       <%= link_to "Create a Group", new_group_path, class: "button" %>
     </div>
