@@ -206,7 +206,7 @@ module FormBuilders
       (opts || {}).partition { |k, v| CUSTOM_OPTS.include?(k) }.map(&:to_h)
     end
 
-    CUSTOM_LABEL_OPTIONS = [:text, :class, :inline, :extra_classes, :hidden, :skip]
+    CUSTOM_LABEL_OPTIONS = [:text, :class, :inline, :extra_classes, :hidden, :skip, :value]
     def partition_custom_label_options(opts)
       (opts || {}).partition { |k, v| CUSTOM_LABEL_OPTIONS.include?(k) }.map(&:to_h)
     end

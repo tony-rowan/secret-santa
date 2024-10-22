@@ -1,9 +1,16 @@
-<%= form_with(url: session_path) do |form| %>
-  <%= render "input_field", form: form, name: :login, type: :text_field, label: "Username", field_extra: { required: true, autocomplete: "username", autofocus: true } %>
-  <%= render "input_field", form: form, name: :password, type: :password_field, label: "Password", field_extra: { required: true, autocomplete: "off" } %>
+<%= render "section" do %>
+  <h2 class="text-xl text-center">
+    <% if group %>
+      Sign in to join <%= group.owner.name %>'s group, <%= group.name %>
+    <% else %>
+      Sign in to your account
+    <% end %>
+  </h2>
+<% end %>
 
-  <%= form.submit(
-    value: "Sign In",
-    class: "button mx-auto"
-  ) %>
+<%= form_with(url: session_path, class: "max-w-screen-sm container mx-auto") do |form| %>
+  <%= form.text_field :login, label: "Username", required: true, autocomplete: "username", autofocus: true %>
+  <%= form.password_field :password, label: "Password", required: true, autocomplete: "off", wrapper_classes: "mt-4" %>
+
+  <%= form.submit group ? "Join" : "Sign In", class: "w-full mt-6" %>
 <% end %>

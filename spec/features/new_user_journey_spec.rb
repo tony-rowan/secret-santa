@@ -47,11 +47,15 @@ RSpec.feature "New User Journey" do
     expect(page).to have_text("New Liverpool Shirt")
   end
 
-  scenario "A user signs up and then joins a group by entering an invite code" do
-    create(:group,
+  scenario "A user signs up and then joins a group by entering a join code" do
+    owner = create(:user)
+    create(
+      :group,
+      owner: owner,
       name: "AIM, no wait, The 10 Rings",
       rules: "No limit, I know you guys can afford it!",
-      join_code: "ABCDEF")
+      join_code: "ABCDEF"
+    )
 
     visit(root_path)
     click_on("Create an Account")
@@ -73,14 +77,19 @@ RSpec.feature "New User Journey" do
     fill_in("Join Code", with: "ABCDEF")
     click_on("Join")
 
+    expect(Group.count).to eq(1)
+    expect(Group.last).to have_attributes(
+      name: "AIM, no wait, The 10 Rings",
+      rules: "No limit, I know you guys can afford it!",
+      owner: owner,
+      users: [owner, User.last]
+    )
+
     expect(page).to have_current_path(dashboard_path)
     expect(page).to have_text("Group Joined")
     expect(page).to have_text("AIM, no wait, The 10 Rings")
     expect(page).to have_text("No limit, I know you guys can afford it!")
     expect(page).to have_text("Trevor Slattery (You)")
-
-    fill_in(:idea, with: "Case of Fosters")
-    click_on("Add")
 
     fill_in("Add a gift idea", with: "Case of Fosters")
     click_on("Add")

@@ -1,34 +1,17 @@
 <%= render "section" do %>
   <h2 class="text-xl text-center">
-    Get started by making an account
+    <% if group %>
+      Create an account to join <%= group.owner.name %>'s group, <%= group.name %>
+    <% else %>
+      Get started by making an account
+    <% end %>
   </h2>
 <% end %>
 
 <%= form_with(model: user) do |form| %>
-  <%= render "section" do %>
-    <div class="mt-4">
-      <%= form.text_field :name %>
-    </div>
+  <%= form.text_field :name, required: true, autocomplete: "Name", autofocus: true %>
+  <%= form.text_field :login, required: true, autocomplete: "Username", hint: "You'll use this to sign in", wrapper_classes: "mt-4" %>
+  <%= form.password_field :password, required: true, autocomplete: "off", wrapper_classes: "mt-4" %>
 
-    <div class="mt-4">
-      <%= form.text_field :login, hint: "You'll use this to sign in" %>
-    </div>
-
-    <div class="mt-4">
-      <%= form.password_field :password %>
-    </div>
-  <% end %>
-
-  <%= render "section" do %>
-    <% if @group %>
-      <%= form.hidden_field :invite_token, value: @group.invite_token %>
-
-      <h3 class="text-xl mb-2">
-        Join Group
-        <span class="text-3xl font-bold"><%= @group.name %></span>
-      </h3>
-    <% end %>
-  <% end %>
-
-  <%= form.submit @group ? "Join" : "Get Started", class: "w-full" %>
+  <%= form.submit group ? "Join" : "Get Started", class: "w-full mt-6" %>
 <% end %>

@@ -1,10 +1,14 @@
-class JoinsController < ApplicationController
+class JoinController < ApplicationController
+  before_action :save_join_code, only: :new
   before_action :require_logged_in
 
-  def show
+  def new
+    join_code = params[:join_code].presence || session.delete(:join_code)
+    group = Group.find_by(join_code:) if join_code
     form = JoinGroup.new
 
     render locals: {
+      group:,
       form:
     }
   end
@@ -27,5 +31,9 @@ class JoinsController < ApplicationController
 
   def join_group_params
     params.require(:join_group).permit(:join_code).merge(user: Current.user)
+  end
+
+  def save_join_code
+    session[:join_code] = params[:join_code].presence
   end
 end

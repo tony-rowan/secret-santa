@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   resource :dashboard, only: %i[show]
 
-  resource :join, only: %i[show create]
+  get "/join", to: "join#new"
+  get "/join/:join_code", to: "join#new", as: :join_with_code
+  post "/join", to: "join#create"
 
   resource :session, only: %i[new create destroy]
 
