@@ -1,6 +1,4 @@
 class Group < ApplicationRecord
-  SECURE_ID_PURPOSE_INVITE_TOKEN = :invite_token
-
   belongs_to :owner, class_name: "User"
   has_many :user_groups
   has_many :users, through: :user_groups
@@ -8,18 +6,6 @@ class Group < ApplicationRecord
 
   before_validation :set_join_code
   validates :name, :join_code, presence: true
-
-  def self.find_by_invite_token!(invite_token)
-    find_signed!(invite_token, purpose: SECURE_ID_PURPOSE_INVITE_TOKEN)
-  end
-
-  def self.find_by_invite_token(invite_token)
-    find_signed(invite_token, purpose: SECURE_ID_PURPOSE_INVITE_TOKEN)
-  end
-
-  def invite_token
-    signed_id(purpose: SECURE_ID_PURPOSE_INVITE_TOKEN)
-  end
 
   def owner?(user)
     user == owner
