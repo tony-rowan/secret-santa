@@ -76,16 +76,19 @@
       </div>
 
       <% if Current.group.owner?(Current.user) %>
-        <p class="mt-8">
-          Click to copy a link that you can share to invite people to your group
-        </p>
-
-        <div class="flex gap-2 items-center mt-2" data-controller="clipboard" data-clipboard-data-value="<%= invite_url(Current.group.invite_token) %>">
-          <%= link_to "Invite Link", invite_path(Current.group.invite_token), class: "button w-max", data: { action: "clipboard#copy" } %>
-          <div class="text-green-200 text-sm font-semibold invisible" data-clipboard-target="confirmation">
-            ✅ Copied!
-          </div>
-        </div>
+        <%= link_to "Invite Others", "#",
+          class: "button mt-8",
+          data: {
+            controller: "share",
+            share_target: "fallbackCopyFeedback",
+            share_fallback_copy_feedback_value: "✅ Invite link copied!",
+            share_data_value: {
+              title: "Secret Santa",
+              text: "Join my secret santa group!",
+              url: join_with_code_url(Current.group.join_code)
+            }.to_json,
+            action: "share#share"
+          } %>
       <% end %>
     </div>
 
