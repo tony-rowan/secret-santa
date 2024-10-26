@@ -2,10 +2,6 @@ class GroupsController < ApplicationController
   before_action :require_logged_in
   before_action :require_owner, only: %i[edit update destroy]
 
-  def show
-    @group = group
-  end
-
   def new
     render locals: {
       group: Group.new
@@ -13,7 +9,11 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    @group = group
+    group = fetch_group
+
+    render locals: {
+      group:
+    }
   end
 
   def create
@@ -30,28 +30,44 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group = group
+    group = fetch_group
 
     if params[:assign_partners]
-      @group.assign_partners
-      return redirect_to dashboard_path, notice: "Secret Santa partners assigned!"
+      if group.assign_partners
+        return redirect_to dashboard_path, notice: "Secret Santa partners assigned!"
+      else
+        return redirect_to dashboard_path, error: "Could not assign secret santa partners"
+      end
+    end
+
+    if params[:reassign_partners]
+      if group.assign_partners
+        return redirect_to dashboard_path, notice: "Secret Santa partners re-assigned!"
+      else
+        return redirect_to dashboard_path, error: "Could not re-assign secret santa partners"
+      end
     end
 
     if params[:kick_user_id]
+      pairs_message = group.pairs.any? ? "Partners have been un-assigned." : nil
       user = User.find(params[:kick_user_id])
-      @group.kick(user)
-      return redirect_to @group, notice: "User removed from group!"
+      group.kick(user)
+      notice = ["Kicked #{user.name} out of the group!", pairs_message].compact.join(" ")
+      return redirect_to dashboard_path, notice:
     end
 
-    if @group.update(update_group_params)
-      redirect_to @group
+    if group.update(update_group_params)
+      redirect_to dashboard_path
     else
-      render :edit
+      render :edit, status: :unprocessable_entity, locals: {
+        group:
+      }
     end
   end
 
   def destroy
-    group.destroy
+    group = fetch_group
+    group.delete
     Current.group = Current.user.groups.last
     redirect_to root_url
   end
@@ -67,10 +83,10 @@ class GroupsController < ApplicationController
   end
 
   def require_owner
-    redirect_to(root_path) unless Current.user == group.owner
+    redirect_to(root_path) unless Current.user == fetch_group.owner
   end
 
-  def group
-    @group ||= Group.find(params[:id])
+  def fetch_group
+    @_group ||= Group.find(params[:id])
   end
 end

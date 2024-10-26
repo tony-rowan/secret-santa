@@ -30,6 +30,7 @@ class Group < ApplicationRecord
   end
 
   def kick(user)
+    pairs.destroy_all
     user_groups.find_by(user: user).destroy
   end
 

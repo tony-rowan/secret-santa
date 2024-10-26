@@ -1,6 +1,7 @@
-<h1>Editing Group</h1>
+<%= render "section" do %>
+  <h2 class="text-xl text-center">
+    Edit Group <%= group.name %>
+  </h2>
+<% end %>
 
-<%= render 'form', group: @group %>
-
-<%= link_to 'Show', @group %> |
-<%= link_to 'Back', groups_path %>
+<%= render 'form', group: %>

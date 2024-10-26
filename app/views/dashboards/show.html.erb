@@ -9,6 +9,20 @@
       <p class="text-2xl mt-4">
         <%= Current.group.name %>
       </p>
+
+      <% if Current.group.rules.present? %>
+        <h4 class="text-xl mt-6">
+          📏 Rules
+        </h4>
+
+        <p class="text-lg mt-4">
+          <%= Current.group.rules %>
+        </p>
+      <% end %>
+
+      <% if Current.group.owner?(Current.user) %>
+        <%= link_to "Edit Group", edit_group_path(Current.group), class: "button w-full mt-8" %>
+      <% end %>
     </div>
 
     <div class="rounded p-4 bg-indigo-900/80 border-2 border-indigo-400/80">
@@ -27,7 +41,7 @@
           <p class="mt-8">Bad Matchups?</p>
 
           <%= button_to "Shuffle Secret Santa Partners", group_path(Current.group),
-            params: { assign_partners: true },
+            params: { reassign_partners: true },
             method: :patch,
             class: "button mt-2" %>
         <% else %>
@@ -38,18 +52,6 @@
         <% end %>
       <% end %>
     </div>
-
-    <% if Current.group.rules.present? %>
-      <div class="rounded p-4 bg-indigo-900/80 border-2 border-indigo-400/80">
-        <h3 class="text-xl">
-          📏 Rules
-        </h3>
-
-        <p class="text-lg mt-4">
-          <%= Current.group.rules %>
-        </p>
-      </div>
-    <% end %>
 
     <div class="rounded p-4 bg-indigo-900/80 border-2 border-indigo-400/80">
       <h3 class="text-xl">
@@ -65,7 +67,9 @@
               <%= button_to "🥾",
                 Current.group,
                 method: :patch,
-                params: { kick_user_id: user.id } %>
+                params: { kick_user_id: user.id },
+                title: "Kick #{user.name}",
+                aria: { label: "Kick #{user.name}" } %>
             <% end %>
           </div>
         <% end %>

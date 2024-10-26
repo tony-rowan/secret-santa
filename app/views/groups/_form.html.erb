@@ -3,5 +3,5 @@
 
   <%= form.text_area :rules, wrapper_classes: "mt-4" %>
 
-  <%= form.submit "Create Group", class: "w-full mt-6" %>
+  <%= form.submit group.persisted? ? "Update Group" : "Create Group", class: "w-full mt-6" %>
 <% end %>
