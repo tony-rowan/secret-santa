@@ -58,7 +58,7 @@ RSpec.feature "Group Management" do
     expect(page).to have_text("New Group Rules")
     expect(page).to have_text("Now buy them some gifts!")
 
-    click_on("Kick Bad Actor")
+    accept_confirm { click_on("Kick Bad Actor") }
 
     expect(group.pairs.count).to eq(0)
     expect(group.users).not_to include(kicked_user)

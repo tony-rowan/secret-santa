@@ -63,13 +63,21 @@
           <div class="flex gap-x-2 items-center">
             <span><%= user.name %></span>
             <span><%= "(You)" if Current.user == user %></span>
-            <% if Current.group.owner?(Current.user) %>
+            <% if Current.group.owner?(Current.user) && !Current.group.owner?(user) %>
               <%= button_to "🥾",
-                Current.group,
-                method: :patch,
-                params: { kick_user_id: user.id },
+                group_membership_path(Current.group, user),
+                method: :delete,
                 title: "Kick #{user.name}",
-                aria: { label: "Kick #{user.name}" } %>
+                aria: { label: "Kick #{user.name}" },
+                data: { turbo_confirm: "Kick #{user.name}, are you sure?" } %>
+            <% end %>
+            <% if Current.user == user && !Current.group.owner?(Current.user) %>
+              <%= button_to "⏏️",
+                group_membership_path(Current.group, user),
+                method: :delete,
+                title: "Leave #{Current.group.name}",
+                aria: { label: "Leave #{Current.group.name}" },
+                data: { turbo_confirm: "Leave #{Current.group.name}, are you sure?" } %>
             <% end %>
           </div>
         <% end %>

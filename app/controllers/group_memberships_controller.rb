@@ -17,7 +17,7 @@ class GroupMembershipsController < ApplicationController
 
     [
       is_owner ? "Kicked #{member.name} out of the group!" : "Left group #{group.name}!",
-      will_remove_pairs ? "Partners have been unassigned." : nil
+      will_remove_pairs ? "Partners have been un-assigned." : nil
     ].compact.join(" ")
   end
 

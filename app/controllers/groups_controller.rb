@@ -48,14 +48,6 @@ class GroupsController < ApplicationController
       end
     end
 
-    if params[:kick_user_id]
-      pairs_message = group.pairs.any? ? "Partners have been un-assigned." : nil
-      user = User.find(params[:kick_user_id])
-      group.kick(user)
-      notice = ["Kicked #{user.name} out of the group!", pairs_message].compact.join(" ")
-      return redirect_to dashboard_path, notice:
-    end
-
     if group.update(update_group_params)
       redirect_to dashboard_path
     else
