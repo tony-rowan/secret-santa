@@ -17,7 +17,5 @@ Rails.application.routes.draw do
     resources :memberships, only: :destroy, param: :user_id, controller: :group_memberships
   end
 
-  resources :invites, only: %i[show update]
-
   get "up" => "rails/health#show", :as => :rails_health_check
 end
