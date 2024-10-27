@@ -19,11 +19,6 @@ class Group < ApplicationRecord
     user_groups.find_or_create_by!(user: user)
   end
 
-  def kick(user)
-    pairs.destroy_all
-    user_groups.find_by(user:)&.destroy
-  end
-
   def assign_partners
     return unless users.count > 2
 

@@ -1,17 +1,17 @@
-<% if flash[:error] %>
+<% Array.wrap(flash[:error]).each do |error| %>
   <div class="my-8 bg-red-900/80 rounded border-2 border-red-400/80 p-4 text-center">
-    <%= flash[:error] %>
+    <%= error %>
   </div>
 <% end %>
 
-<% if flash[:success] %>
+<% Array.wrap(flash[:success]).each do |success| %>
   <div class="my-8 bg-green-900/80 rounded border-2 border-green-400/80 p-4 text-center">
-    <%= flash[:success] %>
+    <%= success %>
   </div>
 <% end %>
 
-<% if flash[:notice] %>
+<% Array.wrap(flash[:notice]).each do |notice| %>
   <div class="my-8 bg-blue-900/80 rounded border-2 border-blue-400/80 p-4 text-center">
-    <%= flash[:notice] %>
+    <%= notice %>
   </div>
 <% end %>

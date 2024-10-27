@@ -63,7 +63,8 @@ RSpec.feature "Group Management" do
     expect(group.pairs.count).to eq(0)
     expect(group.users).not_to include(kicked_user)
 
-    expect(page).to have_text("Kicked Bad Actor out of the group! Partners have been un-assigned.")
+    expect(page).to have_text("Removed Bad Actor from the group!")
+    expect(page).to have_text("Secret santa partners have been un-assigned")
     expect(page).to have_text("Not Started")
   end
 end
