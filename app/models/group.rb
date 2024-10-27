@@ -11,13 +11,17 @@ class Group < ApplicationRecord
     user == owner
   end
 
+  def member?(user)
+    user_groups.where(user:).any?
+  end
+
   def join(user)
     user_groups.find_or_create_by!(user: user)
   end
 
   def kick(user)
     pairs.destroy_all
-    user_groups.find_by(user: user).destroy
+    user_groups.find_by(user:)&.destroy
   end
 
   def assign_partners

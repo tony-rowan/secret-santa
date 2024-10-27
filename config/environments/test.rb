@@ -48,4 +48,8 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # A shunt to help speed up authentication in tests
+  require_relative Rails.root.join("lib/middleware/test/authentication")
+  config.middleware.use Middleware::Test::Authentication
 end
