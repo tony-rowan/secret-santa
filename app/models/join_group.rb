@@ -19,7 +19,7 @@ class JoinGroup
   def save
     return false unless valid?
 
-    user.groups << group
+    user.groups << group unless group.member?(user)
 
     true
   end
