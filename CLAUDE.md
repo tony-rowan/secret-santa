@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Rails app for running Secret Santa groups: users sign up, create or join groups via a join code, add gift ideas, and the group owner assigns secret santa partners. Deployed to Fly.io (`fly.toml`, `Dockerfile`) automatically on push to `main` once lint and tests pass.
 
-The stack is deliberately self-contained: SQLite via [litestack](https://github.com/oldmoe/litestack) (`adapter: litedb`, databases live under `db/<env>/data.sqlite3`), importmap + Stimulus + Turbo for JS (no Node build step), and `tailwindcss-rails` for CSS. Ruby version is pinned in `.tool-versions` (asdf).
+The stack is deliberately self-contained: SQLite only. Dev/test use a single database at `db/<env>/data.sqlite3`. Production uses four SQLite databases on the Fly volume at `/data` (primary plus Solid Cache, Solid Queue and Solid Cable, each with its own `db/*_schema.rb`); Solid Queue runs inside Puma via `SOLID_QUEUE_IN_PUMA`. Frontend uses importmap + Stimulus + Turbo for JS (no Node build step), and `tailwindcss-rails` for CSS. Ruby version is pinned in `.tool-versions` (asdf).
 
 ## Commands
 

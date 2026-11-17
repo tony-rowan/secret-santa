@@ -13,8 +13,8 @@ WORKDIR /rails
 ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test" \
-    LITESTACK_DATA_PATH="/data" \
-    RAILS_ENV="production"
+    RAILS_ENV="production" \
+    SOLID_QUEUE_IN_PUMA="1"
 
 # Update gems and bundler
 RUN gem update --system --no-document && \
@@ -65,9 +65,6 @@ RUN groupadd --system --gid 1000 rails && \
     mkdir /data && \
     chown -R 1000:1000 db log storage tmp /data
 USER 1000:1000
-
-# Deployment options
-ENV DATABASE_URL="sqlite3:///data/production.sqlite3"
 
 # Entrypoint sets up the container.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]

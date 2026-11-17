@@ -8,9 +8,10 @@ gem "rails"
 gem "bcrypt"
 gem "bootsnap", require: false
 gem "importmap-rails"
-# Annoying issue with silencing a warning
-gem "litestack", github: "oldmoe/litestack", branch: "master"
 gem "puma"
+gem "solid_cable"
+gem "solid_cache"
+gem "solid_queue"
 gem "sprockets-rails"
 gem "sqlite3"
 gem "stimulus-rails"
