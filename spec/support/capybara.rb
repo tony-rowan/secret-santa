@@ -7,7 +7,7 @@ Capybara.register_driver(:cuprite) do |app|
 end
 
 Capybara.register_driver(:cuprite_debugging) do |app|
-  Capybara::Cuprite::Driver.new(app, window_size: [1200, 800], inspector: true)
+  Capybara::Cuprite::Driver.new(app, window_size: [1200, 800], headless: false)
 end
 
 Capybara.javascript_driver = :cuprite
