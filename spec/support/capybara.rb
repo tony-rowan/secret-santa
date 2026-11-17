@@ -22,7 +22,7 @@ Capybara.server = :puma, {Silent: true}
 RSpec.configure do |config|
   config.around(:each, type: :feature, debug: true) do |example|
     Capybara.using_driver(:cuprite_debugging) do
-      exmaple.run
+      example.run
     end
   end
 end
