@@ -1,7 +1,7 @@
 <%= form_with(model: group, class: "max-w-screen-sm container mx-auto") do |form| %>
   <%= form.text_field :name %>
 
-  <%= form.text_area :rules, wrapper_classes: "mt-4" %>
+  <%= form.text_area :rules, rows: 8, hint: "Supports Markdown", wrapper_classes: "mt-4" %>
 
   <%= form.submit group.persisted? ? "Update Group" : "Create Group", class: "w-full mt-6" %>
 <% end %>

@@ -21,18 +21,21 @@ RSpec.feature "Group Management" do
 
     click_on("Edit Group")
     fill_in("Name", with: "New Group Name")
-    fill_in("Rules", with: "New Group Rules")
+    fill_in("Rules", with: "New Group Rules with **bold** text\n\n- First rule\n- Second rule")
     click_on("Update Group")
 
     expect(page).to have_text("New Group Name")
 
     group.reload
     expect(group.name).to eq("New Group Name")
-    expect(group.rules).to eq("New Group Rules")
+    expect(group.rules).to eq("New Group Rules with **bold** text\n\n- First rule\n- Second rule")
     expect(group.pairs).to be_empty
 
     expect(page).to have_text("New Group Name")
     expect(page).to have_text("New Group Rules")
+    expect(page).to have_css("strong", text: "bold")
+    expect(page).to have_css("li", text: "First rule")
+    expect(page).to have_css("li", text: "Second rule")
     expect(page).to have_text("Not Started")
 
     click_on("Assign Secret Santa Partners")
