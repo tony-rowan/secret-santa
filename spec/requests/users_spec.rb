@@ -57,7 +57,7 @@ RSpec.describe "Users" do
         authenticate(user)
         patch user_path(user), params: {user: {name: "", login: user.login}}
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         expect(response.body).to include("Edit your account")
       end
     end

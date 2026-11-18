@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
       Current.group = group
       redirect_to(dashboard_path, success: "Group Created. Now invite some friends to join.")
     else
-      render :new, status: :unprocessable_entity, locals: {
+      render :new, status: :unprocessable_content, locals: {
         group:
       }
     end
@@ -51,7 +51,7 @@ class GroupsController < ApplicationController
     if group.update(update_group_params)
       redirect_to dashboard_path
     else
-      render :edit, status: :unprocessable_entity, locals: {
+      render :edit, status: :unprocessable_content, locals: {
         group:
       }
     end

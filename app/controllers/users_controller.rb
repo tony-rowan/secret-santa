@@ -35,7 +35,7 @@ class UsersController < ApplicationController
         redirect_to(dashboard_path, success: "Account Created. Now add some ideas for your partner")
       end
     else
-      render :new, status: :unprocessable_entity, locals: {
+      render :new, status: :unprocessable_content, locals: {
         user:,
         group:
       }
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
     if user.update(user_params)
       redirect_to dashboard_path, success: "Account updated"
     else
-      render :edit, status: :unprocessable_entity, locals: {
+      render :edit, status: :unprocessable_content, locals: {
         user:
       }
     end

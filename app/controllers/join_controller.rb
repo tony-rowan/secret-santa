@@ -19,7 +19,7 @@ class JoinController < ApplicationController
 
       redirect_to(dashboard_path, success: "Group Joined. Now add some ideas to help your partner.")
     else
-      render :show, status: :unprocessable_entity, locals: {
+      render :show, status: :unprocessable_content, locals: {
         form:
       }
     end

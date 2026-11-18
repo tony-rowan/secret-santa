@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
     else
       flash.now[:error] = "Unknown email/password combination"
 
-      render :new, status: :unprocessable_entity, locals: {
+      render :new, status: :unprocessable_content, locals: {
         group:
       }
     end
