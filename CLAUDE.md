@@ -22,7 +22,7 @@ npx prettier --check .                     # JS/other lint (requires Node)
 
 CI (`.github/workflows/test.yml`) runs `RAILS_ENV=test bin/rails assets:precompile` before specs — feature specs need compiled Tailwind assets, so run that (or have `bin/dev` running) if styles/assets are missing in tests.
 
-Lefthook pre-commit runs prettier, standardrb `--fix`, and the full rspec suite on staged files.
+Lefthook pre-commit runs prettier and standardrb `--fix` on staged files. It doesn't run the specs, so run `bin/rspec` before committing.
 
 ## Architecture
 

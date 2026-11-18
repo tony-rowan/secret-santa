@@ -24,9 +24,11 @@ bin/rspec
 
 ### Linters
 
-A [lefthook] post commit hook has been configured to run [StandardRB][standardruby] for Ruby code
-and [Prettier][prettier] for Javascript code. For the latter, you need to have a running NodeJS
-environment.
+A [lefthook] pre-commit hook runs [StandardRB][standardruby] (Ruby) and [Prettier][prettier]
+(everything else) over the staged files, fixing what they can and re-staging the fixes. Prettier
+needs a NodeJS environment. Run `bundle exec lefthook install` once to enable the hook. It doesn't
+run the tests, so run `bin/rspec` yourself before pushing. CI runs them on pull requests and before every
+deploy from `main`.
 
 [solid_cache]: https://github.com/rails/solid_cache
 [solid_queue]: https://github.com/rails/solid_queue

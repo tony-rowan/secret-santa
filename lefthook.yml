@@ -12,6 +12,3 @@ pre-commit:
     standardrb:
       run: ./bin/bundle exec standardrb --fix --only-recognized-file-types --force-exclusion {staged_files}
       stage_fixed: true
-    rspec:
-      run: ./bin/rspec --format=progress
-      stage_fixed: true
