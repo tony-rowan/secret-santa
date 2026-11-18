@@ -2,8 +2,9 @@
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
     <div class="box">
-      <h3 class="text-xl">
-        🪪 Group
+      <h3 class="text-xl flex items-center gap-2">
+        <%= icon(:user_group) %>
+        Group
       </h3>
 
       <p class="text-2xl mt-4">
@@ -11,8 +12,9 @@
       </p>
 
       <% if Current.group.rules.present? %>
-        <h4 class="text-xl mt-6">
-          📏 Rules
+        <h4 class="text-xl mt-6 flex items-center gap-2">
+          <%= icon(:clipboard_document_list) %>
+          Rules
         </h4>
 
         <p class="text-lg mt-4">
@@ -26,8 +28,9 @@
     </div>
 
     <div class="box">
-      <h3 class="text-xl">
-        🎯 Status
+      <h3 class="text-xl flex items-center gap-2">
+        <%= icon(:flag) %>
+        Status
       </h3>
 
       <% if pair %>
@@ -54,8 +57,9 @@
     </div>
 
     <div class="box">
-      <h3 class="text-xl">
-        👨‍👩‍👧‍👦 Members
+      <h3 class="text-xl flex items-center gap-2">
+        <%= icon(:users) %>
+        Members
       </h3>
 
       <div class="mt-4">
@@ -64,46 +68,53 @@
             <span><%= user.name %></span>
             <span><%= "(You)" if Current.user == user %></span>
             <% if Current.group.owner?(Current.user) && !Current.group.owner?(user) %>
-              <%= button_to "🥾",
-                group_membership_path(Current.group, user),
+              <%= button_to group_membership_path(Current.group, user),
                 method: :delete,
+                class: "p-1 rounded-lg hover:bg-white/10",
                 title: "Kick #{user.name}",
                 aria: { label: "Kick #{user.name}" },
-                data: { turbo_confirm: "Kick #{user.name}, are you sure?" } %>
+                data: { turbo_confirm: "Kick #{user.name}, are you sure?" } do %>
+                <%= icon(:user_minus, size: "size-5") %>
+              <% end %>
             <% end %>
             <% if Current.user == user && !Current.group.owner?(Current.user) %>
-              <%= button_to "⏏️",
-                group_membership_path(Current.group, user),
+              <%= button_to group_membership_path(Current.group, user),
                 method: :delete,
+                class: "p-1 rounded-lg hover:bg-white/10",
                 title: "Leave #{Current.group.name}",
                 aria: { label: "Leave #{Current.group.name}" },
-                data: { turbo_confirm: "Leave #{Current.group.name}, are you sure?" } %>
+                data: { turbo_confirm: "Leave #{Current.group.name}, are you sure?" } do %>
+                <%= icon(:arrow_right_start_on_rectangle, size: "size-5") %>
+              <% end %>
             <% end %>
           </div>
         <% end %>
       </div>
 
       <% if Current.group.owner?(Current.user) %>
-        <%= link_to "Invite Others", "#",
-          class: "button mt-8",
+        <%= link_to "#",
+          class: "button mt-8 flex items-center justify-center gap-2",
           data: {
             controller: "share",
-            share_target: "fallbackCopyFeedback",
-            share_fallback_copy_feedback_value: "✅ Invite link copied!",
+            share_fallback_copy_feedback_value: "Invite link copied!",
             share_data_value: {
               title: "Secret Santa",
               text: "Join my secret santa group!",
               url: join_with_code_url(Current.group.join_code)
             }.to_json,
             action: "share#share"
-          } %>
+          } do %>
+          <%= icon(:share, size: "size-5") %>
+          <span data-share-target="fallbackCopyFeedback">Invite Others</span>
+        <% end %>
       <% end %>
     </div>
 
     <% if pair %>
       <div class="box">
-        <h3 class="text-xl">
-          🎁 <%= pair.other.name %>'s Ideas
+        <h3 class="text-xl flex items-center gap-2">
+          <%= icon(:gift) %>
+          <%= pair.other.name %>'s Ideas
         </h3>
 
         <% if pair.other.ideas_in_current_group.empty? %>
@@ -122,12 +133,16 @@
   </div>
 
   <div class="mt-8">
-    <%= render "section", title: "🎁 Your Ideas" do %>
+    <%= render "section", title: "Your Ideas", icon: :gift do %>
       <% Current.user.ideas_in_current_group.each do |idea| %>
         <div class="text-lg mb-2 flex items-center gap-2 group">
           <%= idea.idea %>
-          <%= button_to idea, method: :delete do %>
-            <span class="p-1">🚮</span>
+          <%= button_to idea,
+            method: :delete,
+            class: "p-1 rounded-lg hover:bg-white/10",
+            title: "Remove #{idea.idea}",
+            aria: { label: "Remove #{idea.idea}" } do %>
+            <%= icon(:trash, size: "size-5") %>
           <% end %>
         </div>
       <% end %>

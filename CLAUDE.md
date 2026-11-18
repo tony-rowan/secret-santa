@@ -32,6 +32,7 @@ Lefthook pre-commit runs prettier and standardrb `--fix` on staged files. It doe
 - **Action/form objects in `app/models/`**: multi-step operations live in plain `ActiveModel` classes rather than controllers — e.g. `JoinGroup` (`save`) and `RemoveGroupMembership` (`perform`, collects flash `messages`, clears pairs when membership changes). Follow this pattern for new non-trivial operations.
 - **Controllers** pass data to views via `render locals: {...}` rather than instance variables. Flash types `success` and `error` are added alongside `notice`/`alert` and rendered by `app/views/shared/_flashes.html.erb`.
 - **Join flow** (`JoinController`): `/join/:join_code` links work for logged-out users by stashing the code in the session and picking it back up after sign-in/sign-up.
+- **Icons**: `IconComponent` (`app/components/`, ViewComponent) inlines Heroicons (24px outline) from `app/assets/images/icons/<name>.svg`; use the `icon(:name, size:, class:, aria:)` helper. Icons are `aria-hidden` unless given an `aria-label`, so the surrounding button/link supplies the accessible name. Sources hold only drawing attributes (`spec/assets/icons_spec.rb` enforces it), so strip `aria-hidden`/`data-slot` when adding a Heroicon. No emoji in the UI.
 - **Forms**: `FormBuilders::TailwindFormBuilder` (`app/lib/form_builders/`) is set as the global default form builder in `ApplicationHelper` and applies Tailwind classes to fields.
 
 ## Testing

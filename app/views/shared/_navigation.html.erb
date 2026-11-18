@@ -1,7 +1,7 @@
 <nav class="py-8 px-4 bg-black/20">
   <div class="max-screen-lg container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-8">
-    <%= link_to dashboard_path, class: "text-2xl sm:text-3xl md:text-4xl flex flex-col md:flex-row items-center sm:items-start gap-2" do %>
-      <span>🎅🎁🎄</span>
+    <%= link_to dashboard_path, class: "text-2xl sm:text-3xl md:text-4xl flex flex-col md:flex-row items-center gap-2" do %>
+      <%= icon(:gift, size: "size-8 sm:size-9 md:size-10", class: "text-green-400") %>
       <span>Secret Santa</span>
     <% end %>
 

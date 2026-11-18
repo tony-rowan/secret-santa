@@ -1,6 +1,7 @@
 <div class="mb-8">
   <% if local_assigns[:title]%>
-    <h3 class="text-xl mb-2">
+    <h3 class="text-xl mb-2 flex items-center gap-2">
+      <%= icon(local_assigns[:icon]) if local_assigns[:icon] %>
       <%= title %>
     </h3>
   <% end %>

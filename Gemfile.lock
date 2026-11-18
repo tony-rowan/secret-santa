@@ -77,6 +77,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.9.2)
       public_suffix (>= 2.0.2, < 8.0)
+    ansi (1.6.0)
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt (3.1.22)
@@ -204,6 +205,9 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.7-x86_64-linux-gnu)
       racc (~> 1.4)
+    oga (3.5)
+      ast
+      ruby-ll (~> 2.2)
     parallel (2.3.0)
     parser (3.3.13.0)
       ast (~> 2.4.1)
@@ -313,6 +317,9 @@ GEM
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.47.1, < 2.0)
+    ruby-ll (2.2.0)
+      ansi
+      ast
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     solid_cable (4.1.0)
@@ -382,6 +389,10 @@ GEM
     unicode-emoji (4.3.0)
     uri (1.1.2)
     useragent (0.16.11)
+    view_component (4.24.0)
+      actionview (>= 7.1.0)
+      activesupport (>= 7.1.0)
+      prism (>= 1.0)
     web-console (4.3.0)
       actionview (>= 8.0.0)
       bindex (>= 0.4.0)
@@ -417,6 +428,7 @@ DEPENDENCIES
   launchy
   lefthook
   listen
+  oga
   puma
   rails
   rspec-rails
@@ -429,6 +441,7 @@ DEPENDENCIES
   stimulus-rails
   tailwindcss-rails
   turbo-rails
+  view_component
   web-console
 
 RUBY VERSION

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>🎅🎁🎄 Secret Santa</title>
+    <title>Secret Santa</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <%= csrf_meta_tags %>
@@ -18,7 +18,7 @@
     <div class="flex justify-center content-center items-center w-screen min-h-screen">
       <div class="max-w-screen-sm w-full container py-24 px-4">
         <%= link_to root_path do %>
-          <p class="text-4xl text-center mb-2">🎅🎁🎄</p>
+          <%= icon(:gift, size: "size-12", class: "mx-auto mb-2 text-green-400") %>
           <h1 class="text-4xl text-center mb-4">Secret Santa</h1>
         <% end %>
 

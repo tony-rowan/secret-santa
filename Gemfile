@@ -8,6 +8,7 @@ gem "rails"
 gem "bcrypt"
 gem "bootsnap", require: false
 gem "importmap-rails"
+gem "oga"
 gem "puma"
 gem "solid_cable"
 gem "solid_cache"
@@ -17,6 +18,7 @@ gem "sqlite3"
 gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "turbo-rails"
+gem "view_component"
 
 group :development, :test do
   gem "byebug"

@@ -13,7 +13,8 @@ export default class extends Controller {
     } catch (error) {
       // Fallback to the clipboard
       navigator.clipboard.writeText(this.dataValue.url);
-      this.fallbackCopyFeedbackTarget.text = this.fallbackCopyFeedbackValue;
+      this.fallbackCopyFeedbackTarget.textContent =
+        this.fallbackCopyFeedbackValue;
     }
   }
 }
