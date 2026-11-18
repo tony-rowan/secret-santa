@@ -8,21 +8,14 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if (user = User.find_by(email:)&.authenticate(password))
-      authenticate_user(user)
-
-      if group
-        redirect_to(join_with_code_path(join_code), success: "Signed In")
-      else
-        redirect_to(dashboard_path, success: "Signed In")
-      end
-    else
-      flash.now[:error] = "Unknown email/password combination"
-
-      render :new, status: :unprocessable_content, locals: {
-        group:
-      }
+    # Respond identically whether or not the account exists, so the response doesn't reveal it
+    if (user = User.find_by(email:))
+      send_sign_in_link(user)
     end
+
+    render :check_email, locals: {
+      group:
+    }
   end
 
   def destroy
@@ -34,10 +27,6 @@ class SessionsController < ApplicationController
 
   def email
     params[:email]
-  end
-
-  def password
-    params[:password]
   end
 
   def group

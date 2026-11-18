@@ -60,6 +60,7 @@ RSpec.configure do |config|
 end
 
 RSpec.configure do |config|
+  config.include(ActiveSupport::Testing::TimeHelpers)
   config.include(FactoryBot::Syntax::Methods)
 end
 

@@ -15,14 +15,17 @@ RSpec.feature "Invite Journey" do
     click_on("Create an Account")
     fill_in("Display Name", with: "Trevor Slattery")
     fill_in("Email", with: "trevor@example.com")
-    fill_in("Password", with: "the_mandarin")
     click_on("Join")
+
+    expect(page).to have_text("Check your email")
+
+    follow_magic_link
 
     expect(User.count).to eq(2)
     expect(User.last).to have_attributes(name: "Trevor Slattery", email: "trevor@example.com")
 
     expect(page).to have_current_path(join_with_code_path("ABCDEF"))
-    expect(page).to have_text("Account Created")
+    expect(page).to have_text("Signed In")
     expect(page).to have_text("AIM, no wait, The 10 Rings")
 
     click_on("Join")
@@ -52,7 +55,7 @@ RSpec.feature "Invite Journey" do
   end
 
   scenario "A user signs in and joins a group after following a link including a join code" do
-    user = create(:user, name: "Trevor Slattery", email: "trevor@example.com", password: "the_mandarin")
+    user = create(:user, name: "Trevor Slattery", email: "trevor@example.com")
     owner = create(:user)
     create(
       :group,
@@ -65,8 +68,11 @@ RSpec.feature "Invite Journey" do
     visit(join_with_code_path("ABCDEF"))
     click_on("Sign In")
     fill_in("Email", with: "trevor@example.com")
-    fill_in("Password", with: "the_mandarin")
-    click_on("Join")
+    click_on("Email me a sign-in link")
+
+    expect(page).to have_text("Check your email")
+
+    follow_magic_link
 
     expect(page).to have_current_path(join_with_code_path("ABCDEF"))
     expect(page).to have_text("Signed In")
@@ -99,7 +105,7 @@ RSpec.feature "Invite Journey" do
   end
 
   scenario "A signed in user joins a group after following a link including a join code" do
-    user = create(:user, name: "Trevor Slattery", email: "trevor@example.com", password: "the_mandarin")
+    user = create(:user, name: "Trevor Slattery", email: "trevor@example.com")
     owner = create(:user)
     create(
       :group,
@@ -109,11 +115,7 @@ RSpec.feature "Invite Journey" do
       join_code: "ABCDEF"
     )
 
-    visit(root_path)
-    click_on("Sign In")
-    fill_in("Email", with: "trevor@example.com")
-    fill_in("Password", with: "the_mandarin")
-    click_on("Sign In")
+    sign_in(user)
 
     expect(page).to have_current_path(dashboard_path)
     expect(page).to have_text("Signed In")

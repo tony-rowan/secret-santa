@@ -27,13 +27,11 @@ class UsersController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      authenticate_user(user)
+      send_sign_in_link(user)
 
-      if group
-        redirect_to(join_with_code_path(join_code), success: "Account Created")
-      else
-        redirect_to(dashboard_path, success: "Account Created. Now add some ideas for your partner")
-      end
+      render "sessions/check_email", locals: {
+        group:
+      }
     else
       render :new, status: :unprocessable_content, locals: {
         user:,
@@ -60,7 +58,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password)
+    params.require(:user).permit(:name, :email)
   end
 
   def require_owner

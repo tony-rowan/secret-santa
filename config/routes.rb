@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   get "/join/:join_code", to: "join#new", as: :join_with_code
   post "/join", to: "join#create"
 
-  resource :session, only: %i[new create destroy]
+  resource :session, only: %i[new create destroy] do
+    resource :magic_link, only: %i[show create]
+  end
 
   resources :users, only: %i[new create show edit update destroy]
 

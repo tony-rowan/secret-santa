@@ -6,14 +6,17 @@ RSpec.feature "New User Journey" do
     click_on("Create an Account")
     fill_in("Display Name", with: "Trevor Slattery")
     fill_in("Email", with: "trevor@example.com")
-    fill_in("Password", with: "the_mandarin")
     click_on("Get Started")
 
     expect(User.count).to eq(1)
     expect(User.last).to have_attributes(name: "Trevor Slattery", email: "trevor@example.com")
 
+    expect(page).to have_text("Check your email")
+
+    follow_magic_link
+
     expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("Account Created")
+    expect(page).to have_text("Signed In")
     expect(page).to have_text("You're not part of a group")
     expect(page).to have_link("Join a Group")
     expect(page).to have_link("Create a Group")
@@ -61,14 +64,17 @@ RSpec.feature "New User Journey" do
     click_on("Create an Account")
     fill_in("Display Name", with: "Trevor Slattery")
     fill_in("Email", with: "trevor@example.com")
-    fill_in("Password", with: "the_mandarin")
     click_on("Get Started")
 
     expect(User.count).to eq(2)
     expect(User.last).to have_attributes(name: "Trevor Slattery", email: "trevor@example.com")
 
+    expect(page).to have_text("Check your email")
+
+    follow_magic_link
+
     expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("Account Created")
+    expect(page).to have_text("Signed In")
     expect(page).to have_text("You're not part of a group")
     expect(page).to have_link("Join a Group")
     expect(page).to have_link("Create a Group")

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "Group Management" do
   scenario "The owner edits the group name, rules, then assigns and shuffles secret santas and kicks someone" do
-    owner = create(:user, email: "username@example.com", password: "password")
+    owner = create(:user)
     kicked_user = create(:user, name: "Bad Actor")
     other_users = create_list(:user, 3)
     group = create(
@@ -13,11 +13,7 @@ RSpec.feature "Group Management" do
       rules: "Old Group Rules"
     )
 
-    visit(root_path)
-    click_on("Sign In")
-    fill_in("Email", with: "username@example.com")
-    fill_in("Password", with: "password")
-    click_on("Sign In")
+    sign_in(owner)
 
     expect(page).to have_text("Old Group Name")
     expect(page).to have_text("Old Group Rules")
@@ -27,6 +23,8 @@ RSpec.feature "Group Management" do
     fill_in("Name", with: "New Group Name")
     fill_in("Rules", with: "New Group Rules")
     click_on("Update Group")
+
+    expect(page).to have_text("New Group Name")
 
     group.reload
     expect(group.name).to eq("New Group Name")
@@ -39,6 +37,8 @@ RSpec.feature "Group Management" do
 
     click_on("Assign Secret Santa Partners")
 
+    expect(page).to have_text("Secret Santa partners assigned!")
+
     pair_ids = group.pairs.pluck(:id)
     expect(pair_ids.count).to eq(5)
 
@@ -48,6 +48,8 @@ RSpec.feature "Group Management" do
     expect(page).to have_text("Now buy them some gifts!")
 
     click_on("Shuffle Secret Santa Partners")
+
+    expect(page).to have_text("Secret Santa partners re-assigned!")
 
     shuffled_pair_ids = group.pairs.pluck(:id)
     expect(shuffled_pair_ids).not_to eq(pair_ids)
@@ -59,6 +61,8 @@ RSpec.feature "Group Management" do
     expect(page).to have_text("Now buy them some gifts!")
 
     accept_confirm { click_on("Kick Bad Actor") }
+
+    expect(page).to have_text("Removed Bad Actor from the group!")
 
     expect(group.pairs.count).to eq(0)
     expect(group.users).not_to include(kicked_user)

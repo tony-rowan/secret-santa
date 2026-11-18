@@ -7,7 +7,6 @@
 <%= form_with(model: user, class: "max-w-screen-sm container mx-auto") do |form| %>
   <%= form.text_field :name, required: true, autocomplete: "name" %>
   <%= form.email_field :email, required: true, autocomplete: "email", wrapper_classes: "mt-4" %>
-  <%= form.password_field :password, autocomplete: "new-password", hint: "Leave blank to keep your current password", wrapper_classes: "mt-4" %>
 
   <%= form.submit "Update Account", class: "w-full mt-6" %>
 <% end %>

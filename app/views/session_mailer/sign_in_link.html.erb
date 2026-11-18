@@ -1,0 +1,9 @@
+<p style="margin: 0 0 16px;">Hi <%= @user.name %>,</p>
+
+<p style="margin: 0 0 24px;">Use the button below to sign in to Secret Santa. The link expires in 15 minutes and can only be used once.</p>
+
+<p style="margin: 0 0 24px;">
+  <a href="<%= @magic_link_url %>" style="display: inline-block; padding: 12px 24px; background-color: #166534; color: #ffffff; font-weight: bold; text-decoration: none; border-radius: 8px;">Sign in</a>
+</p>
+
+<p style="margin: 0; font-size: 14px; color: #6b7280;">If you didn't ask for this, you can safely ignore this email.</p>

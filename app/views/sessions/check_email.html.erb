@@ -1,0 +1,12 @@
+<%= render "section" do %>
+  <h2 class="text-xl text-center">
+    Check your email
+  </h2>
+
+  <p class="text-center mt-4">
+    If that email address can be used to sign in, we've sent a link to it. The link expires in 15 minutes.
+    <% if group %>
+      Follow it to join <%= group.owner.name %>'s group, <%= group.name %>.
+    <% end %>
+  </p>
+<% end %>

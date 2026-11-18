@@ -4,7 +4,6 @@ en:
       user:
         name: "Display Name"
         email: "Email"
-        password: "Password"
     errors:
       models:
         group:
@@ -19,5 +18,3 @@ en:
               blank: "Please enter your email address"
               taken: "Email already in use, please use another or try to sign in instead"
               invalid: "Please enter a valid email address"
-            password:
-              blank: "Please enter a password"

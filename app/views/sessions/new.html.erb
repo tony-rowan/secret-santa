@@ -8,9 +8,8 @@
   </h2>
 <% end %>
 
-<%= form_with(url: session_path, class: "max-w-screen-sm container mx-auto") do |form| %>
+<%= form_with(url: session_path, class: "max-w-screen-sm container mx-auto", data: {turbo: false}) do |form| %>
   <%= form.email_field :email, label: "Email", required: true, autocomplete: "email", autofocus: true %>
-  <%= form.password_field :password, label: "Password", required: true, autocomplete: "off", wrapper_classes: "mt-4" %>
 
-  <%= form.submit group ? "Join" : "Sign In", class: "w-full mt-6" %>
+  <%= form.submit "Email me a sign-in link", class: "w-full mt-6" %>
 <% end %>
