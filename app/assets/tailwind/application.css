@@ -28,10 +28,17 @@
     @apply block;
     @apply py-2 px-8;
     @apply border-2 border-green-400;
-    @apply rounded-lg;
+    @apply rounded-xl;
     @apply bg-green-800 hover:bg-green-700;
     @apply cursor-pointer;
     @apply text-center;
+  }
+
+  .box {
+    @apply p-4;
+    @apply rounded-2xl;
+    @apply bg-indigo-900/80;
+    @apply border-2 border-indigo-400/80;
   }
 
   .input-field {
