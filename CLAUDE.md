@@ -34,6 +34,7 @@ Lefthook pre-commit runs prettier and standardrb `--fix` on staged files. It doe
 - **Join flow** (`JoinController`): `/join/:join_code` links work for logged-out users by stashing the code in the session and picking it back up after sign-in/sign-up.
 - **Icons**: `IconComponent` (`app/components/`, ViewComponent) inlines Heroicons (24px outline) from `app/assets/images/icons/<name>.svg`; use the `icon(:name, size:, class:, aria:)` helper. Icons are `aria-hidden` unless given an `aria-label`, so the surrounding button/link supplies the accessible name. Sources hold only drawing attributes (`spec/assets/icons_spec.rb` enforces it), so strip `aria-hidden`/`data-slot` when adding a Heroicon. No emoji in the UI.
 - **Forms**: `FormBuilders::TailwindFormBuilder` (`app/lib/form_builders/`) is set as the global default form builder in `ApplicationHelper` and applies Tailwind classes to fields.
+- **Mail**: Action Mailer sends through Resend (`resend` gem, `:resend` delivery method). Env vars: `RESEND_API_KEY`, `MAILER_FROM` (must be on a Resend-verified domain in production), `APP_HOST` (link host, defaults to the Fly hostname). In dev without `RESEND_API_KEY`, mail uses the `:test` method and just shows in the log. Production sends via `deliver_later` on Solid Queue; the test env uses the `:inline` queue adapter so mail lands in `ActionMailer::Base.deliveries`. Mailer previews live in `spec/mailers/previews`.
 
 ## Testing
 

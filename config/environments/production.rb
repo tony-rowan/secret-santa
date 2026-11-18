@@ -72,6 +72,11 @@ Rails.application.configure do
   config.solid_queue.connects_to = {database: {writing: :queue}}
   # config.active_job.queue_name_prefix = "secret_santa_production"
 
+  # Send mail through Resend (RESEND_API_KEY, MAILER_FROM and APP_HOST are set as Fly secrets).
+  config.action_mailer.delivery_method = :resend
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = {host: ENV.fetch("APP_HOST", "rowan-secret-santa.fly.dev"), protocol: "https"}
+
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true

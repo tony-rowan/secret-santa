@@ -10,6 +10,7 @@ gem "bootsnap", require: false
 gem "importmap-rails"
 gem "oga"
 gem "puma"
+gem "resend"
 gem "solid_cable"
 gem "solid_cache"
 gem "solid_queue"
