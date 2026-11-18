@@ -37,7 +37,7 @@ class IconComponent < ViewComponent::Base
   end
 
   def class_list
-    [size, options[:class]].compact_blank.join(" ")
+    [size, "shrink-0", options[:class]].compact_blank.join(" ")
   end
 
   def base_attributes

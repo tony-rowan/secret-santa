@@ -15,6 +15,12 @@ RSpec.describe IconComponent, type: :component do
     expect(page).to have_css("svg.size-6.text-green-500.icon-plus")
   end
 
+  it "stops the icon shrinking inside flex containers" do
+    render_inline(described_class.new(:plus))
+
+    expect(page).to have_css("svg.shrink-0")
+  end
+
   context "when a custom size is given" do
     it "uses it in place of the default size class" do
       render_inline(described_class.new(:plus, size: "size-4"))
