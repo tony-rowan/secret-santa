@@ -18,7 +18,9 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = user
+    render locals: {
+      user:
+    }
   end
 
   def create
@@ -41,12 +43,12 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = user
-
-    if @user.update(user_params)
-      redirect_to root_path, notice: "User was successfully updated."
+    if user.update(user_params)
+      redirect_to dashboard_path, success: "Account updated"
     else
-      render :edit
+      render :edit, status: :unprocessable_entity, locals: {
+        user:
+      }
     end
   end
 

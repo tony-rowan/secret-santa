@@ -1,6 +1,15 @@
-<h1>Editing User</h1>
+<%= render "section" do %>
+  <h2 class="text-xl text-center">
+    Edit your account
+  </h2>
+<% end %>
 
-<%= render 'form', user: @user %>
+<%= form_with(model: user, class: "max-w-screen-sm container mx-auto") do |form| %>
+  <%= form.text_field :name, required: true, autocomplete: "name" %>
+  <%= form.text_field :login, required: true, autocomplete: "username", hint: "You'll use this to sign in", wrapper_classes: "mt-4" %>
+  <%= form.password_field :password, autocomplete: "new-password", hint: "Leave blank to keep your current password", wrapper_classes: "mt-4" %>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+  <%= form.submit "Update Account", class: "w-full mt-6" %>
+<% end %>
+
+<%= link_to "Back", dashboard_path, class: "block text-center mt-6" %>
