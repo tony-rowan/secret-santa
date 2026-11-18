@@ -1,7 +1,15 @@
 module MagicLinkHelper
   def last_magic_link_url
+    last_email_link_url("/session/magic_link")
+  end
+
+  def last_email_confirmation_url
+    last_email_link_url("/email_confirmation")
+  end
+
+  def last_email_link_url(path)
     mail = ActionMailer::Base.deliveries.last
-    mail.text_part.body.decoded[%r{https?://\S+/session/magic_link\?\S+}]
+    mail.text_part.body.decoded[%r{https?://\S+#{Regexp.escape(path)}\?\S+}]
   end
 end
 

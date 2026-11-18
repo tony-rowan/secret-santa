@@ -1,0 +1,9 @@
+<p style="margin: 0 0 16px;">Hi <%= @user.name %>,</p>
+
+<p style="margin: 0 0 24px;">Use the button below to change your Secret Santa email to <%= @new_email %>. The link expires in 1 hour.</p>
+
+<p style="margin: 0 0 24px;">
+  <a href="<%= @confirmation_url %>" style="display: inline-block; padding: 12px 24px; background-color: #166534; color: #ffffff; font-weight: bold; text-decoration: none; border-radius: 8px;">Confirm new email</a>
+</p>
+
+<p style="margin: 0; font-size: 14px; color: #6b7280;">If you didn't ask for this, you can safely ignore this email.</p>

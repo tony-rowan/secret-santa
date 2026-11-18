@@ -6,6 +6,9 @@ class UsersController < ApplicationController
   before_action :require_logged_in, except: %i[new create]
   before_action :require_owner, except: %i[show new create]
 
+  # Only submits that actually request an email change count, since each one sends an email
+  rate_limit to: 5, within: 15.minutes, only: :update, name: "email_change", by: -> { Current.user&.id }, if: -> { email_change_requested? }, with: -> { redirect_to edit_user_path(user), error: RATE_LIMIT_MESSAGE }
+
   def show
     @user = user
   end
@@ -43,8 +46,12 @@ class UsersController < ApplicationController
   end
 
   def update
-    if user.update(user_params)
-      redirect_to dashboard_path, success: "Account updated"
+    update_account = UpdateAccount.new(user:, name: user_params[:name], email: user_params[:email])
+
+    if update_account.perform
+      redirect_to dashboard_path,
+        success: update_account.messages[:success],
+        notice: update_account.messages[:notice]
     else
       render :edit, status: :unprocessable_content, locals: {
         user:
@@ -61,6 +68,10 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email)
+  end
+
+  def email_change_requested?
+    UpdateAccount.new(user:, email: user_params[:email]).email_changing?
   end
 
   def require_owner

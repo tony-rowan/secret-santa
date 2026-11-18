@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     resource :magic_link, only: %i[show create]
   end
 
+  resource :email_confirmation, only: %i[show create destroy]
+
   resources :users, only: %i[new create show edit update destroy]
 
   resources :ideas, only: %i[create destroy]

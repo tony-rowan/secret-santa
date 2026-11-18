@@ -6,9 +6,16 @@
 
 <%= form_with(model: user, class: "max-w-screen-sm container mx-auto") do |form| %>
   <%= form.text_field :name, required: true, autocomplete: "name" %>
-  <%= form.email_field :email, required: true, autocomplete: "email", wrapper_classes: "mt-4" %>
+  <%= form.email_field :email, autocomplete: "email", wrapper_classes: "mt-4" %>
 
   <%= form.submit "Update Account", class: "w-full mt-6" %>
+<% end %>
+
+<% if user.unconfirmed_email.present? %>
+  <div class="max-w-screen-sm container mx-auto mt-6 text-center">
+    <p>Waiting for you to confirm <%= user.unconfirmed_email %></p>
+    <%= button_to "Cancel change", email_confirmation_path, method: :delete, class: "button mt-2" %>
+  </div>
 <% end %>
 
 <%= link_to "Back", dashboard_path, class: "block text-center mt-6" %>

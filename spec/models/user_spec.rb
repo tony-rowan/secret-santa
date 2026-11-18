@@ -44,4 +44,39 @@ RSpec.describe User do
       end
     end
   end
+
+  describe "email change" do
+    describe "#cancel_email_change" do
+      it "clears the pending address and invalidates its token" do
+        user = create(:user, unconfirmed_email: "new@example.com")
+        token = user.generate_token_for(:email_change)
+
+        user.cancel_email_change
+
+        expect(user.reload.unconfirmed_email).to be_nil
+        expect(User.find_by_token_for(:email_change, token)).to be_nil
+      end
+    end
+
+    describe "#confirm_email_change" do
+      context "when the pending address is free" do
+        it "applies it and clears the pending address" do
+          user = create(:user, unconfirmed_email: "new@example.com")
+
+          expect(user.confirm_email_change).to be(true)
+          expect(user.reload).to have_attributes(email: "new@example.com", unconfirmed_email: nil)
+        end
+      end
+
+      context "when the pending address was taken in the meantime" do
+        it "leaves the email alone and drops the pending address" do
+          user = create(:user, email: "old@example.com", unconfirmed_email: "new@example.com")
+          create(:user, email: "new@example.com")
+
+          expect(user.confirm_email_change).to be(false)
+          expect(user.reload).to have_attributes(email: "old@example.com", unconfirmed_email: nil)
+        end
+      end
+    end
+  end
 end

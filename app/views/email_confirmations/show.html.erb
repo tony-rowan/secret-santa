@@ -1,0 +1,8 @@
+<%= render "section" do %>
+  <h2 class="text-xl text-center">
+    Confirming your new email…
+  </h2>
+<% end %>
+
+<%# Submits itself via JS; the button is the fallback if JS is unavailable %>
+<%= button_to "Click here if nothing happens", email_confirmation_path, params: {token:}, class: "button w-full", form: {class: "max-w-screen-sm container mx-auto", data: {controller: "auto-submit"}} %>
