@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans:
+    "Inter var", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@layer base {
+  /* Tailwind v4 buttons use the default cursor; keep the v3 pointer. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  body {
+    @apply bg-linear-to-br from-indigo-950 to-indigo-900 to-90%;
+    @apply min-h-screen;
+    @apply text-white;
+  }
+}
+
+@layer components {
+  .button {
+    @apply block;
+    @apply py-2 px-8;
+    @apply border-2 border-green-400;
+    @apply rounded-lg;
+    @apply bg-green-800 hover:bg-green-700;
+    @apply cursor-pointer;
+    @apply text-center;
+  }
+
+  .input-field {
+    @apply block;
+    @apply w-full;
+    @apply px-4 py-2;
+    @apply rounded-sm;
+    @apply bg-indigo-800;
+    @apply border-2 border-indigo-400;
+    @apply focus:outline-hidden focus:ring-2 focus:ring-indigo-200 focus:border-indigo-200;
+  }
+}

@@ -168,7 +168,7 @@ module FormBuilders
       label = label(method, custom_options[:label], html_options)
 
       [label, {class: class_names(
-        "mt-1 rounded-md shadow-sm focus:ring focus:ring-success focus:ring-opacity-50",
+        "mt-1 rounded-md shadow-xs focus:ring-3 focus:ring-success/50",
         (custom_options[:field_classes] if custom_options[:field_classes].present?),
         ("block w-full" unless custom_options[:inline]),
         apply_default_or_error_classes(method)
@@ -229,19 +229,19 @@ module FormBuilders
     end
 
     def text_like_field_classes
-      "block w-full px-4 py-2 rounded bg-indigo-800"
+      "block w-full px-4 py-2 rounded-sm bg-indigo-800"
     end
 
     def text_like_field_default_classes
-      "border-2 border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-200"
+      "border-2 border-indigo-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-200 focus:border-indigo-200"
     end
 
     def text_like_field_error_classes
-      "border-2 border-red-400 focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-200"
+      "border-2 border-red-400 focus:outline-hidden focus:ring-2 focus:ring-red-200 focus:border-red-200"
     end
 
     def check_box_classes
-      "cursor-pointer block rounded size-3.5"
+      "cursor-pointer block rounded-sm size-3.5"
     end
 
     def check_box_default_classes
