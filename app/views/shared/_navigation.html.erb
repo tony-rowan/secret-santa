@@ -7,8 +7,16 @@
 
     <div class="flex flex-wrap gap-4">
       <% if Current.user %>
-        <%= button_to "Sign Out", session_path, method: :delete, class: "md:text-lg rounded-xl px-4 py-2 bg-indigo-800 hover:bg-indigo-900" %>
+        <%= link_to edit_user_path(Current.user), class: "nav-item" do %>
+          <%= icon(:user_circle, size: "size-5") %>
+          <span>Account</span>
+        <% end %>
+
+        <%= button_to session_path, method: :delete, class: "nav-item" do %>
+          <%= icon(:arrow_right_start_on_rectangle, size: "size-5") %>
+          <span>Sign Out</span>
+        <% end %>
       <% end %>
-    </ul>
+    </div>
   </div>
 </nav>
