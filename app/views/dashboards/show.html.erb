@@ -1,34 +1,78 @@
 <% if Current.group %>
 
+  <% owner = Current.group.owner?(Current.user) %>
+  <% action_class = "button flex items-center gap-2 py-1.5 px-4" %>
+
+  <nav aria-label="Group" id="group-menu" class="mb-8 p-4 rounded-2xl bg-black/20 flex flex-wrap items-center justify-between gap-4">
+    <h2 class="text-2xl flex items-center gap-2">
+      <%= icon(:user_group) %>
+      <%= Current.group.name %>
+    </h2>
+
+    <div class="flex flex-wrap items-center gap-3">
+      <% if owner %>
+        <%= link_to "#",
+          class: action_class,
+          data: {
+            controller: "share",
+            share_fallback_copy_feedback_value: "Invite link copied!",
+            share_data_value: {
+              title: "Secret Santa",
+              text: "Join my secret santa group!",
+              url: join_with_code_url(Current.group.join_code)
+            }.to_json,
+            action: "share#share"
+          } do %>
+          <%= icon(:share, size: "size-5") %>
+          <span data-share-target="fallbackCopyFeedback">Invite Others</span>
+        <% end %>
+
+        <% if Current.group.pairs.any? %>
+          <%= button_to "Shuffle Secret Santa Partners", group_path(Current.group),
+            params: { reassign_partners: true },
+            method: :patch,
+            form: { class: "contents" },
+            class: action_class %>
+        <% else %>
+          <%= button_to "Assign Secret Santa Partners", group_path(Current.group),
+            params: { assign_partners: true },
+            method: :patch,
+            form: { class: "contents" },
+            class: action_class %>
+        <% end %>
+
+        <%= link_to edit_group_path(Current.group), class: action_class do %>
+          <%= icon(:cog_6_tooth, size: "size-5") %>
+          Manage Group
+        <% end %>
+      <% else %>
+        <%= button_to group_membership_path(Current.group, Current.user),
+          method: :delete,
+          form: { class: "contents" },
+          class: action_class,
+          title: "Leave #{Current.group.name}",
+          aria: { label: "Leave #{Current.group.name}" },
+          data: { turbo_confirm: "Leave #{Current.group.name}, are you sure?" } do %>
+          <%= icon(:arrow_right_start_on_rectangle, size: "size-5") %>
+          Leave group
+        <% end %>
+      <% end %>
+    </div>
+  </nav>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-    <div class="box">
-      <h3 class="text-xl flex items-center gap-2">
-        <%= icon(:user_group) %>
-        Group
-      </h3>
-
-      <p class="text-2xl mt-4">
-        <%= Current.group.name %>
-      </p>
-
-      <% if Current.group.rules.present? %>
-        <h4 class="text-xl mt-6 flex items-center gap-2">
+    <% if Current.group.rules.present? %>
+      <div class="box sm:col-span-2">
+        <h3 class="text-xl flex items-center gap-2">
           <%= icon(:clipboard_document_list) %>
           Rules
-        </h4>
+        </h3>
 
         <div class="prose prose-sm sm:prose-base prose-invert max-w-none mt-4 prose-a:text-green-300 prose-li:marker:text-green-300">
           <%= markdown(Current.group.rules) %>
         </div>
-      <% end %>
-
-      <% if Current.group.owner?(Current.user) %>
-        <%= link_to edit_group_path(Current.group), class: "button w-full mt-8 flex items-center justify-center gap-2" do %>
-          <%= icon(:cog_6_tooth) %>
-          Manage Group
-        <% end %>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
 
     <div class="box">
       <h3 class="text-xl flex items-center gap-2">
@@ -40,22 +84,6 @@
         <p class="text-xl mt-4">You got <%= pair.other.name %>! Now buy them some gifts!</p>
       <% else %>
         <p class="text-xl mt-4">Not Started</p>
-      <% end %>
-
-      <% if Current.group.owner?(Current.user) %>
-        <% if Current.group.pairs.any? %>
-          <p class="mt-8">Bad Matchups?</p>
-
-          <%= button_to "Shuffle Secret Santa Partners", group_path(Current.group),
-            params: { reassign_partners: true },
-            method: :patch,
-            class: "button mt-2" %>
-        <% else %>
-          <%= button_to "Assign Secret Santa Partners", group_path(Current.group),
-            params: { assign_partners: true },
-            method: :patch,
-            class: "button mt-8" %>
-        <% end %>
       <% end %>
     </div>
 
@@ -70,7 +98,7 @@
           <div class="flex gap-x-2 items-center">
             <span><%= user.name %></span>
             <span><%= "(You)" if Current.user == user %></span>
-            <% if Current.group.owner?(Current.user) && !Current.group.owner?(user) %>
+            <% if owner && !Current.group.owner?(user) %>
               <%= button_to group_membership_path(Current.group, user),
                 method: :delete,
                 class: "p-1 rounded-lg hover:bg-white/10",
@@ -80,37 +108,9 @@
                 <%= icon(:user_minus, size: "size-5") %>
               <% end %>
             <% end %>
-            <% if Current.user == user && !Current.group.owner?(Current.user) %>
-              <%= button_to group_membership_path(Current.group, user),
-                method: :delete,
-                class: "p-1 rounded-lg hover:bg-white/10",
-                title: "Leave #{Current.group.name}",
-                aria: { label: "Leave #{Current.group.name}" },
-                data: { turbo_confirm: "Leave #{Current.group.name}, are you sure?" } do %>
-                <%= icon(:arrow_right_start_on_rectangle, size: "size-5") %>
-              <% end %>
-            <% end %>
           </div>
         <% end %>
       </div>
-
-      <% if Current.group.owner?(Current.user) %>
-        <%= link_to "#",
-          class: "button mt-8 flex items-center justify-center gap-2",
-          data: {
-            controller: "share",
-            share_fallback_copy_feedback_value: "Invite link copied!",
-            share_data_value: {
-              title: "Secret Santa",
-              text: "Join my secret santa group!",
-              url: join_with_code_url(Current.group.join_code)
-            }.to_json,
-            action: "share#share"
-          } do %>
-          <%= icon(:share, size: "size-5") %>
-          <span data-share-target="fallbackCopyFeedback">Invite Others</span>
-        <% end %>
-      <% end %>
     </div>
 
     <% if pair %>
