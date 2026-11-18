@@ -1,7 +1,37 @@
 <%= render "section" do %>
   <h2 class="text-xl text-center">
-    Edit Group <%= group.name %>
+    Manage <%= group.name %>
   </h2>
 <% end %>
 
 <%= render 'form', group: %>
+
+<div class="box max-w-screen-sm container mx-auto mt-8">
+  <h3 class="text-xl">Get ready for next year</h3>
+
+  <% pairings_count = group.pairs.count %>
+  <div class="mt-4">
+    <p>Remove all secret santa pairings so partners can be assigned again. (<%= pluralize(pairings_count, "pairing") %>)</p>
+    <%= button_to group_pairings_path(group),
+      method: :delete,
+      disabled: pairings_count.zero?,
+      class: "button-danger w-full mt-2 flex items-center justify-center gap-2",
+      data: { turbo_confirm: "Remove all secret santa pairings, are you sure?" } do %>
+      <%= icon(:trash) %>
+      Remove secret santa pairings
+    <% end %>
+  </div>
+
+  <% ideas_count = group.ideas.count %>
+  <div class="mt-6">
+    <p>Remove every gift idea saved by every member of the group. (<%= pluralize(ideas_count, "gift idea") %>)</p>
+    <%= button_to group_ideas_path(group),
+      method: :delete,
+      disabled: ideas_count.zero?,
+      class: "button-danger w-full mt-2 flex items-center justify-center gap-2",
+      data: { turbo_confirm: "Remove all gift ideas from every member, are you sure?" } do %>
+      <%= icon(:trash) %>
+      Remove all gift ideas
+    <% end %>
+  </div>
+</div>

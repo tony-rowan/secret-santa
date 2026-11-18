@@ -3,6 +3,7 @@ class Group < ApplicationRecord
   has_many :user_groups
   has_many :users, through: :user_groups
   has_many :pairs
+  has_many :ideas
 
   before_validation :set_join_code
   validates :name, :join_code, presence: true
@@ -33,6 +34,14 @@ class Group < ApplicationRecord
     end
 
     pairings.each { |p| pairs.create!(user_id: p[0], other_id: p[1]) }
+  end
+
+  def remove_pairings
+    pairs.destroy_all
+  end
+
+  def remove_ideas
+    ideas.destroy_all
   end
 
   private

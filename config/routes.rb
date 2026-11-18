@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   resources :groups, only: %i[new create edit update destroy] do
     resources :memberships, only: :destroy, param: :user_id, controller: :group_memberships
+    resource :pairings, only: :destroy, controller: :group_pairings
+    resource :ideas, only: :destroy, controller: :group_ideas
   end
 
   get "up" => "rails/health#show", :as => :rails_health_check
