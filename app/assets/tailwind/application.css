@@ -49,8 +49,8 @@
   .box {
     @apply p-4;
     @apply rounded-2xl;
-    @apply bg-linear-to-br from-indigo-800/80 to-indigo-950/80;
-    @apply border-2 border-indigo-400/80;
+    @apply bg-linear-to-br from-indigo-700 to-indigo-800;
+    @apply border-2 border-indigo-400;
   }
 
   .nav-item {
