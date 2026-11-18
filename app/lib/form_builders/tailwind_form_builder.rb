@@ -110,7 +110,7 @@ module FormBuilders
     def combobox(method, options_or_src, **kwargs, &)
       custom_options, html_opts = partition_custom_options(kwargs)
 
-      # Looking for CSS classes? They're overridden in app/assets/stylesheets/application.tailwind.css
+      # Looking for CSS classes? They're overridden in app/assets/tailwind/application.css
 
       label = label(method, custom_options[:label], html_opts)
       field = super(method, options_or_src, **html_opts.merge(
