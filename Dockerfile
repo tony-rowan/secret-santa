@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .tool-versions and Gemfile
-ARG RUBY_VERSION=3.3.5
+ARG RUBY_VERSION=3.4.12
 FROM ruby:$RUBY_VERSION-slim AS base
 
 LABEL fly_launch_runtime="rails"
@@ -26,7 +26,7 @@ FROM base AS build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git pkg-config
+    apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
