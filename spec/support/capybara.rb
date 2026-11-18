@@ -3,11 +3,11 @@ require "capybara/cuprite"
 require "capybara-screenshot/rspec"
 
 Capybara.register_driver(:cuprite) do |app|
-  Capybara::Cuprite::Driver.new(app, window_size: [1200, 800])
+  Capybara::Cuprite::Driver.new(app, window_size: [1200, 800], process_timeout: 30)
 end
 
 Capybara.register_driver(:cuprite_debugging) do |app|
-  Capybara::Cuprite::Driver.new(app, window_size: [1200, 800], headless: false)
+  Capybara::Cuprite::Driver.new(app, window_size: [1200, 800], process_timeout: 30, headless: false)
 end
 
 Capybara.javascript_driver = :cuprite
