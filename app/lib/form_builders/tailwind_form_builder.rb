@@ -229,15 +229,15 @@ module FormBuilders
     end
 
     def text_like_field_classes
-      "block w-full px-4 py-2 rounded-sm bg-indigo-800"
+      "block w-full px-4 py-2 rounded-xl bg-indigo-950 text-white placeholder:text-indigo-300"
     end
 
     def text_like_field_default_classes
-      "border-2 border-indigo-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-200 focus:border-indigo-200"
+      "border-2 border-indigo-500 focus:outline-hidden focus:ring-2 focus:ring-green-500/50 focus:border-green-500"
     end
 
     def text_like_field_error_classes
-      "border-2 border-red-400 focus:outline-hidden focus:ring-2 focus:ring-red-200 focus:border-red-200"
+      "border-2 border-red-400 bg-red-950 focus:outline-hidden focus:ring-2 focus:ring-red-400/50 focus:border-red-300"
     end
 
     def check_box_classes

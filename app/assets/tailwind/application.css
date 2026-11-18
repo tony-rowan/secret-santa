@@ -65,9 +65,9 @@
     @apply block;
     @apply w-full;
     @apply px-4 py-2;
-    @apply rounded-sm;
-    @apply bg-indigo-800;
-    @apply border-2 border-indigo-400;
-    @apply focus:outline-hidden focus:ring-2 focus:ring-indigo-200 focus:border-indigo-200;
+    @apply rounded-xl;
+    @apply bg-indigo-950 text-white placeholder:text-indigo-300;
+    @apply border-2 border-indigo-500;
+    @apply focus:outline-hidden focus:ring-2 focus:ring-green-500/50 focus:border-green-500;
   }
 }
