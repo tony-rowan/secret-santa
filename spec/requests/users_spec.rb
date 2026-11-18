@@ -27,6 +27,23 @@ RSpec.describe "Users" do
     end
   end
 
+  describe "POST /users rate limiting" do
+    context "when one IP exceeds its limit" do
+      it "redirects with an error and creates no user" do
+        5.times do |i|
+          post users_path, params: {user: {name: "User #{i}", email: "user#{i}@example.com"}}
+        end
+
+        expect {
+          post users_path, params: {user: {name: "Extra", email: "extra@example.com"}}
+        }.not_to change(User, :count)
+
+        expect(response).to redirect_to(new_user_path)
+        expect(flash[:error]).to eq(ApplicationController::RATE_LIMIT_MESSAGE)
+      end
+    end
+  end
+
   describe "GET /users/:id/edit" do
     context "when the authenticated user is the requested user" do
       it "renders the edit form" do

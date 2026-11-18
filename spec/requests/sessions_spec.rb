@@ -57,6 +57,45 @@ RSpec.describe "Sessions" do
     end
   end
 
+  describe "POST /session rate limiting" do
+    context "when one IP exceeds its limit" do
+      it "redirects with an error and sends no further email" do
+        10.times do |i|
+          create(:user, email: "user#{i}@example.com")
+          post session_path, params: {email: "user#{i}@example.com"}
+        end
+        create(:user, email: "extra@example.com")
+        ActionMailer::Base.deliveries.clear
+
+        post session_path, params: {email: "extra@example.com"}
+
+        expect(response).to redirect_to(new_session_path)
+        expect(flash[:error]).to eq(ApplicationController::RATE_LIMIT_MESSAGE)
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
+
+    context "when one email exceeds its limit" do
+      it "redirects with an error and sends no further email to it" do
+        create(:user, email: "trevor@example.com")
+        create(:user, email: "other@example.com")
+
+        3.times { post session_path, params: {email: " Trevor@example.com "} }
+        ActionMailer::Base.deliveries.clear
+        post session_path, params: {email: "trevor@example.com"}
+
+        expect(response).to redirect_to(new_session_path)
+        expect(flash[:error]).to eq(ApplicationController::RATE_LIMIT_MESSAGE)
+        expect(ActionMailer::Base.deliveries).to be_empty
+
+        post session_path, params: {email: "other@example.com"}
+
+        expect(response).to have_http_status(:ok)
+        expect(ActionMailer::Base.deliveries.size).to eq(1)
+      end
+    end
+  end
+
   describe "DELETE /session" do
     it "signs the user out" do
       authenticate(create(:user))

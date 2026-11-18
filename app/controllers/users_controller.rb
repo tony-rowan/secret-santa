@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   layout "authentication", only: %i[new create]
 
+  rate_limit to: 5, within: 15.minutes, only: :create, with: -> { redirect_to new_user_path, error: RATE_LIMIT_MESSAGE }
+
   before_action :require_logged_in, except: %i[new create]
   before_action :require_owner, except: %i[show new create]
 
