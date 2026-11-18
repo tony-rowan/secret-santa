@@ -51,6 +51,8 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = ENV["RESEND_API_KEY"].present? ? :resend : :test
   config.action_mailer.raise_delivery_errors = true
+  # Print each email decoded to the log so sign-in links are easy to follow.
+  config.action_mailer.observers = %w[DevelopmentMailLogger]
   config.action_mailer.default_url_options = {host: "localhost", port: 3000}
   config.action_mailer.preview_paths << Rails.root.join("spec/mailers/previews").to_s
 
