@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if (user = User.find_by(login: login)&.authenticate(password))
+    if (user = User.find_by(email:)&.authenticate(password))
       authenticate_user(user)
 
       if group
@@ -32,8 +32,8 @@ class SessionsController < ApplicationController
 
   private
 
-  def login
-    params[:login]
+  def email
+    params[:email]
   end
 
   def password

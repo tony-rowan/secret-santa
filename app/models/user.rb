@@ -8,7 +8,9 @@ class User < ApplicationRecord
   has_many :owned_groups, class_name: "Group", foreign_key: "owner_id", dependent: :destroy
 
   validates :name, presence: true
-  validates :login, presence: true, uniqueness: true
+  normalizes :email, with: ->(email) { email.strip.downcase }
+
+  validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP, allow_blank: true}
 
   def ideas_in_current_group
     ideas.where(group: Current.group)

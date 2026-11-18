@@ -10,7 +10,7 @@
 
 <%= form_with(model: user) do |form| %>
   <%= form.text_field :name, required: true, autocomplete: "Name", autofocus: true %>
-  <%= form.text_field :login, required: true, autocomplete: "Username", hint: "You'll use this to sign in", wrapper_classes: "mt-4" %>
+  <%= form.email_field :email, required: true, autocomplete: "email", wrapper_classes: "mt-4" %>
   <%= form.password_field :password, required: true, autocomplete: "off", wrapper_classes: "mt-4" %>
 
   <%= form.submit group ? "Join" : "Get Started", class: "w-full mt-6" %>

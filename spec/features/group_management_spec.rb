@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "Group Management" do
   scenario "The owner edits the group name, rules, then assigns and shuffles secret santas and kicks someone" do
-    owner = create(:user, login: "username", password: "password")
+    owner = create(:user, email: "username@example.com", password: "password")
     kicked_user = create(:user, name: "Bad Actor")
     other_users = create_list(:user, 3)
     group = create(
@@ -15,7 +15,7 @@ RSpec.feature "Group Management" do
 
     visit(root_path)
     click_on("Sign In")
-    fill_in("Username", with: "username")
+    fill_in("Email", with: "username@example.com")
     fill_in("Password", with: "password")
     click_on("Sign In")
 

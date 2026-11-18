@@ -32,9 +32,9 @@ RSpec.describe "Users" do
         user = create(:user)
 
         authenticate(user)
-        patch user_path(user), params: {user: {name: "New Name", login: "new_login", password: ""}}
+        patch user_path(user), params: {user: {name: "New Name", email: "new@example.com", password: ""}}
 
-        expect(user.reload).to have_attributes(name: "New Name", login: "new_login")
+        expect(user.reload).to have_attributes(name: "New Name", email: "new@example.com")
         expect(response).to redirect_to(dashboard_path)
       end
     end
@@ -44,7 +44,7 @@ RSpec.describe "Users" do
         user = create(:user, password: "original")
 
         authenticate(user)
-        patch user_path(user), params: {user: {name: user.name, login: user.login, password: ""}}
+        patch user_path(user), params: {user: {name: user.name, email: user.email, password: ""}}
 
         expect(user.reload.authenticate("original")).to eq(user)
       end
@@ -55,7 +55,7 @@ RSpec.describe "Users" do
         user = create(:user)
 
         authenticate(user)
-        patch user_path(user), params: {user: {name: "", login: user.login}}
+        patch user_path(user), params: {user: {name: "", email: user.email}}
 
         expect(response).to have_http_status(:unprocessable_content)
         expect(response.body).to include("Edit your account")
