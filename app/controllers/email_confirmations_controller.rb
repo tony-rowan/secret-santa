@@ -1,5 +1,5 @@
 class EmailConfirmationsController < ApplicationController
-  layout "authentication", only: :show
+  layout "getting_started", only: :show
 
   before_action :require_valid_token, only: %i[show create]
   before_action :require_logged_in, only: %i[destroy resend]

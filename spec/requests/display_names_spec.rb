@@ -56,7 +56,7 @@ RSpec.describe "Display names" do
 
         expect(response).to redirect_to(join_path)
         follow_redirect!
-        expect(response.body).to include("You're invited")
+        expect(response.body).to include("You&#39;re invited")
       end
     end
 

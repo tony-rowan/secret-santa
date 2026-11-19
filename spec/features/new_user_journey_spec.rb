@@ -30,7 +30,7 @@ RSpec.feature "New User Journey" do
     fill_in("Add a rule", with: "Remove me")
     click_on("Add")
     click_on("Remove rule: Remove me")
-    click_on("Create Group")
+    click_on("Create group")
 
     group = Group.last
     expect(group).to have_attributes(name: "AIM, no wait, The 10 Rings", owner: User.last, users: [User.last])

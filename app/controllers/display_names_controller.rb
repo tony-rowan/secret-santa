@@ -1,5 +1,7 @@
 # The first step after a new account's first sign-in: choosing how they appear to their group
 class DisplayNamesController < ApplicationController
+  layout "getting_started"
+
   before_action :require_nameless_user
 
   def new

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Secret Santa</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "tailwind", "inter-font", "fraunces-font", "data-turbo-track": "reload" %>
+
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <%# Every step before the dashboard (signing in, naming yourself, joining or starting a group) has
+      no header and the same icon tile, title and subtitle in the same place. Pages set them with
+      content_for :icon, :title and :subtitle (and :glow for the sign-in page). %>
+  <body>
+    <%= render "shared/snow" %>
+
+    <main class="w-full max-w-md mx-auto px-6 pt-16 sm:pt-24 pb-10 flex flex-col gap-8">
+      <div class="flex flex-col items-center gap-4 text-center">
+        <span class="size-22 shrink-0 rounded-[28px] bg-night-800 border-[1.5px] border-gold text-gold flex items-center justify-center <%= "ring-8 ring-gold/12" if content_for?(:glow) %>">
+          <%= icon(content_for?(:icon) ? yield(:icon).to_s : :gift, size: "size-11") %>
+        </span>
+        <h1 class="font-display font-bold <%= content_for?(:glow) ? "text-[40px] tracking-tight leading-none" : "text-[34px] leading-tight" %> break-words max-w-full">
+          <%= content_for?(:title) ? yield(:title) : "Secret Santa" %>
+        </h1>
+        <% if content_for?(:subtitle) %>
+          <p class="text-[17px] text-lilac-300 max-w-[310px]"><%= yield(:subtitle) %></p>
+        <% end %>
+      </div>
+
+      <% if flash.any? %>
+        <div class="-mb-5"><%= render "shared/flashes" %></div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+
+    <%= render "shared/confirm_dialog" %>
+  </body>
+</html>

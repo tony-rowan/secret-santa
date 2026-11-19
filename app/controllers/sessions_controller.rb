@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  layout "authentication"
+  layout "getting_started"
 
   rate_limit to: 10, within: 3.minutes, only: :create, name: "ip", with: -> { redirect_to new_session_path, error: RATE_LIMIT_MESSAGE }
   rate_limit to: 3, within: 15.minutes, only: :create, name: "email", by: -> { params[:email].to_s.strip.downcase }, with: -> { redirect_to new_session_path, error: RATE_LIMIT_MESSAGE }
@@ -27,7 +27,8 @@ class SessionsController < ApplicationController
     send_sign_in_link(email)
 
     render :check_email, locals: {
-      group:
+      group:,
+      email:
     }
   end
 

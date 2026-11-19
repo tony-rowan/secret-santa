@@ -49,7 +49,21 @@ Rails.application.configure do
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 
-  config.action_mailer.delivery_method = ENV["RESEND_API_KEY"].present? ? :resend : :test
+  # Mail only really goes out when an SMTP server is configured; otherwise it's just logged (below).
+  if ENV["SMTP_ADDRESS"].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: ENV["SMTP_ADDRESS"],
+      port: ENV.fetch("SMTP_PORT", 587).to_i,
+      domain: ENV["SMTP_DOMAIN"],
+      user_name: ENV["SMTP_USERNAME"],
+      password: ENV["SMTP_PASSWORD"],
+      authentication: :plain,
+      enable_starttls_auto: true
+    }.compact
+  else
+    config.action_mailer.delivery_method = :test
+  end
   config.action_mailer.raise_delivery_errors = true
   # Print each email decoded to the log so sign-in links are easy to follow.
   config.action_mailer.observers = %w[DevelopmentMailLogger]

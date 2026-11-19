@@ -1,9 +1,15 @@
-<div class="flex flex-col gap-7 pt-8">
+<% if group %>
+  <% content_for :icon, "ticket" %>
+  <% content_for :title, "You're invited" %>
+  <% content_for :subtitle, "Check the details, then join." %>
+<% else %>
+  <% content_for :icon, "users" %>
+  <% content_for :title, "Join a group" %>
+  <% content_for :subtitle, "Enter the code your organiser shared with you." %>
+<% end %>
+
+<div class="contents">
   <% if group %>
-    <div class="flex flex-col gap-2.5">
-      <h1 class="display-title">You're invited</h1>
-      <p class="text-lg text-lilac-300">Check the details, then join.</p>
-    </div>
 
     <section aria-labelledby="invite-heading" class="card gap-4 py-5.5">
       <div class="flex flex-col gap-1">
@@ -26,10 +32,6 @@
       <%= link_to "Use a different code", join_path(join_code: ""), class: "flex items-center justify-center min-h-12 text-[15px] font-medium" %>
     </div>
   <% else %>
-    <div class="flex flex-col gap-2.5">
-      <h1 class="display-title">Join a group</h1>
-      <p class="text-lg text-lilac-300">Enter the code your organiser shared with you.</p>
-    </div>
 
     <%= form_with(model: form, url: join_path, class: "flex flex-col gap-3") do |form| %>
       <%= form.text_field :join_code,
@@ -48,5 +50,9 @@
     </div>
 
     <%= link_to "Start a new group", new_group_path, class: "button-secondary" %>
+
+    <% if Current.user.groups.any? %>
+      <%= link_to "Back to your group", dashboard_path, class: "-mt-4 flex items-center justify-center min-h-12 text-[15px] font-medium" %>
+    <% end %>
   <% end %>
 </div>

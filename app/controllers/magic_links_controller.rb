@@ -1,5 +1,5 @@
 class MagicLinksController < ApplicationController
-  layout "authentication"
+  layout "getting_started"
 
   before_action :require_valid_token
 

@@ -1,12 +1,9 @@
-<div class="flex flex-col gap-7 pt-8">
-  <div class="flex flex-col gap-2.5">
-    <h1 class="display-title">What should we call you?</h1>
-    <p class="text-lg text-lilac-300">This is how you'll appear to your group.</p>
-  </div>
+<% content_for :icon, "user" %>
+<% content_for :title, "What should we call you?" %>
+<% content_for :subtitle, "This is how you'll appear to your group." %>
 
-  <%= form_with(model: user, url: display_name_path, method: :post, class: "flex flex-col gap-4") do |form| %>
-    <%= form.text_field :name, required: true, autocomplete: "nickname", autofocus: true, placeholder: "e.g. Bob" %>
+<%= form_with(model: user, url: display_name_path, method: :post, class: "flex flex-col gap-4") do |form| %>
+  <%= form.text_field :name, required: true, autocomplete: "nickname", autofocus: true, placeholder: "e.g. Bob" %>
 
-    <%= form.submit "Continue", class: "w-full" %>
-  <% end %>
-</div>
+  <%= form.submit "Continue", class: "w-full" %>
+<% end %>

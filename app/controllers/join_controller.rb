@@ -1,4 +1,6 @@
 class JoinController < ApplicationController
+  layout "getting_started"
+
   before_action :require_logged_in
 
   def new

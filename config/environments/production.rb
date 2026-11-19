@@ -72,8 +72,17 @@ Rails.application.configure do
   config.solid_queue.connects_to = {database: {writing: :queue}}
   # config.active_job.queue_name_prefix = "secret_santa_production"
 
-  # Send mail through Resend (RESEND_API_KEY, MAILER_FROM and APP_HOST are set as Fly secrets).
-  config.action_mailer.delivery_method = :resend
+  # Send mail straight from Rails over SMTP (SMTP_*, MAILER_FROM and APP_HOST are set as Fly secrets).
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV["SMTP_ADDRESS"],
+    port: ENV.fetch("SMTP_PORT", 587).to_i,
+    domain: ENV["SMTP_DOMAIN"],
+    user_name: ENV["SMTP_USERNAME"],
+    password: ENV["SMTP_PASSWORD"],
+    authentication: :plain,
+    enable_starttls_auto: true
+  }.compact
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = {host: ENV.fetch("APP_HOST", "rowan-secret-santa.fly.dev"), protocol: "https"}
 

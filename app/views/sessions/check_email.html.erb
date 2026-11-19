@@ -1,18 +1,14 @@
-<div class="flex flex-col items-center gap-5 text-center">
-  <span class="size-22 rounded-full bg-night-800 border-[1.5px] border-gold text-gold flex items-center justify-center">
-    <%= icon(:envelope, size: "size-10") %>
-  </span>
+<% content_for :icon, "envelope" %>
+<% content_for :title, "Check your email" %>
+<% content_for :subtitle do %>
+  We've sent a sign-in link to <strong class="text-snow font-semibold break-words"><%= email %></strong>. It works for 15 minutes.
+  <% if group %>
+    Follow it to join <%= group.owner.name %>'s group, <%= group.name %>.
+  <% end %>
+<% end %>
 
-  <h1 class="font-display font-bold text-[34px] leading-tight">Check your email</h1>
-
-  <p class="text-lg text-lilac-300">
-    If that email address can be used to sign in, we've sent a link to it. The link expires in 15 minutes.
-    <% if group %>
-      Follow it to join <%= group.owner.name %>'s group, <%= group.name %>.
-    <% end %>
-  </p>
-
+<div class="flex flex-col gap-3">
+  <%= button_to "Resend link", session_path, params: {email:}, class: "button-secondary w-full", form: {data: {turbo: false}} %>
   <%= link_to "Use a different email", new_session_path, class: "flex items-center justify-center min-h-12 font-medium" %>
-
-  <p class="text-sm text-lilac-500">Can't see it? Check your spam folder.</p>
+  <p class="text-sm text-center text-lilac-400">Can't see it? Check your spam folder.</p>
 </div>

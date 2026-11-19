@@ -39,6 +39,7 @@ RSpec.describe "Sessions" do
         expect(ActionMailer::Base.deliveries.last.to).to eq([user.email])
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("Check your email")
+        expect(Capybara.string(response.body)).to have_css("form[action='#{session_path}'] input[name='email'][value='trevor@example.com']", visible: :all)
       end
     end
 

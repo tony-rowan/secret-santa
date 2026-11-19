@@ -4,7 +4,12 @@
   <% owner = group.owner?(Current.user) %>
 
   <div class="flex items-center gap-2 px-1 mb-5">
-    <h1 class="display-title min-w-0 break-words"><%= group.name %></h1>
+    <% groups = Current.user.groups.includes(:owner).order(:name).to_a %>
+    <% if groups.many? %>
+      <%= render "dashboards/group_switcher", group:, groups: %>
+    <% else %>
+      <h1 class="display-title min-w-0 break-words"><%= group.name %></h1>
+    <% end %>
     <% if owner %>
       <%= link_to edit_group_path(group), class: "icon-button", title: "Rename group", aria: { label: "Rename group" } do %>
         <%= icon(:pencil_square, size: "size-5") %>

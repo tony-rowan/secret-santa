@@ -1,4 +1,6 @@
 class GroupsController < ApplicationController
+  layout "getting_started"
+
   before_action :require_logged_in
   before_action :require_owner, only: %i[created edit update destroy]
 

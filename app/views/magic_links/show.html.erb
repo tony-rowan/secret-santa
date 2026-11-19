@@ -1,4 +1,4 @@
-<h1 class="mb-6 font-display font-bold text-3xl text-center">Signing you in…</h1>
+<% content_for :title, "Signing you in…" %>
 
 <%# Submits itself via JS; the button is the fallback if JS is unavailable %>
 <%= button_to "Click here if nothing happens", session_magic_link_path, params: {token:, join_code:}, class: "button w-full", form: {data: {controller: "auto-submit"}} %>

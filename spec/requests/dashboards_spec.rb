@@ -170,4 +170,32 @@ RSpec.describe "GET /dashboard" do
       expect(response.body).not_to include("Strangers")
     end
   end
+
+  context "when the user is in several groups" do
+    it "offers to switch between them" do
+      user = create(:user)
+      rowans = create(:group, name: "Rowans", owner: user)
+      book_club = create(:group, name: "Book club", users: [user])
+
+      authenticate(user)
+      get dashboard_path(group_id: rowans.id)
+
+      switcher = Capybara.string(response.body).find("details", text: "Your groups", visible: :all)
+      expect(switcher).to have_link("Book club", href: dashboard_path(group_id: book_club.id), visible: :all)
+      expect(switcher).to have_css("a[aria-current='true']", text: "Rowans", visible: :all)
+      expect(switcher).to have_link("Join another group", href: join_path, visible: :all)
+    end
+  end
+
+  context "when the user is in one group" do
+    it "shows just the group name" do
+      user = create(:user)
+      create(:group, name: "Rowans", owner: user)
+
+      authenticate(user)
+      get dashboard_path
+
+      expect(Capybara.string(response.body)).to have_no_css("details", visible: :all)
+    end
+  end
 end
