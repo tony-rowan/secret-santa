@@ -1,12 +1,18 @@
-<%= render "section" do %>
-  <h2 class="text-xl text-center">
-    Check your email
-  </h2>
+<div class="flex flex-col items-center gap-5 text-center">
+  <span class="size-22 rounded-full bg-night-800 border-[1.5px] border-gold text-gold flex items-center justify-center">
+    <%= icon(:envelope, size: "size-10") %>
+  </span>
 
-  <p class="text-center mt-4">
+  <h1 class="font-display font-bold text-[34px] leading-tight">Check your email</h1>
+
+  <p class="text-lg text-lilac-300">
     If that email address can be used to sign in, we've sent a link to it. The link expires in 15 minutes.
     <% if group %>
       Follow it to join <%= group.owner.name %>'s group, <%= group.name %>.
     <% end %>
   </p>
-<% end %>
+
+  <%= link_to "Use a different email", new_session_path, class: "flex items-center justify-center min-h-12 font-medium" %>
+
+  <p class="text-sm text-lilac-500">Can't see it? Check your spam folder.</p>
+</div>

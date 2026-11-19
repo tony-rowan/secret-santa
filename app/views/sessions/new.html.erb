@@ -1,15 +1,31 @@
-<%= render "section" do %>
-  <h2 class="text-xl text-center">
-    <% if group %>
-      Sign in to join <%= group.owner.name %>'s group, <%= group.name %>
-    <% else %>
-      Sign in to your account
+<% if group %>
+  <p class="mb-6 text-center text-lilac-300">
+    <%= group.owner.name %> invited you to <strong class="text-snow font-semibold"><%= group.name %></strong>. Sign in to join.
+  </p>
+<% end %>
+
+<%= form_with(url: session_path, class: "flex flex-col gap-3", data: {turbo: false}) do |form| %>
+  <div class="flex flex-col gap-2.5">
+    <%= form.label :email, class: "flex flex-col gap-1 font-semibold #{error ? "text-berry-light" : "text-snow"}" do %>
+      <span>Your email</span>
+      <% if error %>
+        <span class="text-sm font-normal"><%= error %></span>
+      <% end %>
     <% end %>
-  </h2>
+    <%= form.email_field :email,
+      tailwindified: true,
+      value: email,
+      required: true,
+      autocomplete: "email",
+      autofocus: true,
+      placeholder: "you@example.com",
+      class: "input-field #{"border-berry-light" if error}" %>
+  </div>
+
+  <%= form.submit "Email me a sign-in link", class: "w-full" %>
 <% end %>
 
-<%= form_with(url: session_path, class: "max-w-screen-sm container mx-auto", data: {turbo: false}) do |form| %>
-  <%= form.email_field :email, label: "Email", required: true, autocomplete: "email", autofocus: true %>
-
-  <%= form.submit "Email me a sign-in link", class: "w-full mt-6" %>
-<% end %>
+<p class="mt-4 text-sm text-center text-lilac-400">
+  New here? The same link creates your account.<br>
+  No passwords to remember.
+</p>

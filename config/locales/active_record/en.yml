@@ -2,7 +2,7 @@ en:
   activerecord:
     attributes:
       user:
-        name: "Display Name"
+        name: "Display name"
         email: "Email"
     errors:
       models:
@@ -10,6 +10,11 @@ en:
           attributes:
             name:
               blank: "Please give your group a name"
+        rule:
+          attributes:
+            text:
+              blank: "Please write the rule before adding it"
+              too_long: "Please keep rules under %{count} characters"
         user:
           attributes:
             name:

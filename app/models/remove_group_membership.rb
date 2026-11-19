@@ -26,6 +26,7 @@ class RemoveGroupMembership
     group.transaction do
       removed_pairs = group.pairs.destroy_all
       group.user_groups.where(user: member).destroy_all
+      group.ideas.where(user: member).destroy_all
 
       if actor == member
         add_success_message("Left group #{group.name}!")

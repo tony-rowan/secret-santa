@@ -5,7 +5,8 @@ class User < ApplicationRecord
   has_many :ideas
   has_many :owned_groups, class_name: "Group", foreign_key: "owner_id", dependent: :destroy
 
-  validates :name, presence: true
+  # New accounts have no name until the person picks one after their first sign-in
+  validates :name, presence: true, allow_nil: true
   normalizes :email, :unconfirmed_email, with: ->(email) { email.strip.downcase }
 
   validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP, allow_blank: true}
@@ -19,6 +20,25 @@ class User < ApplicationRecord
   # Tied to the pending address, so changing or clearing it invalidates any link already sent
   generates_token_for :email_change, expires_in: 1.hour do
     unconfirmed_email
+  end
+
+  # Someone without an account signs up through the same emailed link as everyone else. Until they
+  # follow it there's no record, so the link carries their email, signed, instead of a record token.
+  def self.sign_up_token_verifier
+    Rails.application.message_verifier(:sign_up)
+  end
+
+  def self.generate_sign_up_token(email)
+    sign_up_token_verifier.generate(email, purpose: :sign_up, expires_in: 15.minutes)
+  end
+
+  # A new, unsaved user for the email in the token. Nil once that email has an account, which makes
+  # the link single-use like a sign-in link.
+  def self.build_from_sign_up_token(token)
+    email = sign_up_token_verifier.verified(token, purpose: :sign_up)
+    return if email.blank? || exists?(email:)
+
+    new(email:)
   end
 
   def record_sign_in

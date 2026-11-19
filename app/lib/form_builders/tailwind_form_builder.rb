@@ -179,7 +179,7 @@ module FormBuilders
       hint = options[:hint]
       return unless options[:hint]
 
-      @template.content_tag("span", hint, class: "text-sm")
+      @template.content_tag("span", hint, class: "text-sm font-normal text-lilac-400")
     end
 
     def errors(method, options)
@@ -187,7 +187,7 @@ module FormBuilders
       return unless errors
 
       errors.map do |error|
-        @template.content_tag("span", error, class: "text-sm")
+        @template.content_tag("span", error, class: "text-sm font-normal")
       end
     end
 
@@ -225,19 +225,19 @@ module FormBuilders
     end
 
     def field_wrapper_classes
-      "flex flex-col gap-2"
+      "flex flex-col gap-2.5"
     end
 
     def text_like_field_classes
-      "block w-full px-4 py-2 rounded-xl bg-indigo-950 text-white placeholder:text-indigo-300"
+      "block w-full px-4 py-3.5 rounded-2xl bg-night-950 text-snow placeholder:text-lilac-600"
     end
 
     def text_like_field_default_classes
-      "border-2 border-indigo-500 focus:outline-hidden focus:ring-2 focus:ring-green-500/50 focus:border-green-500"
+      "border-[1.5px] border-night-600 focus:outline-hidden focus:ring-2 focus:ring-gold/40 focus:border-gold"
     end
 
     def text_like_field_error_classes
-      "border-2 border-red-400 bg-red-950 focus:outline-hidden focus:ring-2 focus:ring-red-400/50 focus:border-red-300"
+      "border-[1.5px] border-berry-light bg-[#3c0e12] focus:outline-hidden focus:ring-2 focus:ring-berry-light/50 focus:border-berry-light"
     end
 
     def check_box_classes
@@ -253,15 +253,15 @@ module FormBuilders
     end
 
     def label_classes
-      "flex flex-col gap-1"
+      "flex flex-col gap-1 font-semibold"
     end
 
     def label_default_classes
-      "text-white"
+      "text-snow"
     end
 
     def label_error_classes
-      "text-red-300"
+      "text-berry-light"
     end
 
     def button_classes

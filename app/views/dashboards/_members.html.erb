@@ -1,0 +1,79 @@
+<% members = group.users.to_a %>
+
+<% if owner %>
+  <% drawn = group.pairs.any? %>
+
+  <section aria-labelledby="members-heading" class="card">
+    <h2 id="members-heading" class="card-title">Members <span class="font-medium text-lilac-400">(<%= members.size %>)</span></h2>
+    <p class="card-hint">Share this code to invite people.</p>
+
+    <div class="join-code"><%= group.join_code %></div>
+
+    <%= render "groups/invite_buttons", group: group, class: "bg-night-900" %>
+
+    <% if drawn %>
+      <p class="text-sm text-gold">Adding or removing people now means names will need drawing again.</p>
+    <% end %>
+
+    <ul class="flex flex-col gap-2">
+      <% members.each do |member| %>
+        <% ideas_label = idea_counts[member.id].to_i.zero? ? nil : pluralize(idea_counts[member.id], "idea") %>
+        <% details = [("You" if member == Current.user), ("organiser" if group.owner?(member)), ideas_label].compact %>
+
+        <li class="list-row min-h-14 gap-3 py-1.5 pl-3.5 pr-1.5">
+          <div class="grow min-w-0 flex flex-col gap-0.5">
+            <span class="font-semibold break-words"><%= member.name %></span>
+            <% if ideas_label.nil? %>
+              <span class="text-[13px] text-gold"><%= [*details, "No ideas yet"].join(" · ") %></span>
+            <% else %>
+              <span class="text-[13px] text-lilac-400"><%= details.join(" · ") %></span>
+            <% end %>
+          </div>
+
+          <% unless group.owner?(member) %>
+            <%= render "shared/confirm_details",
+              id: "confirm-remove-#{member.id}",
+              icon: :user_minus,
+              removed: ["#{member.name} leaves the group", "#{member.name}'s gift ideas are deleted"],
+              warning: ("Names have already been drawn. Removing #{member.name} clears them, so you'll need to draw again." if drawn) %>
+            <%= button_to group_membership_path(group, member),
+              method: :delete,
+              class: "shrink-0 min-h-11 px-3 rounded-xl border-[1.5px] border-night-600 text-berry-light hover:bg-berry/20 text-sm font-semibold flex items-center gap-1.5",
+              title: "Remove #{member.name} from the group",
+              aria: { label: "Remove #{member.name} from the group" },
+              data: {
+                turbo_confirm: "Remove #{member.name}?",
+                confirm_button: "Yes, remove #{member.name}",
+                confirm_details: "confirm-remove-#{member.id}"
+              } do %>
+              <%= icon(:x_mark, size: "size-4.5") %>
+              Remove
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+
+<% else %>
+
+  <section aria-labelledby="members-heading" class="card gap-3">
+    <h2 id="members-heading" class="card-title">Who's in <span class="font-medium text-lilac-400">(<%= members.size %>)</span></h2>
+
+    <ul class="flex flex-wrap gap-2">
+      <% members.each do |member| %>
+        <% if member == Current.user %>
+          <li class="py-2 px-3.5 rounded-full bg-night-900 border-[1.5px] border-gold font-semibold text-[15px]"><%= member.name %> (you)</li>
+        <% else %>
+          <li class="py-2 px-3.5 rounded-full bg-night-900 text-[15px]">
+            <%= member.name %>
+            <% if group.owner?(member) %>
+              <span class="text-gold text-[13px]">· organiser</span>
+            <% end %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </section>
+
+<% end %>

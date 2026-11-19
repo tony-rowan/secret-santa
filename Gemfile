@@ -6,7 +6,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem "rails"
 
 gem "bootsnap", require: false
-gem "commonmarker", ">= 2.10"
 gem "importmap-rails"
 gem "oga"
 gem "puma"

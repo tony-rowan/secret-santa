@@ -1,49 +1,6 @@
 require "rails_helper"
 
 RSpec.describe "Users" do
-  describe "POST /users" do
-    context "when the params are valid" do
-      it "sends a sign-in link and does not sign the user in" do
-        post users_path, params: {user: {name: "Trevor Slattery", email: "trevor@example.com"}}
-
-        expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Check your email")
-        expect(User.last).to have_attributes(name: "Trevor Slattery", email: "trevor@example.com")
-        expect(ActionMailer::Base.deliveries.size).to eq(1)
-        expect(ActionMailer::Base.deliveries.last.to).to eq(["trevor@example.com"])
-
-        get dashboard_path
-        expect(response).to redirect_to(root_path)
-      end
-    end
-
-    context "when the params are invalid" do
-      it "re-renders the form as unprocessable without sending anything" do
-        post users_path, params: {user: {name: "", email: "trevor@example.com"}}
-
-        expect(response).to have_http_status(:unprocessable_content)
-        expect(ActionMailer::Base.deliveries).to be_empty
-      end
-    end
-  end
-
-  describe "POST /users rate limiting" do
-    context "when one IP exceeds its limit" do
-      it "redirects with an error and creates no user" do
-        5.times do |i|
-          post users_path, params: {user: {name: "User #{i}", email: "user#{i}@example.com"}}
-        end
-
-        expect {
-          post users_path, params: {user: {name: "Extra", email: "extra@example.com"}}
-        }.not_to change(User, :count)
-
-        expect(response).to redirect_to(new_user_path)
-        expect(flash[:error]).to eq(ApplicationController::RATE_LIMIT_MESSAGE)
-      end
-    end
-  end
-
   describe "GET /users/:id/edit" do
     context "when the authenticated user is the requested user" do
       it "renders the edit form" do

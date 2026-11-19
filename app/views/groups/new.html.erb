@@ -1,7 +1,46 @@
-<%= render "section" do %>
-  <h2 class="text-xl text-center">
-    Create a Group
-  </h2>
-<% end %>
+<div class="flex flex-col gap-6">
+  <%= link_to dashboard_path, class: "self-start flex items-center gap-1.5 min-h-11 font-medium no-underline" do %>
+    <%= icon(:chevron_left, size: "size-5") %>
+    Back
+  <% end %>
 
-<%= render 'form', group: %>
+  <div class="flex flex-col gap-2.5">
+    <h1 class="display-title">Start a group</h1>
+    <p class="text-lg text-lilac-300">You'll be the organiser. You can change all of this later.</p>
+  </div>
+
+  <%= form_with(model: group, class: "flex flex-col gap-5") do |form| %>
+    <%= form.text_field :name, label: "Group name", placeholder: "e.g. The Rowans" %>
+
+    <section aria-labelledby="rules-heading" class="card" data-controller="rule-list">
+      <div class="flex flex-col gap-1">
+        <h2 id="rules-heading" class="card-title">Rules <span class="font-medium text-lilac-400">(optional)</span></h2>
+        <p class="card-hint">Spend limit, swap date, anything people should know.</p>
+      </div>
+
+      <ul class="flex flex-col gap-2 empty:hidden" data-rule-list-target="list"><% group.rules.each do |rule| %><%= render "groups/new_rule", text: rule.text %><% end %></ul>
+
+      <template data-rule-list-target="template">
+        <%= render "groups/new_rule", text: "" %>
+      </template>
+
+      <div class="flex gap-2">
+        <label for="new_rule" class="sr-only">Add a rule</label>
+        <input id="new_rule"
+          type="text"
+          name="group[rule_texts][]"
+          placeholder="Add a rule…"
+          autocomplete="off"
+          class="input-field grow min-w-0"
+          data-rule-list-target="input"
+          data-action="keydown.enter->rule-list#add">
+        <button type="button" class="button min-h-13 text-base px-4.5" data-action="rule-list#add">
+          <%= icon(:plus, size: "size-5", "stroke-width": 2.4) %>
+          Add
+        </button>
+      </div>
+    </section>
+
+    <%= form.submit "Create Group", class: "w-full" %>
+  <% end %>
+</div>

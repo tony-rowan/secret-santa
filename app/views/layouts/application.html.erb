@@ -7,7 +7,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "fraunces-font", "data-turbo-track": "reload" %>
 
     <%= javascript_importmap_tags %>
   </head>
@@ -17,10 +17,12 @@
 
     <%= render "shared/navigation" %>
 
-    <main class="max-screen-lg container mx-auto px-4 py-24">
+    <main class="<%= content_for?(:wide) ? "max-w-5xl" : "max-w-xl" %> mx-auto px-5 pt-3 pb-16">
       <%= render "shared/flashes" %>
 
       <%= yield %>
     </main>
+
+    <%= render "shared/confirm_dialog" %>
   </body>
 </html>

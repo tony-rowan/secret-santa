@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_19_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_19_100100) do
   create_table "groups", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "rules"
     t.string "join_code", null: false
     t.index ["owner_id"], name: "index_groups_on_owner_id"
   end
@@ -42,6 +41,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_090000) do
     t.index ["user_id"], name: "index_pairs_on_user_id"
   end
 
+  create_table "rules", force: :cascade do |t|
+    t.integer "group_id", null: false
+    t.string "text", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_rules_on_group_id"
+  end
+
   create_table "user_groups", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "group_id", null: false
@@ -53,7 +60,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_090000) do
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
-    t.string "name", null: false
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_signed_in_at"
@@ -66,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_090000) do
   add_foreign_key "pairs", "groups"
   add_foreign_key "pairs", "users"
   add_foreign_key "pairs", "users", column: "other_id"
+  add_foreign_key "rules", "groups"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
 end

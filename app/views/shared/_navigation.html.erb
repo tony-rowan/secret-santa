@@ -1,22 +1,31 @@
-<nav class="py-8 px-4 bg-black/20">
-  <div class="max-screen-lg container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-8">
-    <%= link_to dashboard_path, class: "text-2xl sm:text-3xl md:text-4xl flex flex-col md:flex-row items-center gap-2" do %>
-      <%= icon(:gift, size: "size-8 sm:size-9 md:size-10", class: "text-green-400") %>
-      <span>Secret Santa</span>
-    <% end %>
+<header class="<%= content_for?(:wide) ? "max-w-5xl" : "max-w-xl" %> mx-auto flex items-center justify-between gap-4 py-3 pl-5 pr-3">
+  <%= link_to dashboard_path, class: "flex items-center gap-2.5 text-snow hover:text-snow no-underline" do %>
+    <%= icon(:gift, size: "size-7", class: "text-gold") %>
+    <span class="font-display font-bold text-xl">Secret Santa</span>
+  <% end %>
 
-    <div class="flex flex-wrap gap-4">
-      <% if Current.user %>
-        <%= link_to edit_user_path(Current.user), class: "nav-item" do %>
+  <% if Current.user %>
+    <details class="relative">
+      <summary
+        aria-label="Account and sign out"
+        title="Account and sign out"
+        class="list-none [&::-webkit-details-marker]:hidden size-11 rounded-full border-[1.5px] border-night-600 bg-night-800 hover:bg-night-700 flex items-center justify-center cursor-pointer">
+        <%= icon(:user, size: "size-5") %>
+      </summary>
+
+      <div class="absolute right-0 top-full mt-2 z-10 w-56 p-2 rounded-2xl bg-night-800 border border-white/15 shadow-2xl shadow-black/50">
+        <p class="px-4 pt-2 pb-3 text-sm text-lilac-400 truncate"><%= Current.user.name %></p>
+
+        <%= link_to edit_user_path(Current.user), class: "nav-item no-underline" do %>
           <%= icon(:user_circle, size: "size-5") %>
           <span>Account</span>
         <% end %>
 
         <%= button_to session_path, method: :delete, class: "nav-item" do %>
           <%= icon(:arrow_right_start_on_rectangle, size: "size-5") %>
-          <span>Sign Out</span>
+          <span>Sign out</span>
         <% end %>
-      <% end %>
-    </div>
-  </div>
-</nav>
+      </div>
+    </details>
+  <% end %>
+</header>

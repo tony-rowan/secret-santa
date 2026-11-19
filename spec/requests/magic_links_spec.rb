@@ -83,6 +83,57 @@ RSpec.describe "Magic links" do
       end
     end
 
+    context "when the token is a sign-up token" do
+      it "creates the account, signs it in and asks for a display name" do
+        token = User.generate_sign_up_token("trevor@example.com")
+
+        post session_magic_link_path, params: {token:}
+
+        user = User.find_by(email: "trevor@example.com")
+        expect(user).to have_attributes(name: nil)
+        expect(user.last_signed_in_at).to be_present
+        expect(response).to redirect_to(new_display_name_path)
+
+        get dashboard_path
+        expect(response).to redirect_to(new_display_name_path)
+      end
+
+      it "can only be used once" do
+        token = User.generate_sign_up_token("trevor@example.com")
+
+        post session_magic_link_path, params: {token:}
+        delete session_path
+        post session_magic_link_path, params: {token:}
+
+        expect(response).to redirect_to(new_session_path)
+        expect(User.count).to eq(1)
+      end
+    end
+
+    context "when a sign-up token has expired" do
+      it "is rejected without creating an account" do
+        token = User.generate_sign_up_token("trevor@example.com")
+
+        travel(16.minutes) do
+          post session_magic_link_path, params: {token:}
+        end
+
+        expect(response).to redirect_to(new_session_path)
+        expect(User.count).to eq(0)
+      end
+    end
+
+    context "when a sign-up token comes with a join code" do
+      it "keeps the join code for after the display name" do
+        token = User.generate_sign_up_token("trevor@example.com")
+
+        post session_magic_link_path, params: {token:, join_code: "ABCDEF"}
+
+        expect(response).to redirect_to(new_display_name_path)
+        expect(session[:join_code]).to eq("ABCDEF")
+      end
+    end
+
     context "when the token is garbage" do
       it "is rejected" do
         post session_magic_link_path, params: {token: "garbage"}

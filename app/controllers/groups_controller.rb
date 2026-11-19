@@ -1,10 +1,16 @@
 class GroupsController < ApplicationController
   before_action :require_logged_in
-  before_action :require_owner, only: %i[edit update destroy]
+  before_action :require_owner, only: %i[created edit update destroy]
 
   def new
     render locals: {
       group: Group.new
+    }
+  end
+
+  def created
+    render locals: {
+      group: fetch_group
     }
   end
 
@@ -18,10 +24,11 @@ class GroupsController < ApplicationController
 
   def create
     group = Group.new(create_group_params)
+    rule_texts.each { |text| group.rules.build(text:) }
 
     if group.save
       Current.group = group
-      redirect_to(dashboard_path, success: "Group Created. Now invite some friends to join.")
+      redirect_to(created_group_path(group))
     else
       render :new, status: :unprocessable_content, locals: {
         group:
@@ -67,11 +74,16 @@ class GroupsController < ApplicationController
   private
 
   def create_group_params
-    params.require(:group).permit(:name, :rules).merge(users: [Current.user], owner: Current.user)
+    params.require(:group).permit(:name).merge(users: [Current.user], owner: Current.user)
   end
 
   def update_group_params
-    params.require(:group).permit(:name, :rules)
+    params.require(:group).permit(:name)
+  end
+
+  # Rules added on the create form before the group exists; blanks are dropped
+  def rule_texts
+    Array(params.dig(:group, :rule_texts)).map(&:to_s).map(&:squish).compact_blank
   end
 
   def require_owner

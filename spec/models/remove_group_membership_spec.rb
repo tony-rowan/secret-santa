@@ -113,6 +113,22 @@ RSpec.describe RemoveGroupMembership do
       end
     end
 
+    context "when the member has gift ideas" do
+      it "removes their ideas in this group only" do
+        owner, member = create_list(:user, 2)
+        group = create(:group, owner:, users: [owner, member])
+        other_group = create(:group, owner:, users: [owner, member])
+        create(:idea, group:, user: member)
+        owner_idea = create(:idea, group:, user: owner)
+        other_idea = create(:idea, group: other_group, user: member)
+
+        described_class.new(group:, member:, actor: owner).perform
+
+        expect(group.ideas).to eq([owner_idea])
+        expect(other_group.ideas).to eq([other_idea])
+      end
+    end
+
     context "when there are no secret santa pairings" do
       it "does not include a message to the contrary" do
         group, owner, member = setup_group

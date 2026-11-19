@@ -9,7 +9,7 @@ export default class extends Controller {
     event.preventDefault();
 
     try {
-      await navigator.share(shareData);
+      await navigator.share(this.dataValue);
     } catch (error) {
       // Fallback to the clipboard
       navigator.clipboard.writeText(this.dataValue.url);

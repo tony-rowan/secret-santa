@@ -1,113 +1,123 @@
 require "rails_helper"
 
 RSpec.feature "Group Management" do
-  scenario "The owner edits the group name, rules, then assigns and shuffles secret santas and kicks someone" do
+  scenario "The owner renames the group, edits rules, draws names and removes someone" do
     owner = create(:user)
-    kicked_user = create(:user, name: "Bad Actor")
+    removed_user = create(:user, name: "Bad Actor")
     other_users = create_list(:user, 3)
     group = create(
       :group,
       owner: owner,
-      users: [owner, kicked_user, *other_users],
+      users: [owner, removed_user, *other_users],
       name: "Old Group Name",
-      rules: "Old Group Rules"
+      rule_texts: ["Old rule"]
     )
+    create(:idea, group:, user: removed_user, idea: "Bad gift")
 
     sign_in(owner)
 
     expect(page).to have_text("Old Group Name")
-    expect(page).to have_text("Old Group Rules")
-    expect(page).to have_text("Not Started")
+    expect(page).to have_text("Ready when you are")
 
-    click_on("Manage Group")
-    fill_in("Name", with: "New Group Name")
-    fill_in("Rules", with: "New Group Rules with **bold** text\n\n- First rule\n- Second rule")
-    click_on("Update Group")
+    click_on("Rename group")
+    fill_in("Group name", with: "New Group Name")
+    click_on("Save name")
 
-    expect(page).to have_text("New Group Name")
+    expect(page).to have_css("h1", text: "New Group Name")
+    expect(group.reload.name).to eq("New Group Name")
 
-    group.reload
-    expect(group.name).to eq("New Group Name")
-    expect(group.rules).to eq("New Group Rules with **bold** text\n\n- First rule\n- Second rule")
-    expect(group.pairs).to be_empty
+    within("section[aria-labelledby='rules-heading']") do
+      fill_in("Add a rule", with: "Keep it under £20")
+      click_on("Add")
+    end
 
-    expect(page).to have_text("New Group Name")
-    expect(page).to have_text("New Group Rules")
-    expect(page).to have_css("strong", text: "bold")
-    expect(page).to have_css("li", text: "First rule")
-    expect(page).to have_css("li", text: "Second rule")
-    expect(page).to have_text("Not Started")
+    expect(page).to have_text("Keep it under £20")
 
-    click_on("Assign Secret Santa Partners")
+    click_on("Remove rule: Old rule")
+
+    expect(page).to have_no_text("Old rule")
+    expect(group.rules.reload.map(&:text)).to eq(["Keep it under £20"])
+
+    click_on("Draw names")
 
     expect(page).to have_text("Secret Santa partners assigned!")
+    expect(page).to have_text("You're buying for")
 
     pair_ids = group.pairs.pluck(:id)
     expect(pair_ids.count).to eq(5)
 
-    expect(page).to have_text("Secret Santa partners assigned!")
-    expect(page).to have_text("New Group Name")
-    expect(page).to have_text("New Group Rules")
-    expect(page).to have_text("Now buy them some gifts!")
-
-    click_on("Shuffle Secret Santa Partners")
+    click_on("Draw names again")
+    within("dialog[open]") { expect(page).to have_text("Draw names again?") }
+    confirm_dialog("Yes, draw again")
 
     expect(page).to have_text("Secret Santa partners re-assigned!")
+    expect(group.pairs.pluck(:id)).not_to eq(pair_ids)
 
-    shuffled_pair_ids = group.pairs.pluck(:id)
-    expect(shuffled_pair_ids).not_to eq(pair_ids)
-    expect(shuffled_pair_ids.count).to eq(5)
-
-    expect(page).to have_text("Secret Santa partners re-assigned!")
-    expect(page).to have_text("New Group Name")
-    expect(page).to have_text("New Group Rules")
-    expect(page).to have_text("Now buy them some gifts!")
-
-    accept_confirm { click_on("Kick Bad Actor") }
-
-    expect(page).to have_text("Removed Bad Actor from the group!")
-
-    expect(group.pairs.count).to eq(0)
-    expect(group.users).not_to include(kicked_user)
+    click_on("Remove Bad Actor from the group")
+    within("dialog[open]") do
+      expect(page).to have_text("Bad Actor's gift ideas are deleted")
+      expect(page).to have_text("Names have already been drawn")
+    end
+    confirm_dialog("Yes, remove Bad Actor")
 
     expect(page).to have_text("Removed Bad Actor from the group!")
     expect(page).to have_text("Secret santa partners have been un-assigned")
-    expect(page).to have_text("Not Started")
+    expect(page).to have_text("Ready when you are")
+    expect(group.users).not_to include(removed_user)
+    expect(group.ideas.where(user: removed_user)).to be_empty
   end
 
-  scenario "The owner resets the group for next year" do
+  scenario "The owner cancels a confirmation" do
+    owner = create(:user)
+    member = create(:user, name: "Alex")
+    group = create(:group, owner:, users: [owner, member])
+
+    sign_in(owner)
+    click_on("Remove Alex from the group")
+    within("dialog[open]") { click_on("Cancel") }
+
+    expect(page).to have_no_css("dialog[open]")
+    expect(group.reload.users).to include(member)
+  end
+
+  scenario "The owner resets the group for this year" do
     owner = create(:user)
     member = create(:user)
     other_member = create(:user)
-    group = create(:group, owner:, users: [owner, member, other_member])
+    group = create(:group, owner:, users: [owner, member, other_member], rule_texts: ["Keep it under £20"])
     group.assign_partners
     create(:idea, group:, user: owner, idea: "Socks")
     create(:idea, group:, user: member, idea: "Mug")
 
     sign_in(owner)
 
-    expect(page).to have_text("Now buy them some gifts!")
+    expect(page).to have_text("You're buying for")
 
-    click_on("Manage Group")
+    click_on("Clear everything…")
+    within("dialog[open]") do
+      expect(page).to have_text("Everyone's gift ideas are deleted")
+      expect(page).to have_text("All 3 members stay in the group")
+    end
+    confirm_dialog("Yes, clear everything")
 
-    expect(page).to have_text("Manage #{group.name}")
-    expect(page).to have_text("3 pairings")
-    expect(page).to have_text("2 gift ideas")
-
-    accept_confirm { click_on("Remove secret santa pairings") }
-
-    expect(page).to have_text("Secret santa pairings removed")
-    expect(page).to have_text("0 pairings")
+    expect(page).to have_text("is reset for this year")
+    expect(page).to have_text("Ready when you are")
+    expect(page).to have_text("No ideas yet")
+    expect(page).to have_text("Keep it under £20")
     expect(group.pairs.count).to eq(0)
-
-    accept_confirm { click_on("Remove all gift ideas") }
-
-    expect(page).to have_text("Gift ideas removed")
-    expect(page).to have_text("0 gift ideas")
     expect(group.ideas.count).to eq(0)
+    expect(group.users.count).to eq(3)
+  end
 
-    visit dashboard_path
+  scenario "A member leaves the group" do
+    member = create(:user)
+    group = create(:group, name: "Elf Squad", users: [member])
 
-    expect(page).to have_text("Not Started")
+    sign_in(member)
+    click_on("Leave this group")
+    confirm_dialog("Yes, leave")
+
+    expect(page).to have_text("Left group Elf Squad!")
+    expect(group.reload.users).not_to include(member)
   end
 end

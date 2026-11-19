@@ -21,7 +21,8 @@ RSpec.feature "Change email" do
     expect(page).to have_current_path(dashboard_path)
     expect(page).to have_text("Email updated")
 
-    click_on("Sign Out")
+    find("summary[aria-label='Account and sign out']").click
+    click_on("Sign out")
     ActionMailer::Base.deliveries.clear
     sign_in(user.reload)
 

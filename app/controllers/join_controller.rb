@@ -3,7 +3,7 @@ class JoinController < ApplicationController
 
   def new
     group = Group.find_by(join_code:) if join_code
-    form = JoinGroup.new
+    form = JoinGroup.new(join_code: group&.join_code)
 
     render locals: {
       group:,
@@ -19,8 +19,9 @@ class JoinController < ApplicationController
 
       redirect_to(dashboard_path, success: "Group Joined. Now add some ideas to help your partner.")
     else
-      render :show, status: :unprocessable_content, locals: {
-        form:
+      render :new, status: :unprocessable_content, locals: {
+        group: nil,
+        form: form
       }
     end
   end
@@ -42,12 +43,11 @@ class JoinController < ApplicationController
     params.require(:join_group).permit(:join_code).merge(user: Current.user)
   end
 
+  # Save the join code into the session to allow it to follow the user through signing in and
+  # choosing a display name
   def require_logged_in
-    return if logged_in?
+    session[:join_code] = params[:join_code] if params[:join_code].present?
 
-    # Save the join code into the session to allow it to follow the user through the
-    # sign in or sign up flow
-    session[:join_code] = params[:join_code].presence
-    redirect_to(root_path)
+    super
   end
 end

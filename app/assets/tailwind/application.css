@@ -1,12 +1,45 @@
 @import "tailwindcss";
 
 @plugin "@tailwindcss/forms";
-@plugin "@tailwindcss/typography";
 
 @theme {
   --font-sans:
     "Inter var", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Fraunces", Georgia, serif;
+
+  /* Night sky surfaces, darkest first */
+  --color-night-950: #120f2b;
+  --color-night-900: #1b1740;
+  --color-night-800: #262056;
+  --color-night-700: #3a3370;
+  --color-night-600: #4b4385;
+
+  /* Text on the night sky */
+  --color-snow: #fbf5e9;
+  --color-lilac-200: #e4e1f3;
+  --color-lilac-300: #d4d0ea;
+  --color-lilac-400: #c3bedf;
+  --color-lilac-500: #a9a3cc;
+  --color-lilac-600: #8d86b5;
+
+  /* Gold: highlights, the status card and join codes */
+  --color-gold: #f2c45a;
+  --color-gold-light: #ffe09a;
+  --color-gold-ink: #2a1d00;
+  --color-gold-muted: #4a3a10;
+
+  /* Berry: primary actions and the drawn-name card */
+  --color-berry: #c8323c;
+  --color-berry-dark: #a3202c;
+  --color-berry-light: #ffb3b3;
+  --color-berry-pale: #ffd9dc;
+  --color-cream: #fff8ec;
+  --color-cream-line: #eadfcb;
+
+  /* Pine: on-gold accents */
+  --color-pine: #1e4d33;
+  --color-pine-light: #8fd9a8;
 }
 
 @layer base {
@@ -19,55 +52,122 @@
   body {
     @apply bg-linear-to-br from-indigo-950 to-indigo-900 to-90%;
     @apply min-h-screen;
-    @apply text-white;
+    @apply font-sans text-snow;
+  }
+
+  a {
+    @apply text-gold hover:text-gold-light;
   }
 }
 
 @layer components {
+  /* Primary action: berry, full-height touch target */
   .button {
-    @apply block;
-    @apply py-2 px-8;
-    @apply border-2 border-green-900;
-    @apply rounded-xl;
-    @apply bg-linear-to-b from-green-600 to-green-700;
-    @apply hover:from-green-500 hover:to-green-600;
+    @apply flex items-center justify-center gap-2;
+    @apply min-h-14 px-6;
+    @apply rounded-2xl;
+    @apply bg-berry hover:bg-berry-dark;
+    @apply text-cream text-lg font-semibold no-underline hover:text-cream;
+    @apply cursor-pointer;
+    @apply text-center;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .button-secondary {
+    @apply flex items-center justify-center gap-2;
+    @apply min-h-13 px-5;
+    @apply rounded-2xl;
+    @apply border-[1.5px] border-night-600;
+    @apply bg-night-800 hover:bg-night-700;
+    @apply text-snow font-semibold no-underline hover:text-snow;
     @apply cursor-pointer;
     @apply text-center;
   }
 
   .button-danger {
-    @apply block;
-    @apply py-2 px-8;
-    @apply border-2 border-red-900;
-    @apply rounded-xl;
-    @apply bg-linear-to-b from-red-600 to-red-700;
-    @apply hover:from-red-500 hover:to-red-600;
-    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply flex items-center justify-center gap-2;
+    @apply min-h-13 px-5;
+    @apply rounded-2xl;
+    @apply border-[1.5px] border-[#ff8a8a];
+    @apply text-berry-light font-semibold;
+    @apply hover:bg-berry/20;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent;
     @apply text-center;
   }
 
-  .box {
-    @apply p-4;
-    @apply rounded-2xl;
-    @apply bg-linear-to-br from-indigo-700 to-indigo-800;
-    @apply border-2 border-indigo-400;
+  .button-text {
+    @apply min-h-12 px-5;
+    @apply text-lilac-400 hover:text-snow font-medium underline;
+  }
+
+  .card {
+    @apply p-5;
+    @apply rounded-3xl;
+    @apply bg-night-800;
+    @apply border border-white/8;
+    @apply flex flex-col gap-3.5;
+  }
+
+  .card-danger {
+    @apply p-5;
+    @apply rounded-3xl;
+    @apply border-[1.5px] border-[#7a2a2a] bg-[#3c0e12]/55;
+    @apply flex flex-col gap-3;
+  }
+
+  .card-title {
+    @apply text-xl font-semibold;
+  }
+
+  .card-hint {
+    @apply text-sm text-lilac-400;
+  }
+
+  .display-title {
+    @apply font-display font-bold text-4xl leading-tight;
+  }
+
+  .pill {
+    @apply self-start flex items-center gap-2;
+    @apply py-1.5 px-3;
+    @apply rounded-full;
+    @apply text-[13px] font-semibold tracking-wide uppercase;
+  }
+
+  /* A line in a list: idea, rule or member */
+  .list-row {
+    @apply flex items-center gap-2;
+    @apply py-1 pr-1 pl-4 min-h-13;
+    @apply rounded-2xl bg-night-900;
+  }
+
+  .icon-button {
+    @apply flex items-center justify-center shrink-0;
+    @apply size-11 rounded-xl;
+    @apply text-lilac-400 hover:text-snow hover:bg-white/10;
+  }
+
+  .join-code {
+    @apply flex items-center justify-center;
+    @apply min-h-17 px-4 rounded-2xl;
+    @apply bg-gold text-gold-ink;
+    @apply text-2xl sm:text-3xl font-bold tracking-[3px] break-all text-center;
   }
 
   .nav-item {
-    @apply flex items-center gap-2;
-    @apply px-4 py-2;
+    @apply flex items-center gap-3 w-full;
+    @apply px-4 py-3;
     @apply rounded-xl;
-    @apply md:text-lg;
-    @apply bg-indigo-800 hover:bg-indigo-900;
+    @apply text-snow hover:text-snow hover:bg-white/10;
   }
 
   .input-field {
     @apply block;
-    @apply w-full;
-    @apply px-4 py-2;
-    @apply rounded-xl;
-    @apply bg-indigo-950 text-white placeholder:text-indigo-300;
-    @apply border-2 border-indigo-500;
-    @apply focus:outline-hidden focus:ring-2 focus:ring-green-500/50 focus:border-green-500;
+    @apply w-full min-h-13;
+    @apply px-4 py-3;
+    @apply rounded-2xl;
+    @apply bg-night-950 text-snow text-base placeholder:text-lilac-600;
+    @apply border-[1.5px] border-night-600;
+    @apply focus:outline-hidden focus:ring-2 focus:ring-gold/40 focus:border-gold;
   }
 }

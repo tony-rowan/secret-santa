@@ -1,4 +1,4 @@
-Hi <%= @user.name %>,
+<%= @user.name.present? ? "Hi #{@user.name}," : "Hi," %>
 
 Use the link below to sign in to Secret Santa. The link expires in 15 minutes and can only be used once.
 

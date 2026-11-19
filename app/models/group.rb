@@ -4,6 +4,7 @@ class Group < ApplicationRecord
   has_many :users, through: :user_groups
   has_many :pairs
   has_many :ideas
+  has_many :rules, -> { order(:id) }, dependent: :destroy
 
   before_validation :set_join_code
   validates :name, :join_code, presence: true
@@ -36,12 +37,12 @@ class Group < ApplicationRecord
     pairings.each { |p| pairs.create!(user_id: p[0], other_id: p[1]) }
   end
 
-  def remove_pairings
-    pairs.destroy_all
-  end
-
-  def remove_ideas
-    ideas.destroy_all
+  # Clears last time's draw and gift ideas so the group can start again this year. Members stay.
+  def reset
+    transaction do
+      pairs.destroy_all
+      ideas.destroy_all
+    end
   end
 
   private

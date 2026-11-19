@@ -1,0 +1,121 @@
+<% if pair %>
+  <% match = pair.other %>
+  <% match_ideas = match.ideas.where(group:) %>
+
+  <section aria-labelledby="status-heading" class="rounded-3xl bg-berry-dark p-5 pt-6 flex flex-col gap-4 shadow-2xl shadow-black/35">
+    <span class="pill bg-cream/16 text-cream">
+      <%= icon(:check, size: "size-3.5", "stroke-width": 3) %>
+      Names drawn
+    </span>
+
+    <div class="flex flex-col gap-0.5">
+      <p class="text-berry-pale">You're buying for</p>
+      <h2 id="status-heading" class="font-display font-bold text-[52px] leading-none text-cream break-words"><%= match.name %></h2>
+    </div>
+
+    <div class="rounded-2xl bg-cream text-[#2b1a14] px-4.5 py-4 flex flex-col gap-2.5">
+      <h3 class="text-sm font-semibold tracking-wide uppercase text-[#7a2a22]"><%= match.name %>'s ideas</h3>
+
+      <% if match_ideas.empty? %>
+        <p class="py-1">They haven't added any gift ideas yet.</p>
+      <% else %>
+        <ul class="flex flex-col divide-y divide-cream-line">
+          <% match_ideas.each do |match_idea| %>
+            <li class="flex gap-3 py-2.5 last:pb-0.5 text-[17px]">
+              <%= icon(:sparkles, size: "size-5", class: "text-berry-dark mt-0.5") %>
+              <span class="min-w-0 break-words"><%= match_idea.idea %></span>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+
+    <% if owner %>
+      <%= render "shared/confirm_details",
+        id: "confirm-redraw",
+        icon: :arrow_path,
+        removed: ["Everyone gets a new person, including you", "Anyone who has started shopping may need to start again"],
+        kept: ["Gift ideas stay as they are"] %>
+      <%= button_to group_path(group),
+        params: { reassign_partners: true },
+        method: :patch,
+        class: "button-secondary w-full border-cream/30 bg-transparent hover:bg-cream/10",
+        data: {
+          turbo_confirm: "Draw names again?",
+          confirm_button: "Yes, draw again",
+          confirm_details: "confirm-redraw"
+        } do %>
+        <%= icon(:arrow_path, size: "size-5") %>
+        Draw names again
+      <% end %>
+    <% end %>
+  </section>
+
+<% elsif owner %>
+  <% member_count = group.users.count %>
+  <% members_with_ideas = idea_counts.size %>
+  <% drawn = group.pairs.any? %>
+
+  <section aria-labelledby="status-heading" class="rounded-3xl bg-gold text-gold-ink px-5 py-5.5 flex flex-col gap-3.5 shadow-2xl shadow-black/30">
+    <span class="pill bg-pine text-gold">
+      <span class="size-2 rounded-full bg-gold"></span>
+      Not drawn yet
+    </span>
+
+    <h2 id="status-heading" class="font-display font-bold text-[26px] leading-tight">Ready when you are</h2>
+
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between text-[15px]">
+        <span class="text-gold-muted">Members with ideas</span>
+        <span class="font-semibold"><%= members_with_ideas %> of <%= member_count %></span>
+      </div>
+      <div class="h-2 rounded bg-pine/25 flex" role="presentation">
+        <span class="rounded bg-pine" style="width: <%= member_count.zero? ? 0 : (members_with_ideas * 100 / member_count) %>%"></span>
+      </div>
+    </div>
+
+    <%= button_to group_path(group),
+      params: drawn ? { reassign_partners: true } : { assign_partners: true },
+      method: :patch,
+      disabled: member_count < 3,
+      class: "mt-1 w-full min-h-14 rounded-2xl bg-pine hover:bg-[#163a26] text-cream text-lg font-semibold flex items-center justify-center gap-2.5 disabled:opacity-50 disabled:cursor-not-allowed" do %>
+      <%= icon(:sparkles, size: "size-5") %>
+      Draw names
+    <% end %>
+
+    <p class="text-sm text-gold-muted text-center">
+      <% if member_count < 3 %>
+        You need at least 3 people to draw names. Invite a few more below.
+      <% else %>
+        Everyone gets one random person. You won't see who has who.
+      <% end %>
+    </p>
+  </section>
+
+<% else %>
+  <% has_ideas = idea_counts[Current.user.id].to_i.positive? %>
+
+  <section aria-labelledby="status-heading" class="rounded-3xl bg-gold text-gold-ink px-5 py-5.5 flex flex-col gap-3.5 shadow-2xl shadow-black/30">
+    <span class="pill bg-pine text-gold">
+      <span class="size-2 rounded-full bg-gold"></span>
+      Waiting for the draw
+    </span>
+
+    <h2 id="status-heading" class="font-display font-bold text-[26px] leading-tight">Names haven't been drawn yet</h2>
+
+    <ol class="mt-1.5 flex gap-1.5 text-[13px]" aria-label="Progress">
+      <li class="flex-1 flex flex-col gap-2 text-gold-muted">
+        <span class="h-1.5 rounded-sm bg-pine"></span>
+        Joined
+      </li>
+      <li class="flex-1 flex flex-col gap-2 <%= has_ideas ? "text-gold-muted" : "font-semibold" %>" <%= tag.attributes(aria: { current: ("step" unless has_ideas) }) %>>
+        <span class="h-1.5 rounded-sm <%= has_ideas ? "bg-pine" : "bg-pine/60" %>"></span>
+        Add ideas
+      </li>
+      <li class="flex-1 flex flex-col gap-2 <%= has_ideas ? "font-semibold" : "text-gold-muted" %>" <%= tag.attributes(aria: { current: ("step" if has_ideas) }) %>>
+        <span class="h-1.5 rounded-sm bg-pine/25"></span>
+        Names drawn
+      </li>
+    </ol>
+  </section>
+<% end %>

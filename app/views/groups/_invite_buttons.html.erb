@@ -1,0 +1,27 @@
+<div class="grid grid-cols-2 gap-2">
+  <button type="button"
+    class="button-secondary px-3 whitespace-nowrap <%= local_assigns[:class] %>"
+    data-controller="clipboard"
+    data-clipboard-text-value="<%= group.join_code %>"
+    data-clipboard-feedback-value="Copied!"
+    data-action="clipboard#copy">
+    <%= icon(:document_duplicate, size: "size-5") %>
+    <span data-clipboard-target="label">Copy code</span>
+  </button>
+
+  <%= link_to join_with_code_url(group.join_code),
+    class: "button-secondary px-3 whitespace-nowrap #{local_assigns[:class]}",
+    data: {
+      controller: "share",
+      share_fallback_copy_feedback_value: "Link copied!",
+      share_data_value: {
+        title: "Secret Santa",
+        text: "Join my secret santa group!",
+        url: join_with_code_url(group.join_code)
+      }.to_json,
+      action: "share#share"
+    } do %>
+    <%= icon(:arrow_up_tray, size: "size-5") %>
+    <span data-share-target="fallbackCopyFeedback">Share link</span>
+  <% end %>
+</div>

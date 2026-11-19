@@ -1,17 +1,13 @@
-<% Array.wrap(flash[:error]).each do |error| %>
-  <div class="my-8 bg-red-900/80 rounded-2xl border-2 border-red-400/80 p-4 text-center">
-    <%= error %>
-  </div>
-<% end %>
+<% flash_styles = {
+  error: "bg-[#3c0e12]/80 border-[#ff8a8a] text-berry-light",
+  success: "bg-pine/80 border-pine-light text-snow",
+  notice: "bg-night-800/90 border-gold text-snow"
+} %>
 
-<% Array.wrap(flash[:success]).each do |success| %>
-  <div class="my-8 bg-green-900/80 rounded-2xl border-2 border-green-400/80 p-4 text-center">
-    <%= success %>
-  </div>
-<% end %>
-
-<% Array.wrap(flash[:notice]).each do |notice| %>
-  <div class="my-8 bg-blue-900/80 rounded-2xl border-2 border-blue-400/80 p-4 text-center">
-    <%= notice %>
-  </div>
+<% flash_styles.each do |type, classes| %>
+  <% Array.wrap(flash[type]).each do |message| %>
+    <div class="mb-5 rounded-2xl border-[1.5px] px-4 py-3 text-center <%= classes %>">
+      <%= message %>
+    </div>
+  <% end %>
 <% end %>

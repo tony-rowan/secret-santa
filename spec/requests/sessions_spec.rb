@@ -1,6 +1,24 @@
 require "rails_helper"
 
 RSpec.describe "Sessions" do
+  describe "GET /" do
+    it "shows the sign in page" do
+      get root_path
+
+      expect(response.body).to include("Email me a sign-in link")
+    end
+
+    context "when signed in" do
+      it "redirects to the dashboard" do
+        authenticate(create(:user))
+
+        get root_path
+
+        expect(response).to redirect_to(dashboard_path)
+      end
+    end
+  end
+
   describe "GET /session/new" do
     it "asks only for an email" do
       get new_session_path
@@ -35,12 +53,24 @@ RSpec.describe "Sessions" do
     end
 
     context "when the email is unknown" do
-      it "sends nothing but renders the same page" do
-        post session_path, params: {email: "nobody@example.com"}
+      it "sends a sign-up link and renders the same page without creating an account" do
+        post session_path, params: {email: " Nobody@Example.com "}
 
-        expect(ActionMailer::Base.deliveries).to be_empty
+        expect(ActionMailer::Base.deliveries.size).to eq(1)
+        expect(ActionMailer::Base.deliveries.last.to).to eq(["nobody@example.com"])
+        expect(User.count).to eq(0)
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("Check your email")
+      end
+    end
+
+    context "when the email is invalid" do
+      it "re-renders the form with an error and sends nothing" do
+        post session_path, params: {email: "not an email"}
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("Please enter a valid email address")
+        expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
 

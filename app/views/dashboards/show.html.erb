@@ -1,179 +1,70 @@
 <% if Current.group %>
+  <% content_for :wide, true %>
+  <% group = Current.group %>
+  <% owner = group.owner?(Current.user) %>
 
-  <% owner = Current.group.owner?(Current.user) %>
-  <% action_class = "button flex items-center gap-2 py-1.5 px-4" %>
-
-  <nav aria-label="Group" id="group-menu" class="mb-8 p-4 rounded-2xl bg-black/20 flex flex-wrap items-center justify-between gap-4">
-    <h2 class="text-2xl flex items-center gap-2">
-      <%= icon(:user_group) %>
-      <%= Current.group.name %>
-    </h2>
-
-    <div class="flex flex-wrap items-center gap-3">
-      <% if owner %>
-        <%= link_to "#",
-          class: action_class,
-          data: {
-            controller: "share",
-            share_fallback_copy_feedback_value: "Invite link copied!",
-            share_data_value: {
-              title: "Secret Santa",
-              text: "Join my secret santa group!",
-              url: join_with_code_url(Current.group.join_code)
-            }.to_json,
-            action: "share#share"
-          } do %>
-          <%= icon(:share, size: "size-5") %>
-          <span data-share-target="fallbackCopyFeedback">Invite Others</span>
-        <% end %>
-
-        <% if Current.group.pairs.any? %>
-          <%= button_to "Shuffle Secret Santa Partners", group_path(Current.group),
-            params: { reassign_partners: true },
-            method: :patch,
-            form: { class: "contents" },
-            class: action_class %>
-        <% else %>
-          <%= button_to "Assign Secret Santa Partners", group_path(Current.group),
-            params: { assign_partners: true },
-            method: :patch,
-            form: { class: "contents" },
-            class: action_class %>
-        <% end %>
-
-        <%= link_to edit_group_path(Current.group), class: action_class do %>
-          <%= icon(:cog_6_tooth, size: "size-5") %>
-          Manage Group
-        <% end %>
-      <% else %>
-        <%= button_to group_membership_path(Current.group, Current.user),
-          method: :delete,
-          form: { class: "contents" },
-          class: action_class,
-          title: "Leave #{Current.group.name}",
-          aria: { label: "Leave #{Current.group.name}" },
-          data: { turbo_confirm: "Leave #{Current.group.name}, are you sure?" } do %>
-          <%= icon(:arrow_right_start_on_rectangle, size: "size-5") %>
-          Leave group
-        <% end %>
+  <div class="flex items-center gap-2 px-1 mb-5">
+    <h1 class="display-title min-w-0 break-words"><%= group.name %></h1>
+    <% if owner %>
+      <%= link_to edit_group_path(group), class: "icon-button", title: "Rename group", aria: { label: "Rename group" } do %>
+        <%= icon(:pencil_square, size: "size-5") %>
       <% end %>
-    </div>
-  </nav>
-
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-    <% if Current.group.rules.present? %>
-      <div class="box sm:col-span-2">
-        <h3 class="text-xl flex items-center gap-2">
-          <%= icon(:clipboard_document_list) %>
-          Rules
-        </h3>
-
-        <div class="prose prose-sm sm:prose-base prose-invert max-w-none mt-4 prose-a:text-green-300 prose-li:marker:text-green-300">
-          <%= markdown(Current.group.rules) %>
-        </div>
-      </div>
-    <% end %>
-
-    <div class="box">
-      <h3 class="text-xl flex items-center gap-2">
-        <%= icon(:flag) %>
-        Status
-      </h3>
-
-      <% if pair %>
-        <p class="text-xl mt-4">You got <%= pair.other.name %>! Now buy them some gifts!</p>
-      <% else %>
-        <p class="text-xl mt-4">Not Started</p>
-      <% end %>
-    </div>
-
-    <div class="box">
-      <h3 class="text-xl flex items-center gap-2">
-        <%= icon(:users) %>
-        Members
-      </h3>
-
-      <div class="mt-4">
-        <% Current.group.users.each do |user| %>
-          <div class="flex gap-x-2 items-center">
-            <span><%= user.name %></span>
-            <span><%= "(You)" if Current.user == user %></span>
-            <% if owner && !Current.group.owner?(user) %>
-              <%= button_to group_membership_path(Current.group, user),
-                method: :delete,
-                class: "p-1 rounded-lg hover:bg-white/10",
-                title: "Kick #{user.name}",
-                aria: { label: "Kick #{user.name}" },
-                data: { turbo_confirm: "Kick #{user.name}, are you sure?" } do %>
-                <%= icon(:user_minus, size: "size-5") %>
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-
-    <% if pair %>
-      <div class="box">
-        <h3 class="text-xl flex items-center gap-2">
-          <%= icon(:gift) %>
-          <%= pair.other.name %>'s Ideas
-        </h3>
-
-        <% if pair.other.ideas_in_current_group.empty? %>
-          <p>
-            They haven't added any gift ideas yet...
-          </p>
-        <% else %>
-          <% pair.other.ideas_in_current_group.each do |idea| %>
-            <div class="text-lg mt-2">
-              <%= idea.idea %>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
     <% end %>
   </div>
 
-  <div class="mt-8">
-    <%= render "section", title: "Your Ideas", icon: :gift do %>
-      <% Current.user.ideas_in_current_group.each do |idea| %>
-        <div class="text-lg mb-2 flex items-center gap-2 group">
-          <%= idea.idea %>
-          <%= button_to idea,
+  <%# One column on phones (ideas second); on desktop the ideas get the right-hand column %>
+  <div class="flex flex-col gap-5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6">
+    <div class="contents lg:flex lg:flex-col lg:gap-5">
+      <div class="order-1"><%= render "dashboards/status", group:, owner:, pair:, idea_counts: %></div>
+      <div class="order-3"><%= render "dashboards/members", group:, owner:, idea_counts: %></div>
+
+      <% if owner || group.rules.any? %>
+        <div class="order-3"><%= render "dashboards/rules", group:, owner: %></div>
+      <% end %>
+
+      <div class="order-3 flex flex-col">
+        <% if owner %>
+          <%= render "dashboards/reset", group: %>
+        <% else %>
+          <%= render "shared/confirm_details",
+            id: "confirm-leave",
+            icon: :arrow_right_start_on_rectangle,
+            removed: [
+              "You leave #{group.name}",
+              "Your gift ideas for this group are deleted",
+              ("Drawn names are cleared, so they'll need drawing again" if group.pairs.any?)
+            ].compact,
+            note: "You can join again with the code." %>
+          <%= button_to "Leave this group", group_membership_path(group, Current.user),
             method: :delete,
-            class: "p-1 rounded-lg hover:bg-white/10",
-            title: "Remove #{idea.idea}",
-            aria: { label: "Remove #{idea.idea}" } do %>
-            <%= icon(:trash, size: "size-5") %>
-          <% end %>
-        </div>
-      <% end %>
+            form: { class: "self-center" },
+            class: "button-text",
+            data: {
+              turbo_confirm: "Leave #{group.name}?",
+              confirm_button: "Yes, leave",
+              confirm_details: "confirm-leave"
+            } %>
+        <% end %>
+      </div>
+    </div>
 
-      <%= form_with(model: idea) do |form| %>
-        <%= form.text_field :idea, label: "Add a gift idea (or a few) to help out your secret santa" %>
-
-        <%= form.submit "Add", class: "mt-6" %>
-      <% end %>
-    <% end %>
+    <div class="order-2 lg:sticky lg:top-6">
+      <%= render "dashboards/ideas", group:, pair:, idea: %>
+    </div>
   </div>
 
 <% else %>
 
-  <%= render "section" do %>
-    <p class="text-2xl text-center">
-      You're not part of a group
-    </p>
-
-    <p class="text-lg mt-2 text-center">
-      Secret Santa is better with friends!
-    </p>
-
-    <div class="flex flex-col sm:flex-row content-center items-center justify-center gap-4 mt-4">
-      <%= link_to "Join a Group", join_path, class: "button" %>
-      <span>or</span>
-      <%= link_to "Create a Group", new_group_path, class: "button" %>
+  <div class="flex flex-col gap-7 pt-8">
+    <div class="flex flex-col gap-2.5">
+      <h1 class="display-title">You're not part of a group</h1>
+      <p class="text-lg text-lilac-300">Secret Santa is better with friends! Join with the code your organiser shared, or start your own.</p>
     </div>
-  <% end %>
+
+    <div class="flex flex-col gap-3">
+      <%= link_to "Join a group", join_path, class: "button" %>
+      <%= link_to "Start a new group", new_group_path, class: "button-secondary" %>
+    </div>
+  </div>
 
 <% end %>

@@ -1,21 +1,52 @@
-<%= render "section" do %>
-  <h2 class="text-xl text-center">
-    <% if group %>
-      Join <%= group.owner.name %>'s group, <%= group.name %>
-    <% else %>
-      Join a Group
+<div class="flex flex-col gap-7 pt-8">
+  <% if group %>
+    <div class="flex flex-col gap-2.5">
+      <h1 class="display-title">You're invited</h1>
+      <p class="text-lg text-lilac-300">Check the details, then join.</p>
+    </div>
+
+    <section aria-labelledby="invite-heading" class="card gap-4 py-5.5">
+      <div class="flex flex-col gap-1">
+        <h2 id="invite-heading" class="font-display font-bold text-3xl leading-tight break-words"><%= group.name %></h2>
+        <p class="text-lilac-400">Organised by <%= group.owner.name %></p>
+      </div>
+
+      <div class="flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-night-900">
+        <span class="text-sm text-lilac-400">Join code</span>
+        <span class="text-lg font-bold tracking-[3px] text-gold break-all"><%= group.join_code %></span>
+      </div>
+    </section>
+
+    <div class="flex flex-col gap-2">
+      <%= form_with(model: form, url: join_path) do |form| %>
+        <%= form.hidden_field :join_code %>
+        <%= form.button "Join #{group.name}", class: "button w-full" %>
+      <% end %>
+
+      <%= link_to "Use a different code", join_path(join_code: ""), class: "flex items-center justify-center min-h-12 text-[15px] font-medium" %>
+    </div>
+  <% else %>
+    <div class="flex flex-col gap-2.5">
+      <h1 class="display-title">Join a group</h1>
+      <p class="text-lg text-lilac-300">Enter the code your organiser shared with you.</p>
+    </div>
+
+    <%= form_with(model: form, url: join_path, class: "flex flex-col gap-3") do |form| %>
+      <%= form.text_field :join_code,
+        autocomplete: "off",
+        autocapitalize: "characters",
+        spellcheck: false,
+        field_classes: "text-2xl font-semibold tracking-[3px] uppercase text-center" %>
+
+      <%= form.submit "Join group", class: "w-full" %>
     <% end %>
-  </h2>
 
-  <% unless group %>
-    <p class="text-md text-center mt-4">
-      Did someone share a code with you? Enter that code to join their group.
-    </p>
+    <div class="flex items-center gap-3 text-sm text-lilac-500" aria-hidden="true">
+      <span class="grow h-px bg-night-700"></span>
+      <span>or</span>
+      <span class="grow h-px bg-night-700"></span>
+    </div>
+
+    <%= link_to "Start a new group", new_group_path, class: "button-secondary" %>
   <% end %>
-<% end %>
-
-<%= form_with(model: form, url: join_path, class: "max-w-screen-sm container mx-auto") do |form| %>
-  <%= form.text_field :join_code, value: group&.join_code %>
-
-  <%= form.submit "Join", class: "w-full mt-6" %>
-<% end %>
+</div>

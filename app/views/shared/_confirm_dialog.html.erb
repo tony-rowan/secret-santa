@@ -1,0 +1,23 @@
+<%# Styled stand-in for confirm(); see confirm_dialog_controller.js %>
+<dialog
+  aria-labelledby="confirm-dialog-title"
+  class="m-auto w-[calc(100%-2.5rem)] max-w-md p-0 bg-transparent text-snow backdrop:bg-[#080618]/75"
+  data-controller="confirm-dialog"
+  data-action="click->confirm-dialog#backdropClick">
+  <form method="dialog" class="relative rounded-3xl bg-night-800 border border-white/14 shadow-2xl shadow-black/50 p-6 flex flex-col gap-4.5">
+    <button type="submit" value="cancel" aria-label="Close" class="icon-button absolute top-3 right-3">
+      <%= icon(:x_mark, size: "size-5.5") %>
+    </button>
+
+    <div class="self-center empty:hidden" data-confirm-dialog-target="icon"></div>
+
+    <h2 id="confirm-dialog-title" class="px-8 text-center font-display font-bold text-[28px] leading-tight" data-confirm-dialog-target="title"></h2>
+
+    <div class="flex flex-col gap-4.5 empty:hidden" data-confirm-dialog-target="details"></div>
+
+    <div class="flex flex-col gap-2.5 mt-1">
+      <button type="submit" value="confirm" class="button" data-confirm-dialog-target="confirmButton">Confirm</button>
+      <button type="submit" value="cancel" class="button-secondary bg-transparent min-h-14 text-lg" autofocus>Cancel</button>
+    </div>
+  </form>
+</dialog>

@@ -1,8 +1,4 @@
-<%= render "section" do %>
-  <h2 class="text-xl text-center">
-    Signing you in…
-  </h2>
-<% end %>
+<h1 class="mb-6 font-display font-bold text-3xl text-center">Signing you in…</h1>
 
 <%# Submits itself via JS; the button is the fallback if JS is unavailable %>
-<%= button_to "Click here if nothing happens", session_magic_link_path, params: {token:, join_code:}, class: "button w-full", form: {class: "max-w-screen-sm container mx-auto", data: {controller: "auto-submit"}} %>
+<%= button_to "Click here if nothing happens", session_magic_link_path, params: {token:, join_code:}, class: "button w-full", form: {data: {controller: "auto-submit"}} %>

@@ -1,0 +1,17 @@
+<div class="flex flex-col gap-6 pt-6">
+  <div class="flex flex-col items-center gap-3.5 text-center">
+    <span class="size-20 rounded-full bg-gold text-gold-ink flex items-center justify-center">
+      <%= icon(:check, size: "size-10", "stroke-width": 2.4) %>
+    </span>
+    <h1 class="font-display font-bold text-[32px] leading-tight break-words"><%= group.name %> is ready</h1>
+    <p class="text-lg text-lilac-300">Now invite everyone. Share the code or send the link.</p>
+  </div>
+
+  <div class="flex flex-col gap-2.5">
+    <span class="font-semibold">Join code</span>
+    <div class="join-code min-h-19"><%= group.join_code %></div>
+    <%= render "groups/invite_buttons", group: %>
+  </div>
+
+  <%= link_to "Go to your group", dashboard_path, class: "button mt-4" %>
+</div>
