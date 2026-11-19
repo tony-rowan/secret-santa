@@ -29,6 +29,17 @@ module Authentication
     return unless authenticated_user
 
     Current.user = authenticated_user
+
+    # Members of several groups can switch which one the dashboard shows; without a choice it's
+    # the group they joined most recently
+    if (group = authenticated_user.groups.find_by(id: session[:group_id]))
+      Current.group = group
+    end
+  end
+
+  def select_group(group)
+    session[:group_id] = group.id
+    Current.group = group
   end
 
   def authenticated_user

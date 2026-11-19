@@ -13,7 +13,9 @@ Rails.application.routes.draw do
 
   resource :display_name, only: %i[new create]
 
-  resource :email_confirmation, only: %i[show create destroy]
+  resource :email_confirmation, only: %i[show create destroy] do
+    post :resend
+  end
 
   resources :users, only: %i[show edit update destroy]
 

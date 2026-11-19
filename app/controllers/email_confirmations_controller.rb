@@ -2,7 +2,9 @@ class EmailConfirmationsController < ApplicationController
   layout "authentication", only: :show
 
   before_action :require_valid_token, only: %i[show create]
-  before_action :require_logged_in, only: :destroy
+  before_action :require_logged_in, only: %i[destroy resend]
+
+  rate_limit to: 5, within: 15.minutes, only: :resend, by: -> { Current.user&.id }, with: -> { redirect_to edit_user_path(Current.user), error: RATE_LIMIT_MESSAGE }
 
   # Only confirms; the change is applied on POST so link scanners/prefetchers can't burn the token
   def show
@@ -23,6 +25,15 @@ class EmailConfirmationsController < ApplicationController
     Current.user.cancel_email_change
 
     redirect_to edit_user_path(Current.user), notice: "Email change cancelled"
+  end
+
+  def resend
+    if Current.user.unconfirmed_email.present?
+      UserMailer.confirm_email_change(Current.user).deliver_later
+      redirect_to edit_user_path(Current.user), notice: "We've sent another link to #{Current.user.unconfirmed_email}"
+    else
+      redirect_to edit_user_path(Current.user), error: "There's no email change waiting to be verified"
+    end
   end
 
   private

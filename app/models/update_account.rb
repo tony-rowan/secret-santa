@@ -19,9 +19,10 @@ class UpdateAccount
   end
 
   # The name is saved straight away; a different email is only held as `unconfirmed_email` until the
-  # link sent to the new address is followed.
+  # link sent to the new address is followed. The account page sends the two separately, so a field
+  # that wasn't submitted (nil) is left alone.
   def perform
-    user.name = name
+    user.name = name unless name.nil?
     user.unconfirmed_email = new_email if email_changing?
 
     if user.save

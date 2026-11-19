@@ -27,7 +27,7 @@ class GroupsController < ApplicationController
     rule_texts.each { |text| group.rules.build(text:) }
 
     if group.save
-      Current.group = group
+      select_group(group)
       redirect_to(created_group_path(group))
     else
       render :new, status: :unprocessable_content, locals: {

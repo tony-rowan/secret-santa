@@ -6,7 +6,7 @@ class GroupMembershipsController < ApplicationController
     remove_group_membership_action = RemoveGroupMembership.new(group: group, member: member, actor: Current.user)
 
     if remove_group_membership_action.perform
-      redirect_to dashboard_path,
+      redirect_back_or_to dashboard_path,
         success: remove_group_membership_action.messages[:success],
         notice: remove_group_membership_action.messages[:notice]
     else

@@ -141,4 +141,33 @@ RSpec.describe "GET /dashboard" do
       expect(response).to redirect_to(new_display_name_path)
     end
   end
+
+  context "when a group is chosen" do
+    it "shows that group from then on" do
+      user = create(:user)
+      first = create(:group, name: "Book club", users: [user])
+      create(:group, name: "Rowans", owner: user)
+
+      authenticate(user)
+      get dashboard_path(group_id: first.id)
+      expect(response.body).to include("Book club")
+
+      get dashboard_path
+      expect(response.body).to include("Book club")
+    end
+  end
+
+  context "when the chosen group isn't one of the user's" do
+    it "ignores it" do
+      user = create(:user)
+      create(:group, name: "Rowans", owner: user)
+      other = create(:group, name: "Strangers")
+
+      authenticate(user)
+      get dashboard_path(group_id: other.id)
+
+      expect(response.body).to include("Rowans")
+      expect(response.body).not_to include("Strangers")
+    end
+  end
 end

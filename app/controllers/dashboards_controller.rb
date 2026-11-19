@@ -1,5 +1,6 @@
 class DashboardsController < ApplicationController
   before_action :require_logged_in
+  before_action :select_requested_group
 
   def show
     render locals: {
@@ -10,6 +11,14 @@ class DashboardsController < ApplicationController
   end
 
   private
+
+  # Links to a particular group (e.g. from the account page) pass its id
+  def select_requested_group
+    return if params[:group_id].blank?
+
+    group = Current.user.groups.find_by(id: params[:group_id])
+    select_group(group) if group
+  end
 
   def pair_for_current_group
     return nil unless Current.group

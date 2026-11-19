@@ -17,7 +17,7 @@
 
     <%= render "shared/navigation" %>
 
-    <main class="<%= content_for?(:wide) ? "max-w-5xl" : "max-w-xl" %> mx-auto px-5 pt-3 pb-16">
+    <main class="<%= content_for?(:wide) ? "max-w-6xl lg:px-8" : "max-w-xl" %> mx-auto px-5 pt-3 pb-16">
       <%= render "shared/flashes" %>
 
       <%= yield %>

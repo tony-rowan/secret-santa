@@ -13,7 +13,7 @@
       <ul class="flex flex-col gap-2">
         <% rules.each do |rule| %>
           <li class="list-row">
-            <%= icon(:sparkles, size: "size-4.5", class: "text-gold") %>
+            <%= icon(:star_four, size: "size-3.5", class: "text-gold") %>
             <span class="grow min-w-0 break-words"><%= rule.text %></span>
             <%= button_to group_rule_path(group, rule),
               method: :delete,
@@ -45,7 +45,7 @@
     <ul class="flex flex-col gap-2.5 text-lilac-200">
       <% rules.each do |rule| %>
         <li class="flex gap-2.5">
-          <%= icon(:sparkles, size: "size-4.5", class: "text-gold mt-0.5") %>
+          <%= icon(:star_four, size: "size-3.5", class: "text-gold mt-1") %>
           <span class="min-w-0 break-words"><%= rule.text %></span>
         </li>
       <% end %>

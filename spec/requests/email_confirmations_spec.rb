@@ -110,4 +110,31 @@ RSpec.describe "Email confirmations" do
       end
     end
   end
+
+  describe "POST /email_confirmation/resend" do
+    context "when signed in with a pending change" do
+      it "sends the link to the new address again" do
+        user = pending_user
+
+        authenticate(user)
+        post resend_email_confirmation_path
+
+        expect(response).to redirect_to(edit_user_path(user))
+        expect(ActionMailer::Base.deliveries.last.to).to eq(["new@example.com"])
+      end
+    end
+
+    context "when there's no pending change" do
+      it "sends nothing" do
+        user = create(:user)
+
+        authenticate(user)
+        post resend_email_confirmation_path
+
+        expect(response).to redirect_to(edit_user_path(user))
+        expect(flash[:error]).to be_present
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
+  end
 end

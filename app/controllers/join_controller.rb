@@ -15,7 +15,7 @@ class JoinController < ApplicationController
     form = JoinGroup.new(**join_group_params)
 
     if form.save
-      Current.group = form.group
+      select_group(form.group)
 
       redirect_to(dashboard_path, success: "Group Joined. Now add some ideas to help your partner.")
     else

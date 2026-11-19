@@ -11,7 +11,8 @@ class UsersController < ApplicationController
 
   def edit
     render locals: {
-      user:
+      user: user,
+      new_email: nil
     }
   end
 
@@ -19,19 +20,23 @@ class UsersController < ApplicationController
     update_account = UpdateAccount.new(user:, name: user_params[:name], email: user_params[:email])
 
     if update_account.perform
-      redirect_to dashboard_path,
+      redirect_to edit_user_path(user),
         success: update_account.messages[:success],
         notice: update_account.messages[:notice]
     else
       render :edit, status: :unprocessable_content, locals: {
-        user:
+        user: user,
+        new_email: user_params[:email]
       }
     end
   end
 
   def destroy
-    user.destroy
-    redirect_to root_path, notice: "User was successfully destroyed."
+    DeleteAccount.new(user:).perform
+    cookies.delete(:user_id)
+    reset_session
+
+    redirect_to root_path, notice: "Your account has been deleted"
   end
 
   private

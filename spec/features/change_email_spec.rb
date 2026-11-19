@@ -6,22 +6,20 @@ RSpec.feature "Change email" do
 
     authenticate(user)
     visit(edit_user_path(user))
-    fill_in("Email", with: "new@example.com")
-    click_on("Update Account")
+    fill_in("New email address", with: "new@example.com")
+    click_on("Send verification link")
 
-    expect(page).to have_current_path(dashboard_path)
+    expect(page).to have_current_path(edit_user_path(user))
     expect(page).to have_text("We've sent a confirmation link to new@example.com")
+    expect(page).to have_text("Waiting for you to verify new@example.com")
     expect(user.reload.email).to eq("old@example.com")
-
-    visit(edit_user_path(user))
-    expect(page).to have_text("Waiting for you to confirm new@example.com")
 
     visit(URI(last_email_confirmation_url).request_uri)
 
     expect(page).to have_current_path(dashboard_path)
     expect(page).to have_text("Email updated")
 
-    find("summary[aria-label='Account and sign out']").click
+    click_on("Account")
     click_on("Sign out")
     ActionMailer::Base.deliveries.clear
     sign_in(user.reload)
@@ -38,6 +36,17 @@ RSpec.feature "Change email" do
     click_on("Cancel change")
 
     expect(page).to have_text("Email change cancelled")
-    expect(page).not_to have_text("Waiting for you to confirm")
+    expect(page).not_to have_text("Waiting for you to verify")
+  end
+
+  scenario "A user resends the verification link" do
+    user = create(:user, unconfirmed_email: "new@example.com")
+
+    authenticate(user)
+    visit(edit_user_path(user))
+    click_on("Resend")
+
+    expect(page).to have_text("We've sent another link to new@example.com")
+    expect(ActionMailer::Base.deliveries.last.to).to eq(["new@example.com"])
   end
 end
