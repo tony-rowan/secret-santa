@@ -42,7 +42,7 @@ class JoinController < ApplicationController
   end
 
   def join_group_params
-    params.require(:join_group).permit(:join_code).merge(user: Current.user)
+    params.expect(join_group: [:join_code]).merge(user: Current.user)
   end
 
   # Save the join code into the session to allow it to follow the user through signing in and

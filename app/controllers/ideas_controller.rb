@@ -20,7 +20,7 @@ class IdeasController < ApplicationController
   private
 
   def idea_params
-    params.require(:idea).permit(:idea).merge(user: Current.user, group: Current.group)
+    params.expect(idea: [:idea]).merge(user: Current.user, group: Current.group)
   end
 
   def require_owner

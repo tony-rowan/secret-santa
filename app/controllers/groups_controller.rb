@@ -55,11 +55,11 @@ class GroupsController < ApplicationController
   private
 
   def create_group_params
-    params.require(:group).permit(:name).merge(users: [Current.user], owner: Current.user)
+    params.expect(group: [:name]).merge(users: [Current.user], owner: Current.user)
   end
 
   def update_group_params
-    params.require(:group).permit(:name)
+    params.expect(group: [:name])
   end
 
   # Rules added on the create form before the group exists; blanks are dropped

@@ -1,0 +1,10 @@
+# Project-specific RuboCop rules, loaded by Standard alongside its own (see .standard.yml).
+# Custom cops live in lib/rubocop/cop/ and are specced in spec/lib/rubocop/cop/.
+require:
+  - ./lib/rubocop/cop/secret_santa/params_expect
+
+SecretSanta/ParamsExpect:
+  Description: "Use `params.expect` instead of `params.require(...).permit(...)`."
+  Enabled: true
+  Include:
+    - "app/**/*.rb"
