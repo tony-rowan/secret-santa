@@ -32,6 +32,20 @@ jobs:
       - name: Prettier
         run: bun run lint:prettier
 
+  oxlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+      - name: Install JS packages
+        run: bun install --frozen-lockfile
+      - name: Oxlint
+        run: bun run lint:js --format=github
+
   herb-lint:
     runs-on: ubuntu-latest
     steps:

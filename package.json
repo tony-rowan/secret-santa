@@ -3,12 +3,14 @@
   "private": true,
   "packageManager": "bun@1.4.5",
   "scripts": {
-    "lint": "bun run lint:prettier && bun run lint:erb",
+    "lint": "bun run lint:prettier && bun run lint:js && bun run lint:erb",
     "lint:prettier": "prettier --check .",
+    "lint:js": "oxlint --deny-warnings",
     "lint:erb": "herb-lint"
   },
   "devDependencies": {
     "@herb-tools/linter": "0.11.2",
+    "oxlint": "1.94.0",
     "prettier": "3.10.1"
   }
 }

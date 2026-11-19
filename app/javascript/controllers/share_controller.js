@@ -8,13 +8,19 @@ export default class extends Controller {
   async share(event) {
     event.preventDefault();
 
+    if (!navigator.share) return this.copyLink();
+
     try {
       await navigator.share(this.dataValue);
     } catch (error) {
-      // Fallback to the clipboard
-      navigator.clipboard.writeText(this.dataValue.url);
-      this.fallbackCopyFeedbackTarget.textContent =
-        this.fallbackCopyFeedbackValue;
+      // Closing the share sheet isn't a failure, so only fall back for real errors
+      if (error.name !== "AbortError") this.copyLink();
     }
+  }
+
+  copyLink() {
+    navigator.clipboard.writeText(this.dataValue.url);
+    this.fallbackCopyFeedbackTarget.textContent =
+      this.fallbackCopyFeedbackValue;
   }
 }

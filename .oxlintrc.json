@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["import", "unicorn", "oxc"],
+  "env": {
+    "browser": true,
+    "es2024": true
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "ignorePatterns": [
+    "app/assets/builds/**",
+    "app/assets/config/manifest.js",
+    "coverage/**",
+    "node_modules/**",
+    "public/**",
+    "tmp/**",
+    "vendor/**"
+  ],
+  "overrides": [
+    {
+      "files": ["app/javascript/application.js"],
+      "rules": {
+        "import/no-unassigned-import": "off"
+      }
+    }
+  ]
+}

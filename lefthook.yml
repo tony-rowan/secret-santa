@@ -12,6 +12,10 @@ pre-commit:
     standardrb:
       run: ./bin/bundle exec standardrb --fix --only-recognized-file-types --force-exclusion {staged_files}
       stage_fixed: true
+    oxlint:
+      glob: "*.{js,mjs,cjs}"
+      run: bun x oxlint --deny-warnings --fix {staged_files}
+      stage_fixed: true
     herb-lint:
       glob: "*.erb"
       run: bun x herb-lint --fix {staged_files}
