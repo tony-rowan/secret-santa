@@ -1,0 +1,29 @@
+# Herb (https://herb-tools.dev) checks the HTML+ERB templates: `herb-lint` (bun run lint:erb)
+# and the herb gem's `herb analyze` / `herb actionview check`. Run on commit by lefthook and in CI.
+version: 0.11.2
+
+framework: actionview
+
+files:
+  exclude:
+    - "node_modules/**/*"
+    - "public/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+    - "coverage/**/*"
+
+linter:
+  enabled: true
+  # Everything currently passes, so any new offense (down to info) fails the check
+  failLevel: info
+
+  rules:
+    # Partials declare their locals (`<%# locals: (...) %>`) on the first line. Full templates also
+    # declare them, since controllers pass data with `render locals:` rather than instance variables
+    erb-strict-locals-required:
+      enabled: true
+    actionview-strict-locals-first-line:
+      enabled: true
+
+formatter:
+  enabled: false

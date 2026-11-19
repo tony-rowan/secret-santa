@@ -1,3 +1,5 @@
+<%# locals: (pair:, idea:) %>
+
 <% my_ideas = Current.user.ideas_in_current_group %>
 
 <section aria-labelledby="ideas-heading" class="card">
@@ -15,14 +17,14 @@
   <% if my_ideas.empty? %>
     <div class="flex flex-col items-center gap-2.5 px-3 pt-4.5 pb-5 rounded-2xl border-[1.5px] border-dashed border-[#2f6b48] bg-night-900 text-center">
       <svg width="112" height="96" viewBox="0 0 112 96" fill="none" stroke="#3f8a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M14 22h3M15.5 20.5v3"/>
-        <path d="M94 14h4M96 12v4"/>
-        <path d="M100 52h3M101.5 50.5v3"/>
-        <rect x="30" y="46" width="52" height="40" rx="5"/>
-        <rect x="26" y="34" width="60" height="12" rx="4"/>
-        <path d="M56 34v52"/>
-        <path d="M56 33c-4-10-16-14-19-7-2.5 6 9 8 19 7z"/>
-        <path d="M56 33c4-10 16-14 19-7 2.5 6-9 8-19 7z"/>
+        <path d="M14 22h3M15.5 20.5v3" />
+        <path d="M94 14h4M96 12v4" />
+        <path d="M100 52h3M101.5 50.5v3" />
+        <rect x="30" y="46" width="52" height="40" rx="5" />
+        <rect x="26" y="34" width="60" height="12" rx="4" />
+        <path d="M56 34v52" />
+        <path d="M56 33c-4-10-16-14-19-7-2.5 6 9 8 19 7z" />
+        <path d="M56 33c4-10 16-14 19-7 2.5 6-9 8-19 7z" />
       </svg>
       <p class="font-display font-bold text-xl">No ideas yet</p>
       <p class="text-sm text-lilac-400 max-w-65">Give your Secret Santa a hint: sizes, hobbies, or things you'd never buy yourself.</p>

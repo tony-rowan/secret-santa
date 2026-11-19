@@ -131,6 +131,7 @@ GEM
       concurrent-ruby (~> 1.1)
       websocket-driver (~> 0.7)
     ffaker (2.25.0)
+    ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-arm64-darwin)
     ffi (1.17.4-x86_64-darwin)
@@ -140,6 +141,11 @@ GEM
       raabro (~> 1.4)
     globalid (1.4.0)
       activesupport (>= 6.1)
+    herb (0.11.2)
+    herb (0.11.2-aarch64-linux-gnu)
+    herb (0.11.2-arm64-darwin)
+    herb (0.11.2-x86_64-darwin)
+    herb (0.11.2-x86_64-linux-gnu)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.2.3)
@@ -177,6 +183,7 @@ GEM
     marcel (1.2.1)
     matrix (0.4.3)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (6.1.0)
       drb (~> 2.0)
       prism (>= 1.5, < 3)
@@ -191,6 +198,9 @@ GEM
     net-smtp (0.5.2)
       net-protocol
     nio4r (2.7.5)
+    nokogiri (1.19.7)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.19.7-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.7-arm64-darwin)
@@ -209,6 +219,7 @@ GEM
     pp (0.6.4)
       prettyprint
     prettyprint (0.2.1)
+    prism (2.1.0)
     prism (2.1.0-aarch64-linux-gnu)
     prism (2.1.0-arm64-darwin)
     prism (2.1.0-x86_64-darwin)
@@ -339,6 +350,8 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
+    sqlite3 (2.10.2)
+      mini_portile2 (~> 2.8.0)
     sqlite3 (2.10.2-aarch64-linux-gnu)
     sqlite3 (2.10.2-arm64-darwin)
     sqlite3 (2.10.2-x86_64-darwin)
@@ -362,6 +375,7 @@ GEM
     tailwindcss-rails (4.7.0)
       railties (>= 7.0.0)
       tailwindcss-ruby (~> 4.0)
+    tailwindcss-ruby (4.3.4)
     tailwindcss-ruby (4.3.4-aarch64-linux-gnu)
     tailwindcss-ruby (4.3.4-arm64-darwin)
     tailwindcss-ruby (4.3.4-x86_64-darwin)
@@ -413,6 +427,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   ffaker
+  herb
   importmap-rails
   launchy
   lefthook

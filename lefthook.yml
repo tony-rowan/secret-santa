@@ -7,8 +7,16 @@ pre-commit:
   parallel: true
   commands:
     prettier:
-      run: npx -y prettier --ignore-unknown --write {staged_files}
+      run: bun x prettier --ignore-unknown --write {staged_files}
       stage_fixed: true
     standardrb:
       run: ./bin/bundle exec standardrb --fix --only-recognized-file-types --force-exclusion {staged_files}
       stage_fixed: true
+    herb-lint:
+      glob: "*.erb"
+      run: bun x herb-lint --fix {staged_files}
+      stage_fixed: true
+    # Parses and compiles every template, and checks every render call resolves to a partial
+    herb-validate:
+      glob: "*.erb"
+      run: ./bin/bundle exec herb analyze . --no-timing && ./bin/bundle exec herb actionview check . --no-timing

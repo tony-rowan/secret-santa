@@ -1,6 +1,8 @@
+<%# locals: (icon_name:, title:, subtitle:, link_text:, link_url:) %>
+
 <%# A getting-started page explaining what happened (an expired link, a confirmed change, …) with
-    one way on. Locals: icon, title, subtitle, link_text, link_url %>
-<% content_for :icon, icon.to_s %>
+    one way on %>
+<% content_for :icon, icon_name.to_s %>
 <% content_for :title, title %>
 <% content_for :subtitle, subtitle %>
 

@@ -1,3 +1,5 @@
+<%# locals: (pair:, idea:, idea_counts:) %>
+
 <% content_for :wide, true %>
 <% group = Current.group %>
 <% owner = group.owner?(Current.user) %>
@@ -29,6 +31,6 @@
   </div>
 
   <div class="order-2 lg:sticky lg:top-6">
-    <%= render "dashboards/ideas", group:, pair:, idea: %>
+    <%= render "dashboards/ideas", pair:, idea: %>
   </div>
 </div>

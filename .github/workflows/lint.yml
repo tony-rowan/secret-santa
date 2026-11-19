@@ -23,9 +23,40 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .tool-versions
+          bun-version-file: .tool-versions
+      - name: Install JS packages
+        run: bun install --frozen-lockfile
       - name: Prettier
-        run: npx prettier --check .
+        run: bun run lint:prettier
+
+  herb-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+      - name: Install JS packages
+        run: bun install --frozen-lockfile
+      - name: Herb lint
+        run: bun run lint:erb --github
+
+  herb-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .tool-versions
+          bundler-cache: true
+      - name: Parse and compile every template
+        run: bundle exec herb analyze . --no-timing
+      - name: Check every render call resolves
+        run: bundle exec herb actionview check . --no-timing

@@ -1,21 +1,23 @@
-<%# Content for the confirm dialog, referenced by data-confirm-details="<id>".
-    Locals: id, icon, removed (what goes), kept (what stays), warning, note — all but id optional. %>
+<%# locals: (id:, icon_name: nil, removed: [], kept: [], warning: nil, note: nil) %>
+
+<%# Content for the confirm dialog, referenced by data-confirm-details="<id>": an icon, what goes
+    (removed), what stays (kept), a warning and a closing note, all but id optional. %>
 <template id="<%= id %>">
-  <% if local_assigns[:icon] %>
+  <% if icon_name %>
     <span data-confirm-icon class="size-14 rounded-[18px] bg-berry/20 text-[#ff8a8a] flex items-center justify-center">
-      <%= icon(local_assigns[:icon], size: "size-7") %>
+      <%= icon(icon_name, size: "size-7") %>
     </span>
   <% end %>
 
-  <% if local_assigns[:removed].present? || local_assigns[:kept].present? %>
+  <% if removed.present? || kept.present? %>
     <ul class="flex flex-col gap-3 text-lilac-200">
-      <% Array(local_assigns[:removed]).each do |item| %>
+      <% removed.each do |item| %>
         <li class="flex gap-3">
           <%= icon(:x_mark, size: "size-5", class: "text-[#ff8a8a] mt-0.5", "stroke-width": 2) %>
           <span><%= item %></span>
         </li>
       <% end %>
-      <% Array(local_assigns[:kept]).each do |item| %>
+      <% kept.each do |item| %>
         <li class="flex gap-3">
           <%= icon(:check, size: "size-5", class: "text-pine-light mt-0.5", "stroke-width": 2) %>
           <span><%= item %></span>
@@ -24,14 +26,14 @@
     </ul>
   <% end %>
 
-  <% if local_assigns[:warning] %>
+  <% if warning %>
     <div class="flex gap-3 px-4 py-3.5 rounded-2xl bg-gold/12 border border-gold/40 text-[15px] text-gold">
       <%= icon(:exclamation_triangle, size: "size-5", class: "mt-0.5") %>
-      <span><%= local_assigns[:warning] %></span>
+      <span><%= warning %></span>
     </div>
   <% end %>
 
-  <% if local_assigns[:note] %>
-    <p class="text-sm text-lilac-400"><%= local_assigns[:note] %></p>
+  <% if note %>
+    <p class="text-sm text-lilac-400"><%= note %></p>
   <% end %>
 </template>

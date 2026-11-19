@@ -21,6 +21,7 @@ gem "view_component"
 
 group :development, :test do
   gem "byebug"
+  gem "herb", require: false
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "rspec-rails"

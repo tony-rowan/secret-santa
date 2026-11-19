@@ -1,6 +1,8 @@
+<%# locals: (group:, button_class: nil) %>
+
 <div class="grid grid-cols-2 gap-2">
   <button type="button"
-    class="button-secondary px-3 whitespace-nowrap <%= local_assigns[:class] %>"
+    class="button-secondary px-3 whitespace-nowrap <%= button_class %>"
     data-controller="clipboard"
     data-clipboard-text-value="<%= group.join_code %>"
     data-clipboard-feedback-value="Copied!"
@@ -10,7 +12,7 @@
   </button>
 
   <%= link_to join_with_code_url(group.join_code),
-    class: "button-secondary px-3 whitespace-nowrap #{local_assigns[:class]}",
+    class: "button-secondary px-3 whitespace-nowrap #{button_class}",
     data: {
       controller: "share",
       share_fallback_copy_feedback_value: "Link copied!",

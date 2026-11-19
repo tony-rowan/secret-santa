@@ -1,3 +1,5 @@
+<%# locals: (group:, owner:, idea_counts:) %>
+
 <% members = group.users.to_a %>
 
 <% if owner %>
@@ -9,7 +11,7 @@
 
     <div class="join-code"><%= group.join_code %></div>
 
-    <%= render "groups/invite_buttons", group: group, class: "bg-night-900" %>
+    <%= render "groups/invite_buttons", group: group, button_class: "bg-night-900" %>
 
     <% if drawn %>
       <p class="text-sm text-gold">Adding or removing people now means names will need drawing again.</p>
@@ -33,7 +35,7 @@
           <% unless group.owner?(member) %>
             <%= render "shared/confirm_details",
               id: "confirm-remove-#{member.id}",
-              icon: :user_minus,
+              icon_name: :user_minus,
               removed: ["#{member.name} leaves the group", "#{member.name}'s gift ideas are deleted"],
               warning: ("Names have already been drawn. Removing #{member.name} clears them, so you'll need to draw again." if drawn) %>
             <%= button_to group_membership_path(group, member),

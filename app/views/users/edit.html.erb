@@ -1,3 +1,5 @@
+<%# locals: (user:, new_email:) %>
+
 <% content_for :wide, true %>
 <% groups = user.groups.includes(:owner).order(:name).to_a %>
 <% owned_groups = groups.select { |group| group.owner?(user) } %>
@@ -74,7 +76,7 @@
 
         <%= render "shared/confirm_details",
           id: "confirm-delete-account",
-          icon: :trash,
+          icon_name: :trash,
           removed: [
             "You're removed from every group",
             "All your gift ideas are deleted",

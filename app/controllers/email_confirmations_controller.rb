@@ -19,13 +19,13 @@ class EmailConfirmationsController < ApplicationController
 
     if user.confirm_email_change
       render_message(
-        icon: :check,
+        icon_name: :check,
         title: "Email updated",
         subtitle: "From now on you'll sign in with #{new_email}."
       )
     else
       render_message(
-        icon: :exclamation_triangle,
+        icon_name: :exclamation_triangle,
         title: "Email not changed",
         subtitle: "#{new_email} is now used by another account, so you'll keep signing in with #{user.email}.",
         status: :unprocessable_content
@@ -51,16 +51,16 @@ class EmailConfirmationsController < ApplicationController
     return if user
 
     render_message(
-      icon: :envelope,
+      icon_name: :envelope,
       title: "That link has expired",
       subtitle: "Confirmation links work for an hour, and only for the most recent change. Ask for the change again from your account.",
       status: :unprocessable_content
     )
   end
 
-  def render_message(icon:, title:, subtitle:, status: :ok)
+  def render_message(icon_name:, title:, subtitle:, status: :ok)
     render "shared/message", layout: "getting_started", status:, locals: {
-      icon: icon,
+      icon_name: icon_name,
       title: title,
       subtitle: subtitle,
       link_text: logged_in? ? "Go to your account" : "Sign in",

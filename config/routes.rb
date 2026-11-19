@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     post :resend
   end
 
-  resources :users, only: %i[show edit update destroy]
+  resources :users, only: %i[edit update destroy]
 
   resources :ideas, only: %i[create destroy]
 

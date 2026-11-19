@@ -1,3 +1,5 @@
+<%# locals: (group:, owner:, pair:, idea_counts:) %>
+
 <% if pair %>
   <% match = pair.other %>
   <% match_ideas = match.ideas.where(group:) %>
@@ -33,7 +35,7 @@
     <% if owner %>
       <%= render "shared/confirm_details",
         id: "confirm-redraw",
-        icon: :arrow_path,
+        icon_name: :arrow_path,
         removed: ["Everyone gets a new person, including you", "Anyone who has started shopping may need to start again"],
         kept: ["Gift ideas stay as they are"] %>
       <%= button_to group_path(group),

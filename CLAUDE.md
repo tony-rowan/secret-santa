@@ -6,23 +6,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Rails app for running Secret Santa groups: users sign up, create or join groups via a join code, add gift ideas, and the group owner assigns secret santa partners. Deployed to Fly.io (`fly.toml`, `Dockerfile`) automatically on push to `main` once lint and tests pass.
 
-The stack is deliberately self-contained: SQLite only. Dev/test use a single database at `db/<env>/data.sqlite3`. Production uses four SQLite databases on the Fly volume at `/data` (primary plus Solid Cache, Solid Queue and Solid Cable, each with its own `db/*_schema.rb`); Solid Queue runs inside Puma via `SOLID_QUEUE_IN_PUMA`. Frontend uses importmap + Stimulus + Turbo for JS (no Node build step), and `tailwindcss-rails` for CSS. Ruby version is pinned in `.tool-versions` (asdf).
+The stack is deliberately self-contained: SQLite only. Dev/test use a single database at `db/<env>/data.sqlite3`. Production uses four SQLite databases on the Fly volume at `/data` (primary plus Solid Cache, Solid Queue and Solid Cable, each with its own `db/*_schema.rb`); Solid Queue runs inside Puma via `SOLID_QUEUE_IN_PUMA`. Frontend uses importmap + Stimulus + Turbo for JS (no JS build step), and `tailwindcss-rails` for CSS. Ruby and Bun versions are pinned in `.tool-versions` (asdf/mise); Bun is only for dev tooling (Prettier and herb-lint, pinned exactly in `package.json`).
 
 ## Commands
 
 ```bash
-bin/setup                                  # install gems, prepare DB
+bin/setup                                  # install gems and JS packages (bun), prepare DB
 bin/dev                                    # Rails server (port 3000) + Tailwind watcher (Procfile.dev)
 bin/rspec                                  # all tests
 bin/rspec spec/models/join_group_spec.rb   # one file
 bin/rspec spec/models/join_group_spec.rb:12 # one example
 bundle exec standardrb                     # Ruby lint (use --fix to autocorrect)
-npx prettier --check .                     # JS/other lint (requires Node)
+bun run lint                               # Prettier + herb-lint (ERB templates; `bun x herb-lint --fix`)
+bundle exec herb analyze .                 # parse/compile every template ("herb validate")
+bundle exec herb actionview check .        # every render call resolves to a partial
 ```
 
 CI (`.github/workflows/test.yml`) runs `RAILS_ENV=test bin/rails assets:precompile` before specs — feature specs need compiled Tailwind assets, so run that (or have `bin/dev` running) if styles/assets are missing in tests.
 
-Lefthook pre-commit runs prettier and standardrb `--fix` on staged files. It doesn't run the specs, so run `bin/rspec` before committing.
+Lefthook pre-commit runs prettier, standardrb `--fix` and herb-lint `--fix` on staged files, plus the two herb checks when templates change; CI runs all of them. Herb is configured in `.herb.yml`: every offense fails (down to info), and every view declares strict locals on its first line (`<%# locals: (...) %>`, `<%# locals: () %>` for none). It doesn't run the specs, so run `bin/rspec` before committing.
 
 ## Architecture
 

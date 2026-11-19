@@ -1,3 +1,5 @@
+<%# locals: (user:, groups:) %>
+
 <section aria-labelledby="groups-heading" class="card">
   <h2 id="groups-heading" class="card-title">Your groups</h2>
 
@@ -17,7 +19,7 @@
           <% unless group.owner?(user) %>
             <%= render "shared/confirm_details",
               id: "confirm-leave-#{group.id}",
-              icon: :arrow_right_start_on_rectangle,
+              icon_name: :arrow_right_start_on_rectangle,
               removed: [
                 "You leave #{group.name}",
                 "Your gift ideas for this group are deleted",
@@ -46,16 +48,16 @@
   <% else %>
     <div class="flex flex-col items-center gap-2.5 px-4 py-6 rounded-2xl border-[1.5px] border-dashed border-[#2f6b48] bg-night-900 text-center">
       <svg width="128" height="96" viewBox="0 0 128 96" fill="none" stroke="#3f8a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M14 20h3M15.5 18.5v3"/>
-        <path d="M108 12h4M110 10v4"/>
-        <path d="M114 50h3M115.5 48.5v3"/>
-        <circle cx="40" cy="44" r="9"/>
-        <path d="M24 80c0-10 7-17 16-17s16 7 16 17"/>
-        <circle cx="88" cy="44" r="9"/>
-        <path d="M72 80c0-10 7-17 16-17s16 7 16 17"/>
-        <circle cx="64" cy="34" r="11"/>
-        <path d="M44 80c0-13 9-22 20-22s20 9 20 22"/>
-        <path d="M56 22l3-8 5 5 5-5 3 8"/>
+        <path d="M14 20h3M15.5 18.5v3" />
+        <path d="M108 12h4M110 10v4" />
+        <path d="M114 50h3M115.5 48.5v3" />
+        <circle cx="40" cy="44" r="9" />
+        <path d="M24 80c0-10 7-17 16-17s16 7 16 17" />
+        <circle cx="88" cy="44" r="9" />
+        <path d="M72 80c0-10 7-17 16-17s16 7 16 17" />
+        <circle cx="64" cy="34" r="11" />
+        <path d="M44 80c0-13 9-22 20-22s20 9 20 22" />
+        <path d="M56 22l3-8 5 5 5-5 3 8" />
       </svg>
       <p class="font-display font-bold text-xl">No groups yet</p>
       <p class="text-sm text-lilac-400 max-w-65">Join with a code from your organiser, or start a group of your own.</p>

@@ -6,7 +6,6 @@ class MagicLinksController < ApplicationController
   # Only confirms; signing in happens on POST so link scanners/prefetchers can't burn the token
   def show
     render locals: {
-      user:,
       token:,
       join_code:
     }
@@ -37,7 +36,7 @@ class MagicLinksController < ApplicationController
 
   def render_expired_link
     render "shared/message", status: :unprocessable_content, locals: {
-      icon: :envelope,
+      icon_name: :envelope,
       title: "That link has expired",
       subtitle: "Sign-in links work once, for 15 minutes. Ask for a new one and use the newest email.",
       link_text: "Email me a new link",

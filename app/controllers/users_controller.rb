@@ -1,13 +1,9 @@
 class UsersController < ApplicationController
   before_action :require_logged_in
-  before_action :require_owner, except: :show
+  before_action :require_owner
 
   # Only submits that actually request an email change count, since each one sends an email
   rate_limit to: 5, within: 15.minutes, only: :update, name: "email_change", by: -> { Current.user&.id }, if: -> { email_change_requested? }, with: -> { render_email_change_rate_limited }
-
-  def show
-    @user = user
-  end
 
   def edit
     render locals: {

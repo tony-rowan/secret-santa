@@ -1,0 +1,14 @@
+{
+  "name": "secret-santa",
+  "private": true,
+  "packageManager": "bun@1.4.5",
+  "scripts": {
+    "lint": "bun run lint:prettier && bun run lint:erb",
+    "lint:prettier": "prettier --check .",
+    "lint:erb": "herb-lint"
+  },
+  "devDependencies": {
+    "@herb-tools/linter": "0.11.2",
+    "prettier": "3.10.1"
+  }
+}
