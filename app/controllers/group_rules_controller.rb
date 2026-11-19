@@ -4,11 +4,10 @@ class GroupRulesController < ApplicationController
   def create
     rule = group.rules.build(text: params.dig(:rule, :text))
 
-    if rule.save
-      redirect_to dashboard_path
-    else
-      redirect_to dashboard_path, error: rule.errors[:text].first
-    end
+    # The form checks for a blank or over-long rule before it's sent
+    rule.save
+
+    redirect_to dashboard_path
   end
 
   def destroy

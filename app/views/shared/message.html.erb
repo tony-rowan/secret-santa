@@ -1,0 +1,7 @@
+<%# A getting-started page explaining what happened (an expired link, a confirmed change, …) with
+    one way on. Locals: icon, title, subtitle, link_text, link_url %>
+<% content_for :icon, icon.to_s %>
+<% content_for :title, title %>
+<% content_for :subtitle, subtitle %>
+
+<%= link_to link_text, link_url, class: "button" %>

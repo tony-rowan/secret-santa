@@ -5,14 +5,9 @@ class GroupMembershipsController < ApplicationController
   def destroy
     remove_group_membership_action = RemoveGroupMembership.new(group: group, member: member, actor: Current.user)
 
-    if remove_group_membership_action.perform
-      redirect_back_or_to dashboard_path,
-        success: remove_group_membership_action.messages[:success],
-        notice: remove_group_membership_action.messages[:notice]
-    else
-      redirect_to dashboard_path,
-        error: remove_group_membership_action.errors[:base]
-    end
+    remove_group_membership_action.perform
+
+    redirect_back_or_to dashboard_path
   end
 
   private
@@ -20,14 +15,14 @@ class GroupMembershipsController < ApplicationController
   def require_authenticated_user
     return if Current.user
 
-    redirect_to root_path, error: "You must be signed in to do that"
+    redirect_to root_path
   end
 
   def require_authorisation
     return if group.owner?(Current.user)
     return if Current.user == member
 
-    redirect_to dashboard_path, error: "You're not allowed to do that"
+    redirect_to dashboard_path
   end
 
   def group

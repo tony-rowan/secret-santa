@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "Account" do
   scenario "A user renames themselves from the account page" do
-    user = create(:user, name: "Bob")
+    user = create(:user, :with_group, name: "Bob")
 
     authenticate(user)
     visit(dashboard_path)
@@ -36,7 +36,6 @@ RSpec.feature "Account" do
     confirm_dialog("Yes, leave")
 
     expect(page).to have_current_path(edit_user_path(user))
-    expect(page).to have_text("Left group Book club!")
     expect(page).to have_text("No groups yet")
   end
 
@@ -48,7 +47,7 @@ RSpec.feature "Account" do
     click_on("Delete my account…")
     confirm_dialog("Yes, delete my account")
 
-    expect(page).to have_text("Your account has been deleted")
+    expect(page).to have_button("Email me a sign-in link")
     expect(User.exists?(user.id)).to be(false)
   end
 end

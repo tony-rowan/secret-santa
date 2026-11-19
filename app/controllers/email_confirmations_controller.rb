@@ -4,7 +4,8 @@ class EmailConfirmationsController < ApplicationController
   before_action :require_valid_token, only: %i[show create]
   before_action :require_logged_in, only: %i[destroy resend]
 
-  rate_limit to: 5, within: 15.minutes, only: :resend, by: -> { Current.user&.id }, with: -> { redirect_to edit_user_path(Current.user), error: RATE_LIMIT_MESSAGE }
+  # Over the limit, the link just isn't sent again; the earlier ones still work
+  rate_limit to: 5, within: 15.minutes, only: :resend, by: -> { Current.user&.id }, with: -> { redirect_to edit_user_path(Current.user) }
 
   # Only confirms; the change is applied on POST so link scanners/prefetchers can't burn the token
   def show
@@ -14,26 +15,34 @@ class EmailConfirmationsController < ApplicationController
   end
 
   def create
+    new_email = user.unconfirmed_email
+
     if user.confirm_email_change
-      redirect_to after_confirmation_path, success: "Email updated"
+      render_message(
+        icon: :check,
+        title: "Email updated",
+        subtitle: "From now on you'll sign in with #{new_email}."
+      )
     else
-      redirect_to after_confirmation_path, error: "That email address is now used by another account, so your email wasn't changed"
+      render_message(
+        icon: :exclamation_triangle,
+        title: "Email not changed",
+        subtitle: "#{new_email} is now used by another account, so you'll keep signing in with #{user.email}.",
+        status: :unprocessable_content
+      )
     end
   end
 
   def destroy
     Current.user.cancel_email_change
 
-    redirect_to edit_user_path(Current.user), notice: "Email change cancelled"
+    redirect_to edit_user_path(Current.user)
   end
 
   def resend
-    if Current.user.unconfirmed_email.present?
-      UserMailer.confirm_email_change(Current.user).deliver_later
-      redirect_to edit_user_path(Current.user), notice: "We've sent another link to #{Current.user.unconfirmed_email}"
-    else
-      redirect_to edit_user_path(Current.user), error: "There's no email change waiting to be verified"
-    end
+    UserMailer.confirm_email_change(Current.user).deliver_later if Current.user.unconfirmed_email.present?
+
+    redirect_to edit_user_path(Current.user)
   end
 
   private
@@ -41,11 +50,22 @@ class EmailConfirmationsController < ApplicationController
   def require_valid_token
     return if user
 
-    redirect_to(after_confirmation_path, error: "That confirmation link has expired or is no longer valid, request the change again")
+    render_message(
+      icon: :envelope,
+      title: "That link has expired",
+      subtitle: "Confirmation links work for an hour, and only for the most recent change. Ask for the change again from your account.",
+      status: :unprocessable_content
+    )
   end
 
-  def after_confirmation_path
-    logged_in? ? dashboard_path : new_session_path
+  def render_message(icon:, title:, subtitle:, status: :ok)
+    render "shared/message", layout: "getting_started", status:, locals: {
+      icon: icon,
+      title: title,
+      subtitle: subtitle,
+      link_text: logged_in? ? "Go to your account" : "Sign in",
+      link_url: logged_in? ? edit_user_path(Current.user) : new_session_path
+    }
   end
 
   def user

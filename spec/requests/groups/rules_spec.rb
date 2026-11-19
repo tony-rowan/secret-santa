@@ -16,7 +16,7 @@ RSpec.describe "Group rules" do
     end
 
     context "when the rule is blank" do
-      it "adds nothing and explains why" do
+      it "adds nothing" do
         owner = create(:user)
         group = create(:group, owner:)
 
@@ -24,7 +24,6 @@ RSpec.describe "Group rules" do
         post group_rules_path(group), params: {rule: {text: " "}}
 
         expect(group.rules).to be_empty
-        expect(flash[:error]).to eq("Please write the rule before adding it")
       end
     end
 

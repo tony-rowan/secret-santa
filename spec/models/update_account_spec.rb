@@ -10,7 +10,6 @@ RSpec.describe UpdateAccount do
 
         expect(action.perform).to be(true)
         expect(user.reload).to have_attributes(name: "New", unconfirmed_email: nil)
-        expect(action.messages[:success]).to eq(["Account updated"])
         expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
@@ -25,8 +24,6 @@ RSpec.describe UpdateAccount do
         expect(user.reload).to have_attributes(email: "old@example.com", unconfirmed_email: "new@example.com")
         expect(ActionMailer::Base.deliveries.size).to eq(1)
         expect(ActionMailer::Base.deliveries.last.to).to eq(["new@example.com"])
-        expect(action.messages[:success]).to be_empty
-        expect(action.messages[:notice].first).to include("new@example.com")
       end
 
       it "still saves a name change from the same submit" do
@@ -36,7 +33,6 @@ RSpec.describe UpdateAccount do
         action.perform
 
         expect(user.reload.name).to eq("New")
-        expect(action.messages[:success]).to eq(["Account updated"])
       end
 
       it "invalidates links for the previously pending address" do

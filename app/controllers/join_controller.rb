@@ -19,7 +19,7 @@ class JoinController < ApplicationController
     if form.save
       select_group(form.group)
 
-      redirect_to(dashboard_path, success: "Group Joined. Now add some ideas to help your partner.")
+      redirect_to(dashboard_path)
     else
       render :new, status: :unprocessable_content, locals: {
         group: nil,

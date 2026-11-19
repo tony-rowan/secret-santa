@@ -11,13 +11,13 @@ module GroupOwnerRequired
   def require_authenticated_user
     return if Current.user
 
-    redirect_to root_path, error: "You must be signed in to do that"
+    redirect_to root_path
   end
 
   def require_group_owner
     return if group.owner?(Current.user)
 
-    redirect_to dashboard_path, error: "You're not allowed to do that"
+    redirect_to dashboard_path
   end
 
   def group

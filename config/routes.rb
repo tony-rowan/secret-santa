@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   resources :ideas, only: %i[create destroy]
 
-  resources :groups, only: %i[new create edit update destroy] do
+  resources :groups, only: %i[new create update destroy] do
     get :created, on: :member
 
     resources :memberships, only: :destroy, param: :user_id, controller: :group_memberships

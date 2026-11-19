@@ -13,7 +13,7 @@ class MagicLinksController < ApplicationController
   end
 
   def create
-    return redirect_to_new_link unless save_new_account
+    return render_expired_link unless save_new_account
 
     user.record_sign_in
     authenticate_user(user)
@@ -23,20 +23,26 @@ class MagicLinksController < ApplicationController
       session[:join_code] = join_code if join_code
       redirect_to(new_display_name_path)
     elsif join_code
-      redirect_to(join_with_code_path(join_code), success: "Signed In")
+      redirect_to(join_with_code_path(join_code))
     else
-      redirect_to(dashboard_path, success: "Signed In")
+      redirect_to(dashboard_path)
     end
   end
 
   private
 
   def require_valid_token
-    redirect_to_new_link unless user
+    render_expired_link unless user
   end
 
-  def redirect_to_new_link
-    redirect_to(new_session_path, error: "That sign-in link has expired or already been used, request a new one")
+  def render_expired_link
+    render "shared/message", status: :unprocessable_content, locals: {
+      icon: :envelope,
+      title: "That link has expired",
+      subtitle: "Sign-in links work once, for 15 minutes. Ask for a new one and use the newest email.",
+      link_text: "Email me a new link",
+      link_url: new_session_path
+    }
   end
 
   # A sign-up link creates the account the first time it's followed

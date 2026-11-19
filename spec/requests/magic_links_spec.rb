@@ -18,11 +18,11 @@ RSpec.describe "Magic links" do
     end
 
     context "when the token is garbage" do
-      it "redirects to the sign in page with an error" do
+      it "explains the link has expired" do
         get session_magic_link_path(token: "garbage")
 
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:error]).to include("expired or already been used")
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("That link has expired")
       end
     end
   end
@@ -30,12 +30,11 @@ RSpec.describe "Magic links" do
   describe "POST /session/magic_link" do
     context "when the token is valid" do
       it "signs the user in and redirects to the dashboard" do
-        user = create(:user)
+        user = create(:user, :with_group)
 
         post session_magic_link_path, params: {token: user.generate_token_for(:sign_in)}
 
         expect(response).to redirect_to(dashboard_path)
-        expect(flash[:success]).to eq("Signed In")
         expect(user.reload.last_signed_in_at).to be_present
 
         get dashboard_path
@@ -62,8 +61,8 @@ RSpec.describe "Magic links" do
           post session_magic_link_path, params: {token:}
         end
 
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:error]).to include("expired or already been used")
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("That link has expired")
         expect(user.reload.last_signed_in_at).to be_nil
       end
     end
@@ -77,7 +76,8 @@ RSpec.describe "Magic links" do
         delete session_path
         post session_magic_link_path, params: {token:}
 
-        expect(response).to redirect_to(new_session_path)
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("That link has expired")
         get dashboard_path
         expect(response).to redirect_to(root_path)
       end
@@ -105,7 +105,8 @@ RSpec.describe "Magic links" do
         delete session_path
         post session_magic_link_path, params: {token:}
 
-        expect(response).to redirect_to(new_session_path)
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("That link has expired")
         expect(User.count).to eq(1)
       end
     end
@@ -118,7 +119,8 @@ RSpec.describe "Magic links" do
           post session_magic_link_path, params: {token:}
         end
 
-        expect(response).to redirect_to(new_session_path)
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("That link has expired")
         expect(User.count).to eq(0)
       end
     end
@@ -138,7 +140,8 @@ RSpec.describe "Magic links" do
       it "is rejected" do
         post session_magic_link_path, params: {token: "garbage"}
 
-        expect(response).to redirect_to(new_session_path)
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("That link has expired")
         get dashboard_path
         expect(response).to redirect_to(root_path)
       end

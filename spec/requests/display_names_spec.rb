@@ -34,14 +34,14 @@ RSpec.describe "Display names" do
 
   describe "POST /display_name" do
     context "when a name is given" do
-      it "saves it and goes to the dashboard" do
+      it "saves it and goes on to join a group" do
         user = create(:user, name: nil)
 
         authenticate(user)
         post display_name_path, params: {user: {name: "Trevor Slattery"}}
 
         expect(user.reload.name).to eq("Trevor Slattery")
-        expect(response).to redirect_to(dashboard_path)
+        expect(response).to redirect_to(join_path)
       end
     end
 

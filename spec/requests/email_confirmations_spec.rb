@@ -21,26 +21,27 @@ RSpec.describe "Email confirmations" do
 
   describe "POST /email_confirmation" do
     context "when the token is valid and the user is signed in" do
-      it "applies the change and redirects to the dashboard" do
+      it "applies the change and says so, linking to the account page" do
         user = pending_user
 
         authenticate(user)
         post email_confirmation_path, params: {token: user.generate_token_for(:email_change)}
 
-        expect(response).to redirect_to(dashboard_path)
-        expect(flash[:success]).to eq("Email updated")
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Email updated")
+        expect(Capybara.string(response.body)).to have_link("Go to your account", href: edit_user_path(user))
         expect(user.reload).to have_attributes(email: "new@example.com", unconfirmed_email: nil)
       end
     end
 
     context "when the token is valid and the user is signed out" do
-      it "applies the change and redirects to sign in" do
+      it "applies the change and says so, linking to sign in" do
         user = pending_user
 
         post email_confirmation_path, params: {token: user.generate_token_for(:email_change)}
 
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:success]).to eq("Email updated")
+        expect(response.body).to include("Email updated")
+        expect(Capybara.string(response.body)).to have_link("Sign in", href: new_session_path)
         expect(user.reload.email).to eq("new@example.com")
       end
     end
@@ -54,8 +55,8 @@ RSpec.describe "Email confirmations" do
           post email_confirmation_path, params: {token:}
         end
 
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:error]).to include("expired")
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("That link has expired")
         expect(user.reload.email).to eq("old@example.com")
       end
     end
@@ -68,8 +69,8 @@ RSpec.describe "Email confirmations" do
 
         post email_confirmation_path, params: {token:}
 
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:error]).to include("expired")
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("That link has expired")
         expect(user.reload.email).to eq("old@example.com")
       end
     end
@@ -82,8 +83,8 @@ RSpec.describe "Email confirmations" do
 
         post email_confirmation_path, params: {token:}
 
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:error]).to include("another account")
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.body).to include("Email not changed")
         expect(user.reload).to have_attributes(email: "old@example.com", unconfirmed_email: nil)
       end
     end
@@ -132,7 +133,6 @@ RSpec.describe "Email confirmations" do
         post resend_email_confirmation_path
 
         expect(response).to redirect_to(edit_user_path(user))
-        expect(flash[:error]).to be_present
         expect(ActionMailer::Base.deliveries).to be_empty
       end
     end

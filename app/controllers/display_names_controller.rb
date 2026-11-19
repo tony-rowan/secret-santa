@@ -15,7 +15,8 @@ class DisplayNamesController < ApplicationController
     user.name = params.dig(:user, :name).to_s
 
     if user.save
-      redirect_to (session[:join_code].present? ? join_path : dashboard_path), success: "Welcome, #{user.name}!"
+      # The join page picks up an invite's code from the session, or asks for one
+      redirect_to join_path
     else
       render :new, status: :unprocessable_content, locals: {
         user:

@@ -90,7 +90,7 @@ RSpec.describe "Sessions" do
 
   describe "POST /session rate limiting" do
     context "when one IP exceeds its limit" do
-      it "redirects with an error and sends no further email" do
+      it "explains on the sign-in page and sends no further email" do
         10.times do |i|
           create(:user, email: "user#{i}@example.com")
           post session_path, params: {email: "user#{i}@example.com"}
@@ -100,14 +100,14 @@ RSpec.describe "Sessions" do
 
         post session_path, params: {email: "extra@example.com"}
 
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:error]).to eq(ApplicationController::RATE_LIMIT_MESSAGE)
+        expect(response).to have_http_status(:too_many_requests)
+        expect(response.body).to include("Too many attempts")
         expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
 
     context "when one email exceeds its limit" do
-      it "redirects with an error and sends no further email to it" do
+      it "explains on the sign-in page and sends no further email to it" do
         create(:user, email: "trevor@example.com")
         create(:user, email: "other@example.com")
 
@@ -115,8 +115,8 @@ RSpec.describe "Sessions" do
         ActionMailer::Base.deliveries.clear
         post session_path, params: {email: "trevor@example.com"}
 
-        expect(response).to redirect_to(new_session_path)
-        expect(flash[:error]).to eq(ApplicationController::RATE_LIMIT_MESSAGE)
+        expect(response).to have_http_status(:too_many_requests)
+        expect(response.body).to include("Too many attempts")
         expect(ActionMailer::Base.deliveries).to be_empty
 
         post session_path, params: {email: "other@example.com"}

@@ -3,12 +3,22 @@ require "rails_helper"
 RSpec.describe "GET /dashboard" do
   context "when signed in" do
     it "links to the account page from the header" do
-      user = create(:user)
+      user = create(:user, :with_group)
 
       authenticate(user)
       get dashboard_path
 
       expect(response.body).to include(%(href="#{edit_user_path(user)}"))
+    end
+  end
+
+  context "when the user isn't in any group" do
+    it "sends them to join one" do
+      authenticate(create(:user))
+
+      get dashboard_path
+
+      expect(response).to redirect_to(join_path)
     end
   end
 
@@ -25,7 +35,7 @@ RSpec.describe "GET /dashboard" do
       expect(page).to have_css(".join-code", text: group.join_code)
       expect(page).to have_button("Copy code")
       expect(page).to have_link("Share link", href: join_with_code_url(group.join_code))
-      expect(page).to have_link("Rename group", href: edit_group_path(group))
+      expect(page).to have_field("Group name", with: "Elf Squad")
       expect(page).to have_button("Clear everything…")
       expect(page).to have_button("Draw names")
     end
@@ -58,7 +68,7 @@ RSpec.describe "GET /dashboard" do
       expect(page).to have_text("Waiting for the draw")
       expect(page).to have_no_button("Clear everything…")
       expect(page).to have_no_button(/Leave/)
-      expect(page).to have_no_link("Rename group")
+      expect(page).to have_no_field("Group name")
       expect(page).to have_no_css(".join-code")
       expect(page).to have_no_button("Draw names")
     end

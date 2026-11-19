@@ -16,10 +16,8 @@ RSpec.feature "New User Journey" do
     click_on("Continue")
 
     expect(User.last).to have_attributes(name: "Trevor Slattery", email: "trevor@example.com")
-    expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("Welcome, Trevor Slattery!")
-    expect(page).to have_text("You're not part of a group")
-    expect(page).to have_link("Join a group")
+    expect(page).to have_current_path(join_path)
+    expect(page).to have_css("h1", text: "Join a group")
 
     click_on("Start a new group")
     fill_in("Group name", with: "AIM, no wait, The 10 Rings")
@@ -74,14 +72,12 @@ RSpec.feature "New User Journey" do
     fill_in("Display name", with: "Trevor Slattery")
     click_on("Continue")
 
-    click_on("Join a group")
     fill_in("Join Code", with: "ABCDEF")
     click_on("Join group")
 
     expect(Group.last.users).to eq([owner, User.last])
 
     expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("Group Joined")
     expect(page).to have_text("AIM, no wait, The 10 Rings")
     expect(page).to have_text("No limit, I know you guys can afford it!")
     expect(page).to have_text("Trevor Slattery (you)")

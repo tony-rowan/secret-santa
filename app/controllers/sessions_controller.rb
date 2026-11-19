@@ -1,8 +1,8 @@
 class SessionsController < ApplicationController
   layout "getting_started"
 
-  rate_limit to: 10, within: 3.minutes, only: :create, name: "ip", with: -> { redirect_to new_session_path, error: RATE_LIMIT_MESSAGE }
-  rate_limit to: 3, within: 15.minutes, only: :create, name: "email", by: -> { params[:email].to_s.strip.downcase }, with: -> { redirect_to new_session_path, error: RATE_LIMIT_MESSAGE }
+  rate_limit to: 10, within: 3.minutes, only: :create, name: "ip", with: -> { render_rate_limited }
+  rate_limit to: 3, within: 15.minutes, only: :create, name: "email", by: -> { params[:email].to_s.strip.downcase }, with: -> { render_rate_limited }
 
   before_action :redirect_logged_in_users_to_dashboard, only: :new
 
@@ -34,10 +34,18 @@ class SessionsController < ApplicationController
 
   def destroy
     cookies.delete(:user_id)
-    redirect_to(root_path, notice: "You're now signed out")
+    redirect_to(root_path)
   end
 
   private
+
+  def render_rate_limited
+    render :new, layout: "getting_started", status: :too_many_requests, locals: {
+      group: group,
+      email: email,
+      error: RATE_LIMIT_MESSAGE
+    }
+  end
 
   def email
     @_email ||= User.normalize_value_for(:email, params[:email].to_s)

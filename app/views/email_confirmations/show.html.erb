@@ -1,5 +1,6 @@
 <% content_for :icon, "envelope" %>
 <% content_for :title, "Confirming your new email…" %>
 
-<%# Submits itself via JS; the button is the fallback if JS is unavailable %>
-<%= button_to "Click here if nothing happens", email_confirmation_path, params: {token:}, class: "button w-full", form: {data: {controller: "auto-submit"}} %>
+<%# Submits itself via JS; the button is the fallback if JS is unavailable. Not a Turbo submit,
+    because the result is a page rendered straight from the POST %>
+<%= button_to "Click here if nothing happens", email_confirmation_path, params: {token:}, class: "button w-full", form: {data: {controller: "auto-submit", turbo: false}} %>

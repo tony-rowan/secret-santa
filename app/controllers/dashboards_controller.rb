@@ -1,6 +1,7 @@
 class DashboardsController < ApplicationController
   before_action :require_logged_in
   before_action :select_requested_group
+  before_action :require_group
 
   def show
     render locals: {
@@ -20,16 +21,17 @@ class DashboardsController < ApplicationController
     select_group(group) if group
   end
 
-  def pair_for_current_group
-    return nil unless Current.group
+  # There's nothing to show without a group, so people with none are sent to join (or start) one
+  def require_group
+    redirect_to(join_path) unless Current.group
+  end
 
+  def pair_for_current_group
     Current.user.pairs.find_by(group: Current.group)
   end
 
   # Ideas per member (user_id => count), for the organiser's member list and the draw progress
   def idea_counts_for_current_group
-    return {} unless Current.group
-
     Current.group.ideas.group(:user_id).count
   end
 end

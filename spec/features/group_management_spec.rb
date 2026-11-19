@@ -19,9 +19,8 @@ RSpec.feature "Group Management" do
     expect(page).to have_text("Old Group Name")
     expect(page).to have_text("Ready when you are")
 
-    click_on("Rename group")
     fill_in("Group name", with: "New Group Name")
-    click_on("Save name")
+    click_on("Update")
 
     expect(page).to have_css("h1", text: "New Group Name")
     expect(group.reload.name).to eq("New Group Name")
@@ -40,7 +39,6 @@ RSpec.feature "Group Management" do
 
     click_on("Draw names")
 
-    expect(page).to have_text("Secret Santa partners assigned!")
     expect(page).to have_text("You're buying for")
 
     pair_ids = group.pairs.pluck(:id)
@@ -50,7 +48,7 @@ RSpec.feature "Group Management" do
     within("dialog[open]") { expect(page).to have_text("Draw names again?") }
     confirm_dialog("Yes, draw again")
 
-    expect(page).to have_text("Secret Santa partners re-assigned!")
+    expect(page).to have_text("You're buying for")
     expect(group.pairs.pluck(:id)).not_to eq(pair_ids)
 
     click_on("Remove Bad Actor from the group")
@@ -60,8 +58,7 @@ RSpec.feature "Group Management" do
     end
     confirm_dialog("Yes, remove Bad Actor")
 
-    expect(page).to have_text("Removed Bad Actor from the group!")
-    expect(page).to have_text("Secret santa partners have been un-assigned")
+    expect(page).to have_no_text("Bad Actor")
     expect(page).to have_text("Ready when you are")
     expect(group.users).not_to include(removed_user)
     expect(group.ideas.where(user: removed_user)).to be_empty
@@ -100,7 +97,6 @@ RSpec.feature "Group Management" do
     end
     confirm_dialog("Yes, clear everything")
 
-    expect(page).to have_text("is reset for this year")
     expect(page).to have_text("Ready when you are")
     expect(page).to have_text("No ideas yet")
     expect(page).to have_text("Keep it under £20")

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :require_owner, except: :show
 
   # Only submits that actually request an email change count, since each one sends an email
-  rate_limit to: 5, within: 15.minutes, only: :update, name: "email_change", by: -> { Current.user&.id }, if: -> { email_change_requested? }, with: -> { redirect_to edit_user_path(user), error: RATE_LIMIT_MESSAGE }
+  rate_limit to: 5, within: 15.minutes, only: :update, name: "email_change", by: -> { Current.user&.id }, if: -> { email_change_requested? }, with: -> { render_email_change_rate_limited }
 
   def show
     @user = user
@@ -20,9 +20,7 @@ class UsersController < ApplicationController
     update_account = UpdateAccount.new(user:, name: user_params[:name], email: user_params[:email])
 
     if update_account.perform
-      redirect_to edit_user_path(user),
-        success: update_account.messages[:success],
-        notice: update_account.messages[:notice]
+      redirect_to edit_user_path(user)
     else
       render :edit, status: :unprocessable_content, locals: {
         user: user,
@@ -36,10 +34,19 @@ class UsersController < ApplicationController
     cookies.delete(:user_id)
     reset_session
 
-    redirect_to root_path, notice: "Your account has been deleted"
+    redirect_to root_path
   end
 
   private
+
+  def render_email_change_rate_limited
+    user.errors.add(:email, RATE_LIMIT_MESSAGE)
+
+    render :edit, status: :too_many_requests, locals: {
+      user: user,
+      new_email: user_params[:email]
+    }
+  end
 
   def user_params
     params.require(:user).permit(:name, :email)

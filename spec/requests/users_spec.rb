@@ -36,7 +36,6 @@ RSpec.describe "Users" do
 
         expect(user.reload.name).to eq("New Name")
         expect(response).to redirect_to(edit_user_path(user))
-        expect(flash[:success]).to eq(["Account updated"])
         expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
@@ -50,7 +49,6 @@ RSpec.describe "Users" do
 
         expect(user.reload).to have_attributes(email: "old@example.com", unconfirmed_email: "new@example.com")
         expect(response).to redirect_to(edit_user_path(user))
-        expect(flash[:notice].first).to include("new@example.com")
         expect(ActionMailer::Base.deliveries.last.to).to eq(["new@example.com"])
       end
     end
@@ -82,7 +80,7 @@ RSpec.describe "Users" do
     end
 
     context "when too many email changes are requested" do
-      it "redirects back to the edit page with an error" do
+      it "explains on the account page and holds nothing new" do
         user = create(:user)
 
         authenticate(user)
@@ -91,8 +89,8 @@ RSpec.describe "Users" do
         end
         patch user_path(user), params: {user: {name: user.name, email: "extra@example.com"}}
 
-        expect(response).to redirect_to(edit_user_path(user))
-        expect(flash[:error]).to eq(ApplicationController::RATE_LIMIT_MESSAGE)
+        expect(response).to have_http_status(:too_many_requests)
+        expect(response.body).to include("Too many attempts")
         expect(user.reload.unconfirmed_email).to eq("new4@example.com")
       end
     end

@@ -30,7 +30,6 @@ RSpec.feature "Invite Journey" do
     expect(User.last).to have_attributes(name: "Trevor Slattery", email: "trevor@example.com")
 
     expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("Group Joined")
     expect(page).to have_text("No limit, I know you guys can afford it!")
     expect(page).to have_text("Trevor Slattery (you)")
   end
@@ -45,7 +44,6 @@ RSpec.feature "Invite Journey" do
     follow_magic_link
 
     expect(page).to have_current_path(join_with_code_path("ABCDEF"))
-    expect(page).to have_text("Signed In")
     expect(page).to have_text("You're invited")
 
     click_on("Join AIM, no wait, The 10 Rings")
@@ -62,14 +60,14 @@ RSpec.feature "Invite Journey" do
 
     sign_in(user)
 
-    expect(page).to have_text("You're not part of a group")
+    expect(page).to have_css("h1", text: "Join a group")
 
     visit(join_with_code_path("ABCDEF"))
     click_on("Join AIM, no wait, The 10 Rings")
 
     expect(Group.last.users).to eq([owner, user])
     expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("Group Joined")
+    expect(page).to have_css("h1", text: "AIM, no wait, The 10 Rings")
   end
 
   scenario "A signed in user chooses a different code" do

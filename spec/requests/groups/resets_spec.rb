@@ -15,7 +15,6 @@ RSpec.describe "POST /groups/:group_id/reset" do
       expect(group.ideas.count).to eq(0)
       expect(group.users.count).to eq(3)
       expect(response).to redirect_to(dashboard_path)
-      expect(flash[:success]).to include("reset for this year")
     end
   end
 
@@ -29,7 +28,6 @@ RSpec.describe "POST /groups/:group_id/reset" do
       post group_reset_path(group)
 
       expect(group.pairs.count).to eq(3)
-      expect(flash[:error]).to be_present
     end
   end
 

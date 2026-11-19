@@ -1,55 +1,34 @@
-<% if Current.group %>
-  <% content_for :wide, true %>
-  <% group = Current.group %>
-  <% owner = group.owner?(Current.user) %>
+<% content_for :wide, true %>
+<% group = Current.group %>
+<% owner = group.owner?(Current.user) %>
 
-  <div class="flex items-center gap-2 px-1 mb-5">
-    <% groups = Current.user.groups.includes(:owner).order(:name).to_a %>
-    <% if groups.many? %>
-      <%= render "dashboards/group_switcher", group:, groups: %>
-    <% else %>
-      <h1 class="display-title min-w-0 break-words"><%= group.name %></h1>
+<div class="flex items-center gap-2 px-1 mb-5">
+  <% groups = Current.user.groups.includes(:owner).order(:name).to_a %>
+  <% if groups.many? %>
+    <%= render "dashboards/group_switcher", group:, groups: %>
+  <% else %>
+    <h1 class="display-title min-w-0 break-words"><%= group.name %></h1>
+  <% end %>
+</div>
+
+<%# One column on phones (ideas second); on desktop the ideas get the right-hand column %>
+<div class="flex flex-col gap-5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6">
+  <div class="contents lg:flex lg:flex-col lg:gap-5">
+    <div class="order-1"><%= render "dashboards/status", group:, owner:, pair:, idea_counts: %></div>
+    <div class="order-3"><%= render "dashboards/members", group:, owner:, idea_counts: %></div>
+
+    <% if owner || group.rules.any? %>
+      <div class="order-3"><%= render "dashboards/rules", group:, owner: %></div>
     <% end %>
+
+    <%# Members leave from the account page, alongside their other groups %>
     <% if owner %>
-      <%= link_to edit_group_path(group), class: "icon-button", title: "Rename group", aria: { label: "Rename group" } do %>
-        <%= icon(:pencil_square, size: "size-5") %>
-      <% end %>
+      <div class="order-3"><%= render "dashboards/group_name", group: %></div>
+      <div class="order-3"><%= render "dashboards/reset", group: %></div>
     <% end %>
   </div>
 
-  <%# One column on phones (ideas second); on desktop the ideas get the right-hand column %>
-  <div class="flex flex-col gap-5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6">
-    <div class="contents lg:flex lg:flex-col lg:gap-5">
-      <div class="order-1"><%= render "dashboards/status", group:, owner:, pair:, idea_counts: %></div>
-      <div class="order-3"><%= render "dashboards/members", group:, owner:, idea_counts: %></div>
-
-      <% if owner || group.rules.any? %>
-        <div class="order-3"><%= render "dashboards/rules", group:, owner: %></div>
-      <% end %>
-
-      <%# Members leave from the account page, alongside their other groups %>
-      <% if owner %>
-        <div class="order-3"><%= render "dashboards/reset", group: %></div>
-      <% end %>
-    </div>
-
-    <div class="order-2 lg:sticky lg:top-6">
-      <%= render "dashboards/ideas", group:, pair:, idea: %>
-    </div>
+  <div class="order-2 lg:sticky lg:top-6">
+    <%= render "dashboards/ideas", group:, pair:, idea: %>
   </div>
-
-<% else %>
-
-  <div class="flex flex-col gap-7 pt-8">
-    <div class="flex flex-col gap-2.5">
-      <h1 class="display-title">You're not part of a group</h1>
-      <p class="text-lg text-lilac-300">Secret Santa is better with friends! Join with the code your organiser shared, or start your own.</p>
-    </div>
-
-    <div class="flex flex-col gap-3">
-      <%= link_to "Join a group", join_path, class: "button" %>
-      <%= link_to "Start a new group", new_group_path, class: "button-secondary" %>
-    </div>
-  </div>
-
-<% end %>
+</div>
