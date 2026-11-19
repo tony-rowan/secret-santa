@@ -108,16 +108,4 @@ RSpec.feature "Group Management" do
     expect(group.ideas.count).to eq(0)
     expect(group.users.count).to eq(3)
   end
-
-  scenario "A member leaves the group" do
-    member = create(:user)
-    group = create(:group, name: "Elf Squad", users: [member])
-
-    sign_in(member)
-    click_on("Leave this group")
-    confirm_dialog("Yes, leave")
-
-    expect(page).to have_text("Left group Elf Squad!")
-    expect(group.reload.users).not_to include(member)
-  end
 end

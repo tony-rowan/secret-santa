@@ -28,7 +28,6 @@ RSpec.describe "GET /dashboard" do
       expect(page).to have_link("Rename group", href: edit_group_path(group))
       expect(page).to have_button("Clear everything…")
       expect(page).to have_button("Draw names")
-      expect(page).to have_no_button("Leave this group")
     end
   end
 
@@ -47,7 +46,7 @@ RSpec.describe "GET /dashboard" do
   end
 
   context "when the user is a member but not the owner" do
-    it "shows only the leave action" do
+    it "shows no organiser tools" do
       group = create(:group, name: "Elf Squad")
       member = create(:user)
       group.users << member
@@ -56,8 +55,9 @@ RSpec.describe "GET /dashboard" do
       get dashboard_path
       page = Capybara.string(response.body)
 
-      expect(page).to have_button("Leave this group")
       expect(page).to have_text("Waiting for the draw")
+      expect(page).to have_no_button("Clear everything…")
+      expect(page).to have_no_button(/Leave/)
       expect(page).to have_no_link("Rename group")
       expect(page).to have_no_css(".join-code")
       expect(page).to have_no_button("Draw names")

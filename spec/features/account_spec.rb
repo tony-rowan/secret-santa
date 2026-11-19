@@ -36,6 +36,7 @@ RSpec.feature "Account" do
     confirm_dialog("Yes, leave")
 
     expect(page).to have_current_path(edit_user_path(user))
+    expect(page).to have_text("Left group Book club!")
     expect(page).to have_text("No groups yet")
   end
 

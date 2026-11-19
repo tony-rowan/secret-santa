@@ -27,30 +27,10 @@
         <div class="order-3"><%= render "dashboards/rules", group:, owner: %></div>
       <% end %>
 
-      <div class="order-3 flex flex-col">
-        <% if owner %>
-          <%= render "dashboards/reset", group: %>
-        <% else %>
-          <%= render "shared/confirm_details",
-            id: "confirm-leave",
-            icon: :arrow_right_start_on_rectangle,
-            removed: [
-              "You leave #{group.name}",
-              "Your gift ideas for this group are deleted",
-              ("Drawn names are cleared, so they'll need drawing again" if group.pairs.any?)
-            ].compact,
-            note: "You can join again with the code." %>
-          <%= button_to "Leave this group", group_membership_path(group, Current.user),
-            method: :delete,
-            form: { class: "self-center" },
-            class: "button-text",
-            data: {
-              turbo_confirm: "Leave #{group.name}?",
-              confirm_button: "Yes, leave",
-              confirm_details: "confirm-leave"
-            } %>
-        <% end %>
-      </div>
+      <%# Members leave from the account page, alongside their other groups %>
+      <% if owner %>
+        <div class="order-3"><%= render "dashboards/reset", group: %></div>
+      <% end %>
     </div>
 
     <div class="order-2 lg:sticky lg:top-6">
