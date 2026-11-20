@@ -1,0 +1,13 @@
+<%# locals: (path:, icon_size:, text_size:, lockup_class: "") %>
+
+<%# The gift icon, "Secret Santa" and "by muddle" beneath it, for the header and the legal pages.
+    The name links to path and its hit area stretches over the whole lockup (so the icon works
+    too); the byline is its own link to muddle, layered above, since links can't nest. %>
+<div class="relative flex items-center <%= lockup_class %>">
+  <%= icon(:gift, size: icon_size, class: "text-gold") %>
+  <span class="flex flex-col items-start gap-0.5">
+    <%= link_to "Secret Santa", path,
+      class: "font-display font-bold leading-tight #{text_size} text-snow hover:text-snow no-underline after:absolute after:inset-0" %>
+    <%= render "shared/muddle_byline", link_class: "relative z-10" %>
+  </span>
+</div>

@@ -9,10 +9,11 @@
     <%= render "shared/snow" %>
 
     <main class="w-full max-w-2xl mx-auto px-6 pt-12 sm:pt-16 pb-12 flex flex-col gap-7">
-      <%= link_to root_path, class: "self-start flex items-center gap-2.5 min-h-11 text-snow hover:text-snow no-underline" do %>
-        <%= icon(:gift, size: "size-6", class: "text-gold") %>
-        <span class="font-display font-bold text-xl">Secret Santa</span>
-      <% end %>
+      <%= render "shared/brand_lockup",
+        path: root_path,
+        icon_size: "size-6",
+        text_size: "text-xl",
+        lockup_class: "self-start gap-2.5 min-h-11" %>
 
       <%= yield %>
     </main>

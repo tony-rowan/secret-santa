@@ -7,6 +7,8 @@
     "Inter var", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-display: "Fraunces", Georgia, serif;
+  /* Only for the parent brand's "muddle" wordmark */
+  --font-brand: "Nunito", ui-rounded, system-ui, sans-serif;
 
   /* Night sky surfaces, darkest first */
   --color-night-950: #120f2b;
@@ -36,6 +38,10 @@
   --color-berry-pale: #ffd9dc;
   --color-cream: #fff8ec;
   --color-cream-line: #eadfcb;
+
+  /* muddle, the parent brand: its blob and wordmark */
+  --color-muddle: #8b5cf6;
+  --color-muddle-dark: #5a3ca0;
 
   /* Pine: on-gold accents */
   --color-pine: #1e4d33;

@@ -8,6 +8,15 @@ RSpec.describe "Sessions" do
       expect(response.body).to include("Email me a sign-in link")
     end
 
+    it "says who makes Secret Santa" do
+      get root_path
+
+      page = Capybara.string(response.body)
+      expect(page).to have_css("h1", text: "Secret Santa")
+      expect(page).to have_link("by muddle", href: "https://getmuddle.app")
+      expect(page).to have_title("Secret Santa by muddle")
+    end
+
     it "links to the privacy policy and terms" do
       get root_path
 

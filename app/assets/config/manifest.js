@@ -3,3 +3,4 @@
 //= link_tree ../../../vendor/javascript .js
 //= link inter-font.css
 //= link fraunces-font.css
+//= link nunito-font.css

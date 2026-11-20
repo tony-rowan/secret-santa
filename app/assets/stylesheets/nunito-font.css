@@ -1,0 +1,11 @@
+/* Nunito ExtraBold, only for the "muddle" wordmark. Subset to the glyphs in "muddle"
+   (fonts.googleapis.com/css2?family=Nunito:wght@800&text=muddle), so add glyphs if it
+   ever spells anything else. SIL Open Font License. */
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("Nunito-muddle.woff2") format("woff2");
+  unicode-range: U+64-65, U+6C-6D, U+75;
+}

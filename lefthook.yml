@@ -14,6 +14,9 @@ pre-commit:
       stage_fixed: true
     oxlint:
       glob: "*.{js,mjs,cjs}"
+      # Ignored in .oxlintrc.json too; oxlint fails when every file it's given is ignored
+      exclude:
+        - app/assets/config/manifest.js
       run: bun x oxlint --deny-warnings --fix {staged_files}
       stage_fixed: true
     herb-lint:

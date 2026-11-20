@@ -18,6 +18,10 @@
         <h1 class="font-display font-bold <%= content_for?(:glow) ? "text-[40px] tracking-tight leading-none" : "text-[34px] leading-tight" %> break-words max-w-full">
           <%= content_for?(:title) ? yield(:title) : "Secret Santa" %>
         </h1>
+        <% unless content_for?(:title) %>
+          <%# The untitled page (sign in) is the brand's front door, so it says who makes it %>
+          <p class="-mt-1.5"><%= render "shared/muddle_byline", large: true %></p>
+        <% end %>
         <% if content_for?(:subtitle) %>
           <p class="text-[17px] text-lilac-300 max-w-[310px]"><%= yield(:subtitle) %></p>
         <% end %>
