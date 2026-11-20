@@ -1,0 +1,54 @@
+<%# locals: (contact_email:) %>
+
+<%= render "legal_pages/header",
+  title: "Privacy policy",
+  summary: "We only collect your email, display name and gift ideas, only to run Secret Santa, and we will never sell your data." %>
+
+<div class="legal-copy">
+  <section aria-labelledby="what-we-collect">
+    <h2 id="what-we-collect">What we collect</h2>
+    <p>Just three things:</p>
+    <ul>
+      <li><strong>Your email address</strong>, so you can sign in.</li>
+      <li><strong>Your display name</strong>, so your group knows who you are.</li>
+      <li><strong>Your gift ideas</strong>, so your Secret Santa knows what to get you.</li>
+    </ul>
+    <p>That’s it. No passwords, no phone number, no address.</p>
+  </section>
+
+  <section aria-labelledby="why-we-collect-it">
+    <h2 id="why-we-collect-it">Why we collect it</h2>
+    <p>Only to run Secret Santa for you. We don’t use your information for ads, and we don’t track you around the web.</p>
+  </section>
+
+  <section aria-labelledby="who-can-see-it">
+    <h2 id="who-can-see-it">Who can see it</h2>
+    <ul>
+      <li>People in your group can see your display name.</li>
+      <li>Only the person buying for you can see your gift ideas.</li>
+      <li>Nobody else can see your email address.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="never-sold">
+    <h2 id="never-sold">We never sell your data</h2>
+    <p>Not to advertisers, not to anyone. Your information stays with us and is only used to run the app.</p>
+  </section>
+
+  <section aria-labelledby="cookies">
+    <h2 id="cookies">Cookies</h2>
+    <p>We only use the cookies the app needs to work: one keeps you signed in, and another remembers things like which group you’re looking at. No tracking or advertising cookies.</p>
+  </section>
+
+  <section aria-labelledby="deleting-your-data">
+    <h2 id="deleting-your-data">Deleting your data</h2>
+    <p>You can delete your account at any time from your Account page. When you do, we delete your email, display name and gift ideas.</p>
+  </section>
+
+  <section aria-labelledby="questions">
+    <h2 id="questions">Questions?</h2>
+    <p>Email us at <%= mail_to contact_email %> and we’ll get back to you.</p>
+  </section>
+</div>
+
+<%= render "legal_pages/footer", other_page_text: "Read our terms", other_page_path: terms_path %>

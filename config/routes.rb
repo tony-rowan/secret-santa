@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root "sessions#new"
 
+  get "/privacy", to: "legal_pages#privacy"
+  get "/terms", to: "legal_pages#terms"
+
   resource :dashboard, only: %i[show]
 
   get "/join", to: "join#new"

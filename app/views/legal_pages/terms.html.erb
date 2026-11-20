@@ -1,0 +1,49 @@
+<%# locals: (contact_email:) %>
+
+<%= render "legal_pages/header",
+  title: "Terms and conditions",
+  summary: "Use Secret Santa for swapping gifts. Don’t use it to break the law or to bully, harass or upset anyone." %>
+
+<div class="legal-copy">
+  <section aria-labelledby="be-kind">
+    <h2 id="be-kind">Be kind</h2>
+    <p>Secret Santa is for swapping gifts with people you know. Please don’t use it to:</p>
+    <ul>
+      <li>break the law</li>
+      <li>bully, harass or threaten anyone</li>
+      <li>post anything hateful, abusive or nasty in your name or gift ideas</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="breaking-the-rules">
+    <h2 id="breaking-the-rules">If someone breaks the rules</h2>
+    <p>We may remove their content or close their account. Organisers can also remove people from their own group.</p>
+  </section>
+
+  <section aria-labelledby="your-stuff">
+    <h2 id="your-stuff">Your stuff is yours</h2>
+    <p>You own the things you write, like your gift ideas. You let us store them and show them to your group so the app works.</p>
+  </section>
+
+  <section aria-labelledby="account-safety">
+    <h2 id="account-safety">Keeping your account safe</h2>
+    <p>You sign in with a link sent to your email, so keep your email account secure. Don’t share sign-in links with anyone.</p>
+  </section>
+
+  <section aria-labelledby="no-guarantees">
+    <h2 id="no-guarantees">No guarantees</h2>
+    <p>We work hard to keep Secret Santa running smoothly, but we can’t promise it will always be available or free of bugs.</p>
+  </section>
+
+  <section aria-labelledby="changes">
+    <h2 id="changes">Changes to these terms</h2>
+    <p>If we change anything important, we’ll let you know by email before it applies.</p>
+  </section>
+
+  <section aria-labelledby="questions">
+    <h2 id="questions">Questions?</h2>
+    <p>Email us at <%= mail_to contact_email %> and we’ll get back to you.</p>
+  </section>
+</div>
+
+<%= render "legal_pages/footer", other_page_text: "Read our privacy policy", other_page_path: privacy_path %>

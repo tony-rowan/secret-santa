@@ -8,6 +8,14 @@ RSpec.describe "Sessions" do
       expect(response.body).to include("Email me a sign-in link")
     end
 
+    it "links to the privacy policy and terms" do
+      get root_path
+
+      page = Capybara.string(response.body)
+      expect(page).to have_link("Privacy", href: privacy_path)
+      expect(page).to have_link("Terms", href: terms_path)
+    end
+
     context "when signed in" do
       it "redirects to the dashboard" do
         authenticate(create(:user))

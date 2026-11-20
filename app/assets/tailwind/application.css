@@ -61,6 +61,41 @@
 }
 
 @layer components {
+  /* Long-form copy on the privacy policy and terms */
+  .legal-copy {
+    @apply flex flex-col gap-7;
+
+    section {
+      @apply flex flex-col gap-2.5;
+    }
+
+    h2 {
+      @apply font-display font-bold text-[22px] leading-snug;
+    }
+
+    p,
+    ul {
+      @apply text-base leading-relaxed text-lilac-200;
+    }
+
+    ul {
+      @apply flex flex-col gap-2.5;
+    }
+
+    li {
+      @apply relative pl-6;
+    }
+
+    li::before {
+      content: "✦" / "";
+      @apply absolute left-0 text-gold;
+    }
+
+    strong {
+      @apply font-semibold text-snow;
+    }
+  }
+
   /* Primary action: berry, full-height touch target */
   .button {
     @apply flex items-center justify-center gap-2;

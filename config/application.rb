@@ -34,6 +34,12 @@ module SecretSanta
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
+
+    # Shown on the privacy policy and terms. Falls back to the address mail is sent from.
+    config.x.contact_email = ENV.fetch("CONTACT_EMAIL") do
+      ENV.fetch("MAILER_FROM", "santa@example.com")[/[^<\s]+@[^>\s]+/]
+    end
+
     # config.eager_load_paths << Rails.root.join("extras")
 
     # We run in a memory-constrained environment, don't opt in to yjit
