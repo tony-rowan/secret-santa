@@ -30,5 +30,14 @@ RSpec.describe UserMailer do
 
       expect(mail.text_part.body.decoded).to include("1 hour")
     end
+
+    it "names the current and the new address" do
+      user = create(:user, email: "old@example.com", unconfirmed_email: "new@example.com")
+
+      mail = described_class.confirm_email_change(user)
+
+      expect(mail.text_part.body.decoded).to include("from old@example.com to new@example.com")
+      expect(Capybara.string(mail.html_part.body.decoded)).to have_text("from old@example.com to new@example.com")
+    end
   end
 end

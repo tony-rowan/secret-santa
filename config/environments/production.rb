@@ -85,6 +85,8 @@ Rails.application.configure do
   }.compact
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = {host: ENV.fetch("APP_HOST", "secretsanta.getmuddle.app"), protocol: "https"}
+  # Images and fonts in emails need absolute URLs
+  config.action_mailer.asset_host = "https://#{ENV.fetch("APP_HOST", "secretsanta.getmuddle.app")}"
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

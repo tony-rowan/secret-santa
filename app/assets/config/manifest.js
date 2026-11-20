@@ -4,3 +4,4 @@
 //= link inter-font.css
 //= link fraunces-font.css
 //= link nunito-font.css
+//= link_tree ../images/email .png

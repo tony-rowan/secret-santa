@@ -1,31 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+    <%# Email-safe HTML: tables for layout and inline styles, which every client honours. This block only
+        adds what some clients support and others skip: the app's fonts (Apple Mail, iOS) and the starry
+        sky over the header's flat night colour %>
+    <style>
+      @font-face { font-family: "Inter"; font-weight: 100 900; src: url("<%= font_url("Inter-roman.latin.var.woff2") %>") format("woff2"); }
+      @font-face { font-family: "Fraunces"; font-weight: 100 900; src: url("<%= font_url("Fraunces-latin.var.woff2") %>") format("woff2"); }
+      @font-face { font-family: "Nunito"; font-weight: 800; src: url("<%= font_url("Nunito-muddle.woff2") %>") format("woff2"); unicode-range: U+64-65, U+6C-6D, U+75; }
+      .sky {
+        background-image:
+          radial-gradient(circle, rgba(255, 255, 255, 0.7) 1.2px, transparent 1.8px),
+          radial-gradient(circle, rgba(255, 255, 255, 0.35) 1px, transparent 1.6px),
+          radial-gradient(circle, rgba(255, 240, 210, 0.25) 1.5px, transparent 2.2px),
+          linear-gradient(180deg, #100d29 0%, #1d1846 55%, #2d2254 100%);
+        background-size: 97px 113px, 61px 79px, 151px 137px, 100% 100%;
+        background-position: 13px 21px, 40px 7px, 77px 59px, 0 0;
+      }
+    </style>
   </head>
-  <body style="margin: 0; padding: 0; background-color: #f4f1ea; font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: #1f2937;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f1ea;">
+  <body style="margin: 0; padding: 0; background-color: #ece9f4; font-family: 'Inter', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; color: #2b2650; -webkit-text-size-adjust: 100%;">
+    <%# The inbox preview line, hidden in the email itself %>
+    <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;"><%= yield :preheader %></div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ece9f4" style="background-color: #ece9f4;">
       <tr>
         <td align="center" style="padding: 24px 12px;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; background-color: #ffffff; border-radius: 8px; overflow: hidden;">
+          <!--[if mso]><table role="presentation" width="592" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width: 592px; background-color: #ffffff; border-radius: 18px; border-collapse: separate; overflow: hidden; box-shadow: 0 8px 24px rgba(43, 38, 80, 0.12);">
             <tr>
-              <td style="background-color: #166534; padding: 16px 24px; color: #ffffff; font-size: 20px; font-weight: bold;">
-                Secret Santa
-                <div style="margin-top: 2px; font-size: 13px; font-weight: normal; color: #dcfce7;">
-                  by <a href="https://getmuddle.app" style="color: #ffffff; font-weight: bold; text-decoration: none;">muddle</a>
-                </div>
+              <td class="sky" align="center" bgcolor="#1b1740" style="padding: 32px 24px; background-color: #1b1740; border-radius: 18px 18px 0 0;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td valign="middle" style="padding-right: 12px;">
+                      <%= image_tag image_url("email/gift-tile.png"), alt: "", width: 48, height: 48, style: "display: block; border: 0;" %>
+                    </td>
+                    <td valign="middle" align="left">
+                      <div style="font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-size: 24px; font-weight: 700; line-height: 1; color: #fbf5e9;">Secret Santa</div>
+                      <a href="https://getmuddle.app" style="display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 500; line-height: 13px; color: #c3bedf; text-decoration: none;">by <%= image_tag image_url("email/muddle-blob.png"), alt: "", width: 12, height: 12, style: "display: inline-block; vertical-align: -1px; border: 0;" %> <span style="font-family: 'Nunito', 'Arial Rounded MT Bold', -apple-system, sans-serif; font-size: 13px; font-weight: 800; color: #a78bfa;">muddle</span></a>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
             <tr>
-              <td style="padding: 24px; font-size: 16px; line-height: 1.5;">
+              <td style="padding: 36px 40px 40px; font-size: 16px; line-height: 1.6; color: #2b2650;">
+                <h1 style="margin: 0 0 20px; font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: 700; line-height: 1.2; color: #1e1a3a;"><%= yield :heading %></h1>
                 <%= yield %>
               </td>
             </tr>
+          </table>
+          <!--[if mso]></td></tr></table><![endif]-->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 592px;">
             <tr>
-              <td style="padding: 16px 24px; border-top: 4px solid #b91c1c; font-size: 12px; color: #6b7280;">
-                Happy gifting!<br>
-                Secret Santa is made by muddle, <a href="https://getmuddle.app" style="color: #6b7280;">getmuddle.app</a>
+              <td align="center" style="padding: 16px 8px 0; font-size: 12px; line-height: 1.6; color: #5e5880;">
+                Secret Santa by muddle &middot; <a href="https://getmuddle.app" style="color: #5e5880;">getmuddle.app</a> &middot; <%= link_to "Privacy", privacy_url, style: "color: #5e5880;" %><br>
+                You’re getting this because someone entered this email address on Secret Santa.
               </td>
             </tr>
           </table>

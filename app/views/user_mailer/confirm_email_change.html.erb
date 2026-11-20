@@ -1,9 +1,9 @@
-<p style="margin: 0 0 16px;">Hi <%= @user.name %>,</p>
+<% content_for :preheader, "One tap to finish changing your email." %>
+<% content_for :heading, "Confirm your new email" %>
 
-<p style="margin: 0 0 24px;">Use the button below to change your Secret Santa email to <%= @new_email %>. The link expires in 1 hour.</p>
+<p style="margin: 0 0 12px;">You asked to change your Secret Santa email from <strong style="font-weight: 600;"><%= @user.email %></strong> to <strong style="font-weight: 600;"><%= @new_email %></strong>.</p>
+<p style="margin: 0 0 20px;">Tap the button to confirm it’s you. Until then, you’ll keep signing in with your old email.</p>
 
-<p style="margin: 0 0 24px;">
-  <%= link_to "Confirm new email", @confirmation_url, style: "display: inline-block; padding: 12px 24px; background-color: #166534; color: #ffffff; font-weight: bold; text-decoration: none; border-radius: 8px;" %>
-</p>
-
-<p style="margin: 0; font-size: 14px; color: #6b7280;">If you didn't ask for this, you can safely ignore this email.</p>
+<%= render "mailer/button", text: "Confirm new email", url: @confirmation_url %>
+<%= render "mailer/link_details", expiry: "This link works for 1 hour.", url: @confirmation_url %>
+<%= render "mailer/not_requested", message: "Ignore this email and nothing will change." %>

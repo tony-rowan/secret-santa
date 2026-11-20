@@ -1,0 +1,12 @@
+<%# locals: (text:, url:) %>
+
+<%# A "bulletproof" button: the table cell carries the colour, so it still looks like a button where
+    clients drop padding or radius on links, followed by the link spelled out for when it doesn't work %>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 20px;">
+  <tr>
+    <td bgcolor="#c8323c" style="border-radius: 14px; background-color: #c8323c;">
+      <%= link_to text, url,
+        style: "display: inline-block; padding: 15px 28px; border-radius: 14px; font-size: 17px; font-weight: 600; line-height: 22px; color: #fff8ec; text-decoration: none;" %>
+    </td>
+  </tr>
+</table>

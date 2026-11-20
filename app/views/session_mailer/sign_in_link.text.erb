@@ -1,7 +1,9 @@
-<%= @user.name.present? ? "Hi #{@user.name}," : "Hi," %>
+Here's your sign-in link
 
-Use the link below to sign in to Secret Santa. The link expires in 15 minutes and can only be used once.
+Open the link below to sign in to Secret Santa. New here? The same link creates your account.
 
 <%= @magic_link_url %>
 
-If you didn't ask for this, you can safely ignore this email.
+This link works for 15 minutes and can only be used once.
+
+Didn't ask for this? You can ignore this email. Nobody can sign in without this link.

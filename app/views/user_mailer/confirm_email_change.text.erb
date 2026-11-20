@@ -1,7 +1,9 @@
-Hi <%= @user.name %>,
+Confirm your new email
 
-Use the link below to change your Secret Santa email to <%= @new_email %>. The link expires in 1 hour.
+You asked to change your Secret Santa email from <%= @user.email %> to <%= @new_email %>. Open the link below to confirm it's you. Until then, you'll keep signing in with your old email.
 
 <%= @confirmation_url %>
 
-If you didn't ask for this, you can safely ignore this email.
+This link works for 1 hour.
+
+Didn't ask for this? Ignore this email and nothing will change.

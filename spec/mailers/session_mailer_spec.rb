@@ -38,6 +38,13 @@ RSpec.describe SessionMailer do
       expect(mail.text_part.body.decoded).to include("15 minutes")
     end
 
+    it "loads its images from the app's host" do
+      mail = described_class.sign_in_link(create(:user))
+
+      sources = Capybara.string(mail.html_part.body.decoded).all("img", visible: :all).map { it[:src] }
+      expect(sources).to all(start_with("http://www.example.com/assets/email/"))
+    end
+
     context "when a join code is given" do
       it "includes the join code in the link" do
         mail = described_class.sign_in_link(create(:user), join_code: "ABCDEF")

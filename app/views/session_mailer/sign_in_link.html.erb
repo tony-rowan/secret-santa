@@ -1,9 +1,9 @@
-<p style="margin: 0 0 16px;"><%= @user.name.present? ? "Hi #{@user.name}," : "Hi," %></p>
+<% content_for :preheader, "Tap to sign in. The link works for 15 minutes." %>
+<% content_for :heading, "Here’s your sign-in link" %>
 
-<p style="margin: 0 0 24px;">Use the button below to sign in to Secret Santa. The link expires in 15 minutes and can only be used once.</p>
+<p style="margin: 0 0 12px;">Tap the button below to sign in to Secret Santa.</p>
+<p style="margin: 0 0 20px;">New here? The same link creates your account.</p>
 
-<p style="margin: 0 0 24px;">
-  <%= link_to "Sign in", @magic_link_url, style: "display: inline-block; padding: 12px 24px; background-color: #166534; color: #ffffff; font-weight: bold; text-decoration: none; border-radius: 8px;" %>
-</p>
-
-<p style="margin: 0; font-size: 14px; color: #6b7280;">If you didn't ask for this, you can safely ignore this email.</p>
+<%= render "mailer/button", text: "Sign in to Secret Santa", url: @magic_link_url %>
+<%= render "mailer/link_details", expiry: "This link works for 15 minutes and can only be used once.", url: @magic_link_url %>
+<%= render "mailer/not_requested", message: "You can ignore this email. Nobody can sign in without this link." %>

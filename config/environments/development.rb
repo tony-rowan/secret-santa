@@ -68,6 +68,8 @@ Rails.application.configure do
   # Print each email decoded to the log so sign-in links are easy to follow.
   config.action_mailer.observers = %w[DevelopmentMailLogger]
   config.action_mailer.default_url_options = {host: "localhost", port: 3000}
+  # Images and fonts in emails need absolute URLs
+  config.action_mailer.asset_host = "http://localhost:3000"
   config.action_mailer.preview_paths << Rails.root.join("spec/mailers/previews").to_s
 
   # Suppress logger output for asset requests.
