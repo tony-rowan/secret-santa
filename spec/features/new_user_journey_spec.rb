@@ -36,7 +36,7 @@ RSpec.feature "New User Journey" do
 
     expect(page).to have_current_path(created_group_path(group))
     expect(page).to have_text("AIM, no wait, The 10 Rings is ready")
-    expect(page).to have_text(group.join_code)
+    expect(page).to have_text(group.formatted_join_code)
 
     click_on("Go to your group")
 

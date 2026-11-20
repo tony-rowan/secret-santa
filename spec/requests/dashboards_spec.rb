@@ -32,9 +32,9 @@ RSpec.describe "GET /dashboard" do
       page = Capybara.string(response.body)
 
       expect(page).to have_css("h1", text: "Elf Squad")
-      expect(page).to have_css(".join-code", text: group.join_code)
+      expect(page).to have_css(".join-code", text: group.formatted_join_code)
       expect(page).to have_button("Copy code")
-      expect(page).to have_link("Share link", href: join_with_code_url(group.join_code))
+      expect(page).to have_link("Share link", href: join_with_code_url(group.formatted_join_code))
       expect(page).to have_field("Group name", with: "Elf Squad")
       expect(page).to have_button("Clear everything…")
       expect(page).to have_button("Draw names")

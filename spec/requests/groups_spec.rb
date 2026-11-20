@@ -35,7 +35,7 @@ RSpec.describe "Groups" do
         authenticate(owner)
         get created_group_path(group)
 
-        expect(response.body).to include("The Rowans is ready", group.join_code)
+        expect(response.body).to include("The Rowans is ready", group.formatted_join_code)
       end
     end
 

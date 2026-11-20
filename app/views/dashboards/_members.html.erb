@@ -9,7 +9,7 @@
     <h2 id="members-heading" class="card-title">Members <span class="font-medium text-lilac-400">(<%= members.size %>)</span></h2>
     <p class="card-hint">Share this code to invite people.</p>
 
-    <div class="join-code"><%= group.join_code %></div>
+    <div class="join-code"><%= group.formatted_join_code %></div>
 
     <%= render "groups/invite_buttons", group: group, button_class: "bg-night-900" %>
 
