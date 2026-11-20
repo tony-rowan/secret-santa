@@ -16,6 +16,8 @@ RSpec.describe "Legal pages" do
       page = Capybara.string(response.body)
       expect(page).to have_css("h1", text: "Privacy policy")
       expect(page).to have_text("we will never sell your data")
+      expect(page).to have_link("Fly.io", href: "https://fly.io")
+      expect(page).to have_link("Resend", href: "https://resend.com")
       expect(page).to have_link("hello@secret-santa.test", href: "mailto:hello@secret-santa.test")
       expect(page).to have_link("Read our terms", href: terms_path)
     end
@@ -28,6 +30,8 @@ RSpec.describe "Legal pages" do
       page = Capybara.string(response.body)
       expect(page).to have_css("h1", text: "Terms and conditions")
       expect(page).to have_text("Don’t use it to break the law")
+      expect(page).to have_link("Fly.io", href: "https://fly.io")
+      expect(page).to have_link("Resend", href: "https://resend.com")
       expect(page).to have_link("hello@secret-santa.test", href: "mailto:hello@secret-santa.test")
       expect(page).to have_link("Read our privacy policy", href: privacy_path)
     end

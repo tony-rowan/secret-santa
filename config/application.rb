@@ -37,7 +37,7 @@ module SecretSanta
 
     # Shown on the privacy policy and terms. Falls back to the address mail is sent from.
     config.x.contact_email = ENV.fetch("CONTACT_EMAIL") do
-      ENV.fetch("MAILER_FROM", "santa@example.com")[/[^<\s]+@[^>\s]+/]
+      ENV.fetch("MAILER_FROM", "santa@updates.secretsanta.getmuddle.app")[/[^<\s]+@[^>\s]+/]
     end
 
     # config.eager_load_paths << Rails.root.join("extras")

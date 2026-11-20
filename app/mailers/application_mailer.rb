@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  # Production sets MAILER_FROM to an address the SMTP server is allowed to send from.
-  default from: ENV.fetch("MAILER_FROM", "Secret Santa <santa@example.com>")
+  # The address must be on a domain verified with the SMTP provider (Resend); MAILER_FROM overrides it.
+  default from: ENV.fetch("MAILER_FROM", "Secret Santa <santa@updates.secretsanta.getmuddle.app>")
   layout "mailer"
 end
