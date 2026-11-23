@@ -34,7 +34,7 @@ RSpec.describe Dashboard::StatusComponent, type: :component do
 
       render_inline(described_class.new(group:, user: member, pair: nil, idea_counts: {member.id => 2}))
 
-      expect(page).to have_text("Waiting for the draw")
+      expect(page).to have_text("Names haven't been drawn yet")
       expect(page).to have_no_button("Draw names")
       expect(page).to have_css("li[aria-current='step']", text: "Names drawn")
     end

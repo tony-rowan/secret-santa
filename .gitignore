@@ -43,3 +43,6 @@ yarn-debug.log*
 
 # Editor settings
 /.vscode/
+
+# Local Claude Code instructions
+/CLAUDE.local.md
