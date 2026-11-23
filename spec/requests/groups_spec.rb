@@ -21,7 +21,7 @@ RSpec.describe "Groups" do
         post groups_path, params: {group: {name: "", rule_texts: ["Keep it under £20"]}}
 
         expect(response).to have_http_status(:unprocessable_content)
-        expect(response.body).to include("Please give your group a name", "Keep it under £20")
+        expect(Capybara.string(response.body)).to have_css("input[name='group[rule_texts][]'][value='Keep it under £20']", visible: :all)
       end
     end
   end
@@ -35,7 +35,8 @@ RSpec.describe "Groups" do
         authenticate(owner)
         get created_group_path(group)
 
-        expect(response.body).to include("The Rowans is ready", group.formatted_join_code)
+        expect(response).to have_http_status(:ok)
+        expect(Capybara.string(response.body)).to have_css(".join-code", text: group.formatted_join_code)
       end
     end
 

@@ -1,0 +1,39 @@
+<% if owner? %>
+  <section aria-labelledby="members-heading" class="card">
+    <h2 id="members-heading" class="card-title">Members <span class="font-medium text-lilac-400">(<%= members.size %>)</span></h2>
+    <p class="card-hint">Share this code to invite people.</p>
+
+    <div class="join-code"><%= group.formatted_join_code %></div>
+
+    <%= render Groups::InviteButtonsComponent.new(group:, button_class: "bg-night-900") %>
+
+    <% if drawn? %>
+      <p class="text-sm text-gold">Adding or removing people now means names will need drawing again.</p>
+    <% end %>
+
+    <ul class="flex flex-col gap-2">
+      <% members.each do |member| %>
+        <%= render Dashboard::MemberRowComponent.new(group:, member:, user:, idea_count: idea_counts[member.id].to_i, drawn: drawn?) %>
+      <% end %>
+    </ul>
+  </section>
+<% else %>
+  <section aria-labelledby="members-heading" class="card gap-3">
+    <h2 id="members-heading" class="card-title">Who's in <span class="font-medium text-lilac-400">(<%= members.size %>)</span></h2>
+
+    <ul class="flex flex-wrap gap-2">
+      <% members.each do |member| %>
+        <% if member == user %>
+          <li class="py-2 px-3.5 rounded-full bg-night-900 border-[1.5px] border-gold font-semibold text-[15px]"><%= member.name %> (you)</li>
+        <% else %>
+          <li class="py-2 px-3.5 rounded-full bg-night-900 text-[15px]">
+            <%= member.name %>
+            <% if group.owner?(member) %>
+              <span class="text-gold text-[13px]">· organiser</span>
+            <% end %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

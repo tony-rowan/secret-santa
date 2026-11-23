@@ -1,0 +1,18 @@
+<section aria-labelledby="name-heading" class="card">
+  <h2 id="name-heading" class="card-title">Display name</h2>
+
+  <%= form_with(model: user, class: "flex flex-col gap-2") do |form| %>
+    <%= label_tag "user_name", "How you appear to your groups", class: "text-sm text-lilac-400" %>
+    <% if error %>
+      <p class="text-sm text-berry-light"><%= error %></p>
+    <% end %>
+    <div class="flex gap-2">
+      <%= form.text_field :name,
+        tailwindified: true,
+        required: true,
+        autocomplete: "nickname",
+        class: "input-field grow min-w-0 #{"border-berry-light" if error}" %>
+      <%= form.button "Save", class: "button min-h-13 text-base px-4.5" %>
+    </div>
+  <% end %>
+</section>

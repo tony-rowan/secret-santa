@@ -1,0 +1,11 @@
+<section aria-labelledby="delete-heading" class="card-danger">
+  <h2 id="delete-heading" class="card-title">Delete account</h2>
+  <p class="text-sm text-[#e7c9c9]">Removes you from every group and deletes your gift ideas. This can't be undone.</p>
+
+  <%= render ConfirmationComponent.new(**delete_confirmation) do |confirmation| %>
+    <%= button_to "Delete my account…", user_path(user),
+      method: :delete,
+      class: "button-danger w-full",
+      data: confirmation.data %>
+  <% end %>
+</section>

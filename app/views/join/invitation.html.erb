@@ -1,0 +1,7 @@
+<%# locals: (group:, form:) %>
+
+<% content_for :icon, "ticket" %>
+<% content_for :title, "You're invited" %>
+<% content_for :subtitle, "Check the details, then join." %>
+
+<%= render Join::InvitationComponent.new(group:, form:) %>

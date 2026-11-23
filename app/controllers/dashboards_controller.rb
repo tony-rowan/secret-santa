@@ -5,8 +5,11 @@ class DashboardsController < ApplicationController
 
   def show
     render locals: {
+      group: Current.group,
+      user: Current.user,
+      groups: Current.user.groups.includes(:owner).order(:name).to_a,
       pair: pair_for_current_group,
-      idea: Idea.new,
+      ideas: Current.user.ideas_in_current_group,
       idea_counts: idea_counts_for_current_group
     }
   end

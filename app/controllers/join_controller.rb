@@ -5,12 +5,18 @@ class JoinController < ApplicationController
 
   def new
     group = Group.find_by(join_code:) if join_code
-    form = JoinGroup.new(join_code: group&.join_code)
 
-    render locals: {
-      group:,
-      form:
-    }
+    if group
+      render :invitation, locals: {
+        group: group,
+        form: JoinGroup.new(join_code: group.join_code)
+      }
+    else
+      render locals: {
+        form: JoinGroup.new,
+        user: Current.user
+      }
+    end
   end
 
   def create
@@ -22,8 +28,8 @@ class JoinController < ApplicationController
       redirect_to(dashboard_path)
     else
       render :new, status: :unprocessable_content, locals: {
-        group: nil,
-        form: form
+        form: form,
+        user: Current.user
       }
     end
   end

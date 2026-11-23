@@ -2,12 +2,7 @@
 
 <% content_for :icon, "envelope" %>
 <% content_for :title, "Check your email" %>
-<% content_for :subtitle do %>
-  We've sent a sign-in link to <strong class="text-snow font-semibold break-words"><%= email %></strong>. It works for 15 minutes.
-  <% if group %>
-    Follow it to join <%= group.owner.name %>'s group, <%= group.name %>.
-  <% end %>
-<% end %>
+<% content_for :subtitle, render(Sessions::LinkSentComponent.new(email:, group:)) %>
 
 <div class="flex flex-col gap-3">
   <%= button_to "Resend link", session_path, params: {email:}, class: "button-secondary w-full", form: {data: {turbo: false}} %>

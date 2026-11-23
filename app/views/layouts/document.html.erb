@@ -6,14 +6,10 @@
 
   <%# Long-form pages anyone can read, signed in or not: the privacy policy and terms %>
   <body>
-    <%= render "shared/snow" %>
+    <%= render SnowComponent.new %>
 
     <main class="w-full max-w-2xl mx-auto px-6 pt-12 sm:pt-16 pb-12 flex flex-col gap-7">
-      <%= render "shared/brand_lockup",
-        path: root_path,
-        icon_size: "size-6",
-        text_size: "text-xl",
-        lockup_class: "self-start gap-2.5 min-h-11" %>
+      <%= render BrandLockupComponent.new(path: root_path, size: :document) %>
 
       <%= yield %>
     </main>

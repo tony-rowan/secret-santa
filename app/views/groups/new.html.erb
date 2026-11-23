@@ -8,34 +8,7 @@
   <%= form_with(model: group, class: "flex flex-col gap-5") do |form| %>
     <%= form.text_field :name, label: "Group name", placeholder: "e.g. The Rowans" %>
 
-    <section aria-labelledby="rules-heading" class="card" data-controller="rule-list">
-      <div class="flex flex-col gap-1">
-        <h2 id="rules-heading" class="card-title">Rules <span class="font-medium text-lilac-400">(optional)</span></h2>
-        <p class="card-hint">Spend limit, swap date, anything people should know.</p>
-      </div>
-
-      <ul class="flex flex-col gap-2 empty:hidden" data-rule-list-target="list"><% group.rules.each do |rule| %><%= render "groups/new_rule", text: rule.text %><% end %></ul>
-
-      <template data-rule-list-target="template">
-        <%= render "groups/new_rule", text: "" %>
-      </template>
-
-      <div class="flex gap-2">
-        <label for="new_rule" class="sr-only">Add a rule</label>
-        <input id="new_rule"
-          type="text"
-          name="group[rule_texts][]"
-          placeholder="Add a rule…"
-          autocomplete="off"
-          class="input-field grow min-w-0"
-          data-rule-list-target="input"
-          data-action="keydown.enter->rule-list#add">
-        <button type="button" class="button min-h-13 text-base px-4.5" data-action="rule-list#add">
-          <%= icon(:plus, size: "size-5", "stroke-width": 2.4) %>
-          Add
-        </button>
-      </div>
-    </section>
+    <%= render Groups::RuleListComponent.new(rules: group.rules) %>
 
     <div class="flex flex-col gap-2">
       <%= form.submit "Create group", class: "w-full" %>

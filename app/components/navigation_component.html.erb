@@ -1,0 +1,11 @@
+<header class="max-w-6xl mx-auto flex items-center justify-between gap-4 min-h-17 lg:min-h-21 py-3 pl-5 pr-3 lg:px-8">
+  <%= render BrandLockupComponent.new(path: dashboard_path, size: :header) %>
+
+  <% if user %>
+    <%= link_to edit_user_path(user),
+      class: "flex items-center justify-center gap-2 size-11 lg:w-auto lg:pl-3 lg:pr-4 rounded-full border-[1.5px] border-night-600 bg-night-800 hover:bg-night-700 text-snow hover:text-snow font-semibold text-[15px] no-underline" do %>
+      <%= icon(:user, size: "size-5") %>
+      <span class="sr-only lg:not-sr-only">Account</span>
+    <% end %>
+  <% end %>
+</header>

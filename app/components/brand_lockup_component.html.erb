@@ -1,0 +1,8 @@
+<div class="relative flex items-center <%= size[:lockup] %>">
+  <%= icon(:gift, size: size[:icon], class: "text-gold") %>
+  <span class="flex flex-col items-start gap-0.5">
+    <%= link_to "Secret Santa", path,
+      class: "font-display font-bold leading-tight #{size[:text]} text-snow hover:text-snow no-underline after:absolute after:inset-0" %>
+    <%= render MuddleBylineComponent.new(link_class: "relative z-10") %>
+  </span>
+</div>

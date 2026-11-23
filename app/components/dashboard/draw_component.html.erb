@@ -1,0 +1,29 @@
+<section aria-labelledby="status-heading" class="rounded-3xl bg-gold text-gold-ink px-5 py-5.5 flex flex-col gap-3.5 shadow-2xl shadow-black/30">
+  <span class="pill bg-pine text-gold">
+    <span class="size-2 rounded-full bg-gold"></span>
+    Not drawn yet
+  </span>
+
+  <h2 id="status-heading" class="font-display font-bold text-[26px] leading-tight">Ready when you are</h2>
+
+  <div class="flex flex-col gap-2">
+    <div class="flex justify-between text-[15px]">
+      <span class="text-gold-muted">Members with ideas</span>
+      <span class="font-semibold"><%= members_with_ideas %> of <%= member_count %></span>
+    </div>
+    <div class="h-2 rounded bg-pine/25 flex" role="presentation">
+      <span class="rounded bg-pine" style="width: <%= progress_percent %>%"></span>
+    </div>
+  </div>
+
+  <%= button_to group_path(group),
+    params: draw_params,
+    method: :patch,
+    disabled: !enough_members?,
+    class: "mt-1 w-full min-h-14 rounded-2xl bg-pine hover:bg-[#163a26] text-cream text-lg font-semibold flex items-center justify-center gap-2.5 disabled:opacity-50 disabled:cursor-not-allowed" do %>
+    <%= icon(:sparkles, size: "size-5") %>
+    Draw names
+  <% end %>
+
+  <p class="text-sm text-gold-muted text-center"><%= hint %></p>
+</section>

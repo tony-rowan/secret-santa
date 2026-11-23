@@ -5,15 +5,15 @@
   </head>
 
   <body>
-    <%= render "shared/snow" %>
+    <%= render SnowComponent.new %>
 
-    <%= render "shared/navigation" %>
+    <%= render NavigationComponent.new(user: Current.user) %>
 
     <main class="<%= content_for?(:wide) ? "max-w-6xl lg:px-8" : "max-w-xl" %> mx-auto px-5 pt-3 pb-16">
 
       <%= yield %>
     </main>
 
-    <%= render "shared/confirm_dialog" %>
+    <%= render ConfirmDialogComponent.new %>
   </body>
 </html>

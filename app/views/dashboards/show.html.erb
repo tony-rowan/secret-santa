@@ -1,36 +1,23 @@
-<%# locals: (pair:, idea:, idea_counts:) %>
+<%# locals: (group:, user:, groups:, pair:, ideas:, idea_counts:) %>
 
 <% content_for :wide, true %>
-<% group = Current.group %>
-<% owner = group.owner?(Current.user) %>
 
 <div class="flex items-center gap-2 px-1 mb-5">
-  <% groups = Current.user.groups.includes(:owner).order(:name).to_a %>
-  <% if groups.many? %>
-    <%= render "dashboards/group_switcher", group:, groups: %>
-  <% else %>
-    <h1 class="display-title min-w-0 break-words"><%= group.name %></h1>
-  <% end %>
+  <%= render Dashboard::GroupTitleComponent.new(group:, groups:, user:) %>
 </div>
 
-<%# One column on phones (ideas second); on desktop the ideas get the right-hand column %>
+<%# One column on phones (ideas second); on desktop the ideas get the right-hand column. Members
+    leave from the account page, alongside their other groups. %>
 <div class="flex flex-col gap-5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6">
   <div class="contents lg:flex lg:flex-col lg:gap-5">
-    <div class="order-1"><%= render "dashboards/status", group:, owner:, pair:, idea_counts: %></div>
-    <div class="order-3"><%= render "dashboards/members", group:, owner:, idea_counts: %></div>
-
-    <% if owner || group.rules.any? %>
-      <div class="order-3"><%= render "dashboards/rules", group:, owner: %></div>
-    <% end %>
-
-    <%# Members leave from the account page, alongside their other groups %>
-    <% if owner %>
-      <div class="order-3"><%= render "dashboards/group_name", group: %></div>
-      <div class="order-3"><%= render "dashboards/reset", group: %></div>
-    <% end %>
+    <div class="order-1"><%= render Dashboard::StatusComponent.new(group:, user:, pair:, idea_counts:) %></div>
+    <div class="order-3"><%= render Dashboard::MembersComponent.new(group:, user:, idea_counts:) %></div>
+    <div class="order-3 empty:hidden"><%= render Dashboard::RulesComponent.new(group:, user:) %></div>
+    <div class="order-3 empty:hidden"><%= render Dashboard::GroupNameComponent.new(group:, user:) %></div>
+    <div class="order-3 empty:hidden"><%= render Dashboard::ResetComponent.new(group:, user:) %></div>
   </div>
 
   <div class="order-2 lg:sticky lg:top-6">
-    <%= render "dashboards/ideas", pair:, idea: %>
+    <%= render Dashboard::IdeasComponent.new(ideas:, drawn: pair.present?) %>
   </div>
 </div>

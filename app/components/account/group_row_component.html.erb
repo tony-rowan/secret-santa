@@ -1,0 +1,17 @@
+<li class="list-row min-h-14 gap-3 py-1.5 pl-3.5 pr-1.5">
+  <%= link_to dashboard_path(group_id: group.id), class: "grow min-w-0 flex flex-col gap-0.5 text-snow hover:text-gold-light no-underline" do %>
+    <span class="font-semibold break-words"><%= group.name %></span>
+    <span class="text-[13px] <%= owner? ? "font-semibold text-gold" : "text-lilac-400" %>"><%= organiser_text %></span>
+  <% end %>
+
+  <% unless owner? %>
+    <%= render ConfirmationComponent.new(**leave_confirmation) do |confirmation| %>
+      <%= button_to "Leave", group_membership_path(group, user),
+        method: :delete,
+        class: "shrink-0 min-h-11 px-3.5 rounded-xl border-[1.5px] border-night-600 text-berry-light hover:bg-berry/20 text-sm font-semibold",
+        title: "Leave #{group.name}",
+        aria: { label: "Leave #{group.name}" },
+        data: confirmation.data %>
+    <% end %>
+  <% end %>
+</li>

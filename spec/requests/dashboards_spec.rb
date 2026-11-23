@@ -1,14 +1,17 @@
 require "rails_helper"
 
+# What the dashboard shows for each kind of user is covered by the components in spec/components/dashboard
 RSpec.describe "GET /dashboard" do
-  context "when signed in" do
-    it "links to the account page from the header" do
-      user = create(:user, :with_group)
+  context "when the user is in a group" do
+    it "shows it" do
+      user = create(:user)
+      create(:group, name: "Rowans", owner: user)
 
       authenticate(user)
       get dashboard_path
 
-      expect(response.body).to include(%(href="#{edit_user_path(user)}"))
+      expect(response).to have_http_status(:ok)
+      expect(Capybara.string(response.body)).to have_css("h1", text: "Rowans")
     end
   end
 
@@ -19,126 +22,6 @@ RSpec.describe "GET /dashboard" do
       get dashboard_path
 
       expect(response).to redirect_to(join_path)
-    end
-  end
-
-  context "when the user owns the group" do
-    it "shows the group name, invite code and organiser actions" do
-      owner = create(:user)
-      group = create(:group, owner:, name: "Elf Squad", users: [owner, *create_list(:user, 2)])
-
-      authenticate(owner)
-      get dashboard_path
-      page = Capybara.string(response.body)
-
-      expect(page).to have_css("h1", text: "Elf Squad")
-      expect(page).to have_css(".join-code", text: group.formatted_join_code)
-      expect(page).to have_button("Copy code")
-      expect(page).to have_link("Share link", href: join_with_code_url(group.formatted_join_code))
-      expect(page).to have_field("Group name", with: "Elf Squad")
-      expect(page).to have_button("Clear everything…")
-      expect(page).to have_button("Draw names")
-    end
-  end
-
-  context "when the group has fewer than 3 members" do
-    it "disables the draw and explains why" do
-      owner = create(:user)
-      create(:group, owner:, users: [owner, create(:user)])
-
-      authenticate(owner)
-      get dashboard_path
-      page = Capybara.string(response.body)
-
-      expect(page).to have_button("Draw names", disabled: true)
-      expect(page).to have_text("You need at least 3 people to draw names")
-    end
-  end
-
-  context "when the user is a member but not the owner" do
-    it "shows no organiser tools" do
-      group = create(:group, name: "Elf Squad")
-      member = create(:user)
-      group.users << member
-
-      authenticate(member)
-      get dashboard_path
-      page = Capybara.string(response.body)
-
-      expect(page).to have_text("Waiting for the draw")
-      expect(page).to have_no_button("Clear everything…")
-      expect(page).to have_no_button(/Leave/)
-      expect(page).to have_no_field("Group name")
-      expect(page).to have_no_css(".join-code")
-      expect(page).to have_no_button("Draw names")
-    end
-  end
-
-  context "when names have been drawn" do
-    it "shows who the user is buying for and their ideas" do
-      owner = create(:user)
-      match = create(:user, name: "Alex")
-      group = create(:group, owner:, users: [owner, match, create(:user)])
-      create(:pair, group:, user: owner, other: match)
-      create(:idea, group:, user: match, idea: "Anything chocolate")
-
-      authenticate(owner)
-      get dashboard_path
-      page = Capybara.string(response.body)
-
-      expect(page).to have_text("You're buying for")
-      expect(page).to have_css("h2", text: "Alex")
-      expect(page).to have_css("li", text: "Anything chocolate")
-      expect(page).to have_button("Draw names again")
-    end
-  end
-
-  context "when the user has no gift ideas" do
-    it "shows the empty state" do
-      owner = create(:user)
-      create(:group, owner:)
-
-      authenticate(owner)
-      get dashboard_path
-
-      expect(Capybara.string(response.body)).to have_text("No ideas yet")
-    end
-  end
-
-  context "when the group has no rules and the user is a member" do
-    it "does not render the Rules box" do
-      member = create(:user)
-      create(:group, users: [member])
-
-      authenticate(member)
-      get dashboard_path
-
-      expect(Capybara.string(response.body)).to have_no_css("h2", text: "Rules")
-    end
-  end
-
-  context "when the group has no rules and the user is the owner" do
-    it "renders the Rules box so they can add some" do
-      owner = create(:user)
-      create(:group, owner:)
-
-      authenticate(owner)
-      get dashboard_path
-
-      expect(Capybara.string(response.body)).to have_field("Add a rule")
-    end
-  end
-
-  context "when the group has rules" do
-    it "lists them" do
-      member = create(:user)
-      create(:group, users: [member], rule_texts: ["No spending over $20"])
-
-      authenticate(member)
-      get dashboard_path
-      rules = Capybara.string(response.body).find("section[aria-labelledby='rules-heading']")
-
-      expect(rules).to have_css("li", text: "No spending over $20")
     end
   end
 
@@ -160,10 +43,10 @@ RSpec.describe "GET /dashboard" do
 
       authenticate(user)
       get dashboard_path(group_id: first.id)
-      expect(response.body).to include("Book club")
+      expect(Capybara.string(response.body)).to have_css("h1", text: "Book club")
 
       get dashboard_path
-      expect(response.body).to include("Book club")
+      expect(Capybara.string(response.body)).to have_css("h1", text: "Book club")
     end
   end
 
@@ -176,36 +59,8 @@ RSpec.describe "GET /dashboard" do
       authenticate(user)
       get dashboard_path(group_id: other.id)
 
-      expect(response.body).to include("Rowans")
+      expect(Capybara.string(response.body)).to have_css("h1", text: "Rowans")
       expect(response.body).not_to include("Strangers")
-    end
-  end
-
-  context "when the user is in several groups" do
-    it "offers to switch between them" do
-      user = create(:user)
-      rowans = create(:group, name: "Rowans", owner: user)
-      book_club = create(:group, name: "Book club", users: [user])
-
-      authenticate(user)
-      get dashboard_path(group_id: rowans.id)
-
-      switcher = Capybara.string(response.body).find("details", text: "Your groups", visible: :all)
-      expect(switcher).to have_link("Book club", href: dashboard_path(group_id: book_club.id), visible: :all)
-      expect(switcher).to have_css("a[aria-current='true']", text: "Rowans", visible: :all)
-      expect(switcher).to have_link("Join another group", href: join_path, visible: :all)
-    end
-  end
-
-  context "when the user is in one group" do
-    it "shows just the group name" do
-      user = create(:user)
-      create(:group, name: "Rowans", owner: user)
-
-      authenticate(user)
-      get dashboard_path
-
-      expect(Capybara.string(response.body)).to have_no_css("details", visible: :all)
     end
   end
 end

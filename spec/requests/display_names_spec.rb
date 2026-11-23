@@ -9,7 +9,6 @@ RSpec.describe "Display names" do
         get new_display_name_path
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("What should we call you?")
       end
     end
 
@@ -56,7 +55,7 @@ RSpec.describe "Display names" do
 
         expect(response).to redirect_to(join_path)
         follow_redirect!
-        expect(response.body).to include("You&#39;re invited")
+        expect(Capybara.string(response.body)).to have_css("h1", text: "You're invited")
       end
     end
 

@@ -1,8 +1,8 @@
 <%# locals: (contact_email:) %>
 
-<%= render "legal_pages/header",
+<%= render LegalPages::HeaderComponent.new(
   title: "Terms and conditions",
-  summary: "Use Secret Santa for swapping gifts. Don’t use it to break the law or to bully, harass or upset anyone." %>
+  summary: "Use Secret Santa for swapping gifts. Don’t use it to break the law or to bully, harass or upset anyone.") %>
 
 <div class="legal-copy">
   <section aria-labelledby="be-kind">
@@ -47,4 +47,4 @@
   </section>
 </div>
 
-<%= render "legal_pages/footer", other_page_text: "Read our privacy policy", other_page_path: privacy_path %>
+<%= render LegalPages::FooterComponent.new(other_page_text: "Read our privacy policy", other_page_path: privacy_path) %>

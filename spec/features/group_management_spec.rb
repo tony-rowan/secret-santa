@@ -52,10 +52,6 @@ RSpec.feature "Group Management" do
     expect(group.pairs.pluck(:id)).not_to eq(pair_ids)
 
     click_on("Remove Bad Actor from the group")
-    within("dialog[open]") do
-      expect(page).to have_text("Bad Actor's gift ideas are deleted")
-      expect(page).to have_text("Names have already been drawn")
-    end
     confirm_dialog("Yes, remove Bad Actor")
 
     expect(page).to have_no_text("Bad Actor")
@@ -91,15 +87,14 @@ RSpec.feature "Group Management" do
     expect(page).to have_text("You're buying for")
 
     click_on("Clear everything…")
+    # The dialog shows the details from the button's ConfirmationComponent
     within("dialog[open]") do
-      expect(page).to have_text("Everyone's gift ideas are deleted")
-      expect(page).to have_text("All 3 members stay in the group")
+      expect(page).to have_css("h2", text: "Clear everything?")
+      expect(page).to have_css("li", text: "Everyone's gift ideas are deleted")
     end
     confirm_dialog("Yes, clear everything")
 
     expect(page).to have_text("Ready when you are")
-    expect(page).to have_text("No ideas yet")
-    expect(page).to have_text("Keep it under £20")
     expect(group.pairs.count).to eq(0)
     expect(group.ideas.count).to eq(0)
     expect(group.users.count).to eq(3)

@@ -1,0 +1,37 @@
+<section aria-labelledby="groups-heading" class="card">
+  <h2 id="groups-heading" class="card-title">Your groups</h2>
+
+  <% if groups.any? %>
+    <ul class="flex flex-col gap-2">
+      <% groups.each do |group| %>
+        <%= render Account::GroupRowComponent.new(group:, user:) %>
+      <% end %>
+    </ul>
+
+    <%= link_to join_path, class: "button-secondary bg-night-900" do %>
+      <%= icon(:plus, size: "size-5", "stroke-width": 2.4) %>
+      Join another group
+    <% end %>
+  <% else %>
+    <%= render EmptyStateComponent.new(
+      title: "No groups yet",
+      text: "Join with a code from your organiser, or start a group of your own."
+    ) do %>
+      <svg width="128" height="96" viewBox="0 0 128 96" fill="none" stroke="#3f8a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 20h3M15.5 18.5v3" />
+        <path d="M108 12h4M110 10v4" />
+        <path d="M114 50h3M115.5 48.5v3" />
+        <circle cx="40" cy="44" r="9" />
+        <path d="M24 80c0-10 7-17 16-17s16 7 16 17" />
+        <circle cx="88" cy="44" r="9" />
+        <path d="M72 80c0-10 7-17 16-17s16 7 16 17" />
+        <circle cx="64" cy="34" r="11" />
+        <path d="M44 80c0-13 9-22 20-22s20 9 20 22" />
+        <path d="M56 22l3-8 5 5 5-5 3 8" />
+      </svg>
+    <% end %>
+
+    <%= link_to "Join a group", join_path, class: "button min-h-13 text-base" %>
+    <%= link_to "Start a new group", new_group_path, class: "flex items-center justify-center min-h-12 text-[15px] font-medium" %>
+  <% end %>
+</section>

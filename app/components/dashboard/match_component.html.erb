@@ -1,0 +1,41 @@
+<section aria-labelledby="status-heading" class="rounded-3xl bg-berry-dark p-5 pt-6 flex flex-col gap-4 shadow-2xl shadow-black/35">
+  <span class="pill bg-cream/16 text-cream">
+    <%= icon(:check, size: "size-3.5", "stroke-width": 3) %>
+    Names drawn
+  </span>
+
+  <div class="flex flex-col gap-0.5">
+    <p class="text-berry-pale">You're buying for</p>
+    <h2 id="status-heading" class="font-display font-bold text-[52px] leading-none text-cream break-words"><%= match.name %></h2>
+  </div>
+
+  <div class="rounded-2xl bg-cream text-[#2b1a14] px-4.5 py-4 flex flex-col gap-2.5">
+    <h3 class="text-sm font-semibold tracking-wide uppercase text-[#7a2a22]"><%= match.name %>'s ideas</h3>
+
+    <% if match_ideas.empty? %>
+      <p class="py-1">They haven't added any gift ideas yet.</p>
+    <% else %>
+      <ul class="flex flex-col divide-y divide-cream-line">
+        <% match_ideas.each do |match_idea| %>
+          <li class="flex gap-3 py-2.5 last:pb-0.5 text-[17px]">
+            <%= icon(:star_four, size: "size-3.5", class: "text-berry-dark mt-1.5") %>
+            <span class="min-w-0 break-words"><%= match_idea.idea %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+
+  <% if owner %>
+    <%= render ConfirmationComponent.new(**redraw_confirmation) do |confirmation| %>
+      <%= button_to group_path(pair.group),
+        params: { reassign_partners: true },
+        method: :patch,
+        class: "button-secondary w-full border-cream/30 bg-transparent hover:bg-cream/10",
+        data: confirmation.data do %>
+        <%= icon(:arrow_path, size: "size-5") %>
+        Draw names again
+      <% end %>
+    <% end %>
+  <% end %>
+</section>

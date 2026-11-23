@@ -1,0 +1,25 @@
+<%= form_with(url: session_path, class: "flex flex-col gap-3", data: {turbo: false}) do |form| %>
+  <div class="flex flex-col gap-2.5">
+    <%= form.label :email, class: "flex flex-col gap-1 font-semibold #{error ? "text-berry-light" : "text-snow"}" do %>
+      <span>Your email</span>
+      <% if error %>
+        <span class="text-sm font-normal"><%= error %></span>
+      <% end %>
+    <% end %>
+    <%= form.email_field :email,
+      tailwindified: true,
+      value: email,
+      required: true,
+      autocomplete: "email",
+      autofocus: true,
+      placeholder: "you@example.com",
+      class: "input-field #{"border-berry-light" if error}" %>
+  </div>
+
+  <%= form.submit "Email me a sign-in link", class: "w-full" %>
+
+  <p class="mt-1 text-sm text-center text-lilac-400">
+    New here? The same link creates your account.<br>
+    No passwords to remember.
+  </p>
+<% end %>

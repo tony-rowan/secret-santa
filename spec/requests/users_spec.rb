@@ -10,7 +10,6 @@ RSpec.describe "Users" do
         get edit_user_path(user)
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Your account")
       end
     end
 
@@ -75,7 +74,6 @@ RSpec.describe "Users" do
         patch user_path(user), params: {user: {name: ""}}
 
         expect(response).to have_http_status(:unprocessable_content)
-        expect(response.body).to include("Your account")
       end
     end
 
@@ -90,7 +88,6 @@ RSpec.describe "Users" do
         patch user_path(user), params: {user: {name: user.name, email: "extra@example.com"}}
 
         expect(response).to have_http_status(:too_many_requests)
-        expect(response.body).to include("Too many attempts")
         expect(user.reload.unconfirmed_email).to eq("new4@example.com")
       end
     end

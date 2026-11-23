@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   def edit
     render locals: {
       user: user,
+      groups: groups,
       new_email: nil
     }
   end
@@ -20,6 +21,7 @@ class UsersController < ApplicationController
     else
       render :edit, status: :unprocessable_content, locals: {
         user: user,
+        groups: groups,
         new_email: user_params[:email]
       }
     end
@@ -40,6 +42,7 @@ class UsersController < ApplicationController
 
     render :edit, status: :too_many_requests, locals: {
       user: user,
+      groups: groups,
       new_email: user_params[:email]
     }
   end
@@ -57,6 +60,10 @@ class UsersController < ApplicationController
   end
 
   def user
-    @user ||= User.find(params[:id])
+    @_user ||= User.find(params[:id])
+  end
+
+  def groups
+    user.groups.includes(:owner).order(:name).to_a
   end
 end

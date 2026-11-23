@@ -1,0 +1,10 @@
+<div role="status" class="flex flex-col gap-1 px-4 pt-3.5 pb-1 rounded-2xl bg-gold/12 border border-gold/40">
+  <p class="flex gap-2.5 text-[15px] text-gold">
+    <%= icon(:envelope, size: "size-5", class: "mt-0.5") %>
+    <span>Waiting for you to verify <strong class="font-semibold break-all"><%= user.unconfirmed_email %></strong></span>
+  </p>
+  <div class="flex gap-4 pl-7.5">
+    <%= button_to "Resend", resend_email_confirmation_path, class: "min-h-11 text-sm font-semibold text-gold hover:text-gold-light underline cursor-pointer" %>
+    <%= button_to "Cancel change", email_confirmation_path, method: :delete, class: "min-h-11 text-sm font-semibold text-lilac-400 hover:text-snow underline cursor-pointer" %>
+  </div>
+</div>

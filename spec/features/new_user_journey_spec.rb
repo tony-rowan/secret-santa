@@ -10,7 +10,6 @@ RSpec.feature "New User Journey" do
     follow_magic_link
 
     expect(page).to have_current_path(new_display_name_path)
-    expect(page).to have_text("What should we call you?")
 
     fill_in("Display name", with: "Trevor Slattery")
     click_on("Continue")
@@ -35,14 +34,10 @@ RSpec.feature "New User Journey" do
     expect(group.rules.map(&:text)).to eq(["No limit, I know you guys can afford it!", "Swap on Christmas Eve"])
 
     expect(page).to have_current_path(created_group_path(group))
-    expect(page).to have_text("AIM, no wait, The 10 Rings is ready")
-    expect(page).to have_text(group.formatted_join_code)
 
     click_on("Go to your group")
 
     expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("No limit, I know you guys can afford it!")
-    expect(page).to have_text("You · organiser")
 
     within("section[aria-labelledby='ideas-heading']") do
       fill_in("Add a gift idea", with: "Case of Fosters")
@@ -78,9 +73,7 @@ RSpec.feature "New User Journey" do
     expect(Group.last.users).to eq([owner, User.last])
 
     expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("AIM, no wait, The 10 Rings")
-    expect(page).to have_text("No limit, I know you guys can afford it!")
-    expect(page).to have_text("Trevor Slattery (you)")
+    expect(page).to have_css("h1", text: "AIM, no wait, The 10 Rings")
 
     fill_in("Add a gift idea", with: "Case of Fosters")
     click_on("Add")

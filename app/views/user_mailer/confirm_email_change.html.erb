@@ -4,6 +4,6 @@
 <p style="margin: 0 0 12px;">You asked to change your Secret Santa email from <strong style="font-weight: 600;"><%= @user.email %></strong> to <strong style="font-weight: 600;"><%= @new_email %></strong>.</p>
 <p style="margin: 0 0 20px;">Tap the button to confirm it’s you. Until then, you’ll keep signing in with your old email.</p>
 
-<%= render "mailer/button", text: "Confirm new email", url: @confirmation_url %>
-<%= render "mailer/link_details", expiry: "This link works for 1 hour.", url: @confirmation_url %>
-<%= render "mailer/not_requested", message: "Ignore this email and nothing will change." %>
+<%= render Mailer::ButtonComponent.new(text: "Confirm new email", url: @confirmation_url) %>
+<%= render Mailer::LinkDetailsComponent.new(expiry: "This link works for 1 hour.", url: @confirmation_url) %>
+<%= render Mailer::NotRequestedComponent.new(message: "Ignore this email and nothing will change.") %>

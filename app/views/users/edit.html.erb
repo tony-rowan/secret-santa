@@ -1,8 +1,6 @@
-<%# locals: (user:, new_email:) %>
+<%# locals: (user:, groups:, new_email:) %>
 
 <% content_for :wide, true %>
-<% groups = user.groups.includes(:owner).order(:name).to_a %>
-<% owned_groups = groups.select { |group| group.owner?(user) } %>
 
 <div class="flex flex-col gap-5 lg:gap-6 pt-6">
   <h1 class="display-title px-1 lg:text-[44px]">Your account</h1>
@@ -10,92 +8,19 @@
   <%# One column on phones (groups after email); on desktop the groups get the right-hand column %>
   <div class="flex flex-col gap-5 lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-start lg:gap-6">
     <div class="contents lg:flex lg:flex-col lg:gap-6">
-      <section aria-labelledby="name-heading" class="card order-1">
-        <h2 id="name-heading" class="card-title">Display name</h2>
-
-        <%= form_with(model: user, class: "flex flex-col gap-2") do |form| %>
-          <%= label_tag "user_name", "How you appear to your groups", class: "text-sm text-lilac-400" %>
-          <% if user.errors[:name].any? %>
-            <p class="text-sm text-berry-light"><%= user.errors[:name].first %></p>
-          <% end %>
-          <div class="flex gap-2">
-            <%= form.text_field :name,
-              tailwindified: true,
-              required: true,
-              autocomplete: "nickname",
-              class: "input-field grow min-w-0 #{"border-berry-light" if user.errors[:name].any?}" %>
-            <%= form.button "Save", class: "button min-h-13 text-base px-4.5" %>
-          </div>
-        <% end %>
-      </section>
-
-      <section aria-labelledby="email-heading" class="card order-2">
-        <div class="flex flex-col gap-1">
-          <h2 id="email-heading" class="card-title">Email</h2>
-          <p class="card-hint">You sign in with <strong class="text-snow font-semibold break-all"><%= user.email %></strong></p>
-        </div>
-
-        <%= form_with(model: user, class: "flex flex-col gap-2") do |form| %>
-          <%= form.label :email, "New email address", class: "font-semibold" %>
-          <% if user.errors[:email].any? %>
-            <p class="text-sm text-berry-light"><%= user.errors[:email].first %></p>
-          <% end %>
-          <%= form.email_field :email,
-            tailwindified: true,
-            value: new_email,
-            required: true,
-            autocomplete: "email",
-            placeholder: "you@example.com",
-            class: "input-field #{"border-berry-light" if user.errors[:email].any?}" %>
-          <%= form.button "Send verification link", class: "button min-h-13 text-base" %>
-          <p class="card-hint">Your email only changes once you click the link we send to the new address.</p>
-        <% end %>
-
-        <% if user.unconfirmed_email.present? %>
-          <div role="status" class="flex flex-col gap-1 px-4 pt-3.5 pb-1 rounded-2xl bg-gold/12 border border-gold/40">
-            <p class="flex gap-2.5 text-[15px] text-gold">
-              <%= icon(:envelope, size: "size-5", class: "mt-0.5") %>
-              <span>Waiting for you to verify <strong class="font-semibold break-all"><%= user.unconfirmed_email %></strong></span>
-            </p>
-            <div class="flex gap-4 pl-7.5">
-              <%= button_to "Resend", resend_email_confirmation_path, class: "min-h-11 text-sm font-semibold text-gold hover:text-gold-light underline cursor-pointer" %>
-              <%= button_to "Cancel change", email_confirmation_path, method: :delete, class: "min-h-11 text-sm font-semibold text-lilac-400 hover:text-snow underline cursor-pointer" %>
-            </div>
-          </div>
-        <% end %>
-      </section>
+      <div class="order-1"><%= render Account::NameFormComponent.new(user:) %></div>
+      <div class="order-2"><%= render Account::EmailFormComponent.new(user:, new_email:) %></div>
 
       <%= button_to session_path, method: :delete, form: { class: "order-4" }, class: "button-secondary w-full" do %>
         <%= icon(:arrow_right_start_on_rectangle, size: "size-5") %>
         Sign out
       <% end %>
 
-      <section aria-labelledby="delete-heading" class="card-danger order-5">
-        <h2 id="delete-heading" class="card-title">Delete account</h2>
-        <p class="text-sm text-[#e7c9c9]">Removes you from every group and deletes your gift ideas. This can't be undone.</p>
-
-        <%= render "shared/confirm_details",
-          id: "confirm-delete-account",
-          icon_name: :trash,
-          removed: [
-            "You're removed from every group",
-            "All your gift ideas are deleted",
-            *owned_groups.map { |group| "#{group.name} is deleted for everyone, because you organise it" }
-          ],
-          note: "This can't be undone." %>
-        <%= button_to "Delete my account…", user_path(user),
-          method: :delete,
-          class: "button-danger w-full",
-          data: {
-            turbo_confirm: "Delete your account?",
-            confirm_button: "Yes, delete my account",
-            confirm_details: "confirm-delete-account"
-          } %>
-      </section>
+      <div class="order-5"><%= render Account::DeleteComponent.new(user:, groups:) %></div>
     </div>
 
     <div class="order-3 lg:sticky lg:top-6">
-      <%= render "users/groups", user:, groups: %>
+      <%= render Account::GroupsComponent.new(user:, groups:) %>
     </div>
   </div>
 </div>

@@ -1,0 +1,8 @@
+<li class="list-row">
+  <%= icon(:star_four, size: "size-3.5", class: "text-gold") %>
+  <span class="grow min-w-0 break-words" data-rule-text><%= text %></span>
+  <input type="hidden" name="group[rule_texts][]" value="<%= text %>">
+  <button type="button" class="icon-button" title="Remove rule: <%= text %>" aria-label="Remove rule: <%= text %>" data-action="rule-list#remove">
+    <%= icon(:x_mark, size: "size-5") %>
+  </button>
+</li>

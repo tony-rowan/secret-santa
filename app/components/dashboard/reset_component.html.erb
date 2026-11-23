@@ -1,0 +1,11 @@
+<section aria-labelledby="reset-heading" class="card-danger">
+  <h2 id="reset-heading" class="card-title">Reset for this year</h2>
+  <p class="text-sm text-[#e7c9c9]">Clears everyone's gift ideas and un-draws names, ready to start this year's Secret Santa. Members stay in the group.</p>
+
+  <%= render ConfirmationComponent.new(**reset_confirmation) do |confirmation| %>
+    <%= button_to group_reset_path(group), class: "button-danger w-full", data: confirmation.data do %>
+      <%= icon(:arrow_path, size: "size-5") %>
+      Clear everything…
+    <% end %>
+  <% end %>
+</section>

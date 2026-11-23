@@ -4,6 +4,6 @@
 <p style="margin: 0 0 12px;">Tap the button below to sign in to Secret Santa.</p>
 <p style="margin: 0 0 20px;">New here? The same link creates your account.</p>
 
-<%= render "mailer/button", text: "Sign in to Secret Santa", url: @magic_link_url %>
-<%= render "mailer/link_details", expiry: "This link works for 15 minutes and can only be used once.", url: @magic_link_url %>
-<%= render "mailer/not_requested", message: "You can ignore this email. Nobody can sign in without this link." %>
+<%= render Mailer::ButtonComponent.new(text: "Sign in to Secret Santa", url: @magic_link_url) %>
+<%= render Mailer::LinkDetailsComponent.new(expiry: "This link works for 15 minutes and can only be used once.", url: @magic_link_url) %>
+<%= render Mailer::NotRequestedComponent.new(message: "You can ignore this email. Nobody can sign in without this link.") %>
