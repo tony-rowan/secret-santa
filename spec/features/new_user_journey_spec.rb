@@ -15,10 +15,10 @@ RSpec.feature "New User Journey" do
     click_on("Continue")
 
     expect(User.last).to have_attributes(name: "Trevor Slattery", email: "trevor@example.com")
-    expect(page).to have_current_path(join_path)
-    expect(page).to have_css("h1", text: "Join a group")
+    expect(page).to have_current_path(new_group_path)
+    expect(page).to have_css("h1", text: "Start a group")
+    expect(page).to have_text("Expecting to join someone else's group? Open the invite link they sent you again.")
 
-    click_on("Start a new group")
     fill_in("Group name", with: "AIM, no wait, The 10 Rings")
     fill_in("Add a rule", with: "No limit, I know you guys can afford it!")
     click_on("Add")
@@ -49,36 +49,5 @@ RSpec.feature "New User Journey" do
     expect(page).to have_current_path(dashboard_path)
     expect(page).to have_text("Case of Fosters")
     expect(page).to have_text("New Liverpool Shirt")
-  end
-
-  scenario "A new user signs up and joins a group by entering a join code" do
-    owner = create(:user)
-    create(
-      :group,
-      owner: owner,
-      name: "AIM, no wait, The 10 Rings",
-      rule_texts: ["No limit, I know you guys can afford it!"],
-      join_code: "ABCDEF"
-    )
-
-    visit(root_path)
-    request_magic_link("trevor@example.com")
-    follow_magic_link
-    fill_in("Display name", with: "Trevor Slattery")
-    click_on("Continue")
-
-    fill_in("Join Code", with: "ABCDEF")
-    click_on("Join group")
-
-    expect(Group.last.users).to eq([owner, User.last])
-
-    expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_css("h1", text: "AIM, no wait, The 10 Rings")
-
-    fill_in("Add a gift idea", with: "Case of Fosters")
-    click_on("Add")
-
-    expect(page).to have_current_path(dashboard_path)
-    expect(page).to have_text("Case of Fosters")
   end
 end

@@ -16,12 +16,12 @@ RSpec.describe "GET /dashboard" do
   end
 
   context "when the user isn't in any group" do
-    it "sends them to join one" do
+    it "sends them to start one" do
       authenticate(create(:user))
 
       get dashboard_path
 
-      expect(response).to redirect_to(join_path)
+      expect(response).to redirect_to(new_group_path)
     end
   end
 

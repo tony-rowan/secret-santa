@@ -15,7 +15,7 @@ class DisplayNamesController < ApplicationController
     user.name = params.dig(:user, :name).to_s
 
     if user.save
-      # The join page picks up an invite's code from the session, or asks for one
+      # The join page picks up an invite link's token from the session, or sends them to start a group
       redirect_to join_path
     else
       render :new, status: :unprocessable_content, locals: {

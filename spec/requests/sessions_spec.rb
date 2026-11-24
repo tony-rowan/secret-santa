@@ -82,15 +82,15 @@ RSpec.describe "Sessions" do
       end
     end
 
-    context "when the user started from a join link" do
-      it "carries the join code in the emailed link" do
+    context "when the user started from an invite link" do
+      it "carries the invite token in the emailed link" do
         create(:user, email: "trevor@example.com")
-        create(:group, join_code: "ABCDEF")
+        group = create(:group)
 
-        get join_with_code_path("ABCDEF")
+        get invite_path(group.invite_token)
         post session_path, params: {email: "trevor@example.com"}
 
-        expect(last_magic_link_url).to include("join_code=ABCDEF")
+        expect(last_magic_link_url).to include("invite_token=#{group.invite_token}")
       end
     end
   end

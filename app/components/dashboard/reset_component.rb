@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Dashboard
-  # "Reset for this year", for the organiser only: clears ideas and the draw, keeps members and rules
+  # "Reset for this year", for the organiser once names are drawn: clears the draw and everyone's
+  # gift ideas to start afresh. Members and rules stay.
   class ResetComponent < ApplicationComponent
     def initialize(group:, user:)
       @group = group
@@ -9,7 +10,7 @@ module Dashboard
     end
 
     def render?
-      group.owner?(user)
+      group.owner?(user) && group.pairs.any?
     end
 
     private

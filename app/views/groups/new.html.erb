@@ -1,4 +1,4 @@
-<%# locals: (group:) %>
+<%# locals: (group:, user:) %>
 
 <% content_for :icon, "plus" %>
 <% content_for :title, "Start a group" %>
@@ -10,9 +10,9 @@
 
     <%= render Groups::RuleListComponent.new(rules: group.rules) %>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-3">
       <%= form.submit "Create group", class: "w-full" %>
-      <%= link_to "Go back to join a group", join_path, class: "flex items-center justify-center min-h-12 text-[15px] font-medium" %>
+      <%= render Groups::InviteReminderComponent.new(user:) %>
     </div>
   <% end %>
 </div>

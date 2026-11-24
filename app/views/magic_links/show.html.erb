@@ -1,6 +1,6 @@
-<%# locals: (token:, join_code:) %>
+<%# locals: (token:, invite_token:) %>
 
 <% content_for :title, "Signing you in…" %>
 
 <%# Submits itself via JS; the button is the fallback if JS is unavailable %>
-<%= button_to "Click here if nothing happens", session_magic_link_path, params: {token:, join_code:}, class: "button w-full", form: {data: {controller: "auto-submit"}} %>
+<%= button_to "Click here if nothing happens", session_magic_link_path, params: {token:, invite_token:}, class: "button w-full", form: {data: {controller: "auto-submit"}} %>

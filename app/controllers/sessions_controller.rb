@@ -58,10 +58,10 @@ class SessionsController < ApplicationController
   def group
     return @_group if defined?(@_group)
 
-    @_group = Group.find_by(join_code:) if join_code
+    @_group = Group.find_by(invite_token:) if invite_token
   end
 
-  def join_code
-    session[:join_code].presence
+  def invite_token
+    session[:invite_token].presence
   end
 end

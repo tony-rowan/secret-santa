@@ -26,7 +26,8 @@ RSpec.describe Dashboard::GroupTitleComponent, type: :component do
       expect(switcher).to have_link("Book club", href: "/dashboard?group_id=#{book_club.id}", visible: :all)
       expect(switcher).to have_css("a[aria-current='true']", text: "Rowans", visible: :all)
       expect(switcher).to have_css("a[aria-current='false']", text: "Book club", visible: :all)
-      expect(switcher).to have_link("Join another group", href: "/join", visible: :all)
+      expect(switcher).to have_link("Start a new group", href: "/groups/new", visible: :all)
+      expect(switcher).to have_no_link(href: "/join", visible: :all)
     end
 
     it "says who organises each group" do

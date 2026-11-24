@@ -28,7 +28,7 @@ RSpec.describe "Groups" do
 
   describe "GET /groups/:id/created" do
     context "when the user owns the group" do
-      it "shows the join code" do
+      it "shows the group created page" do
         owner = create(:user)
         group = create(:group, owner:, name: "The Rowans")
 
@@ -36,7 +36,7 @@ RSpec.describe "Groups" do
         get created_group_path(group)
 
         expect(response).to have_http_status(:ok)
-        expect(Capybara.string(response.body)).to have_css(".join-code", text: group.formatted_join_code)
+        expect(Capybara.string(response.body)).to have_css("h1", text: "The Rowans is ready")
       end
     end
 

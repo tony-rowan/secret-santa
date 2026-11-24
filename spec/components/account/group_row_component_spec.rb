@@ -24,7 +24,7 @@ RSpec.describe Account::GroupRowComponent, type: :component do
       expect(page).to have_css("button[data-turbo-confirm='Leave Book club?'][data-confirm-button='Yes, leave']", text: "Leave")
       details = template_content("confirm-leave-#{group.id}")
       expect(details).to have_text("You leave Book club")
-      expect(details).to have_text("You can join again with the code.")
+      expect(details).to have_text("To join again, you'll need a new invite from the organiser.")
     end
 
     context "when names have been drawn" do

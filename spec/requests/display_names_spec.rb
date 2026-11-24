@@ -46,11 +46,11 @@ RSpec.describe "Display names" do
 
     context "when the user arrived from an invite link" do
       it "goes on to the join page" do
-        create(:group, join_code: "ABCDEF")
+        group = create(:group)
         user = create(:user, name: nil)
 
         authenticate(user)
-        get join_with_code_path("ABCDEF")
+        get invite_path(group.invite_token)
         post display_name_path, params: {user: {name: "Trevor Slattery"}}
 
         expect(response).to redirect_to(join_path)

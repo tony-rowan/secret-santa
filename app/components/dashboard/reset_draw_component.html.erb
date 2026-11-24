@@ -1,0 +1,11 @@
+<section aria-labelledby="reset-draw-heading" class="card-danger">
+  <h2 id="reset-draw-heading" class="card-title">Reset names</h2>
+  <p class="text-sm text-[#e7c9c9]">Clears the drawn names so more people can join, or so you can draw again if the match-ups didn't work out. Gift ideas stay.</p>
+
+  <%= render ConfirmationComponent.new(**reset_draw_confirmation) do |confirmation| %>
+    <%= button_to group_draw_reset_path(group), class: "button-danger w-full", data: confirmation.data do %>
+      <%= icon(:arrow_path, size: "size-5") %>
+      Reset names…
+    <% end %>
+  <% end %>
+</section>

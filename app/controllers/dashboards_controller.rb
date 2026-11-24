@@ -24,9 +24,9 @@ class DashboardsController < ApplicationController
     select_group(group) if group
   end
 
-  # There's nothing to show without a group, so people with none are sent to join (or start) one
+  # There's nothing to show without a group, so people with none are sent to start one
   def require_group
-    redirect_to(join_path) unless Current.group
+    redirect_to(new_group_path) unless Current.group
   end
 
   def pair_for_current_group

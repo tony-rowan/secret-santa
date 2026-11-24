@@ -6,7 +6,8 @@ class GroupsController < ApplicationController
 
   def new
     render locals: {
-      group: Group.new
+      group: Group.new,
+      user: Current.user
     }
   end
 
@@ -25,7 +26,8 @@ class GroupsController < ApplicationController
       redirect_to(created_group_path(group))
     else
       render :new, status: :unprocessable_content, locals: {
-        group:
+        group:,
+        user: Current.user
       }
     end
   end

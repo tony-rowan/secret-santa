@@ -23,10 +23,10 @@ RSpec.feature "Switch group" do
     authenticate(user)
     visit(dashboard_path)
     find("summary[title='Switch group']").click
-    expect(page).to have_link("Join another group")
+    expect(page).to have_link("Start a new group")
 
     find("summary[title='Switch group']").send_keys(:escape)
 
-    expect(page).to have_no_link("Join another group")
+    expect(page).to have_no_link("Start a new group")
   end
 end

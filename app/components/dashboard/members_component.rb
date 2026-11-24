@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 module Dashboard
-  # Who's in the group. The organiser gets the join code, invite buttons and a row per member they
-  # can remove; everyone else sees names as chips.
+  # Who's in the group. The organiser gets a row per member they can remove and the invite button
+  # (until names are drawn, when the group stops taking new members), or an empty state while it's
+  # just them; everyone else sees names as chips.
   class MembersComponent < ApplicationComponent
     def initialize(group:, user:, idea_counts:)
       @group = group
@@ -20,6 +21,10 @@ module Dashboard
 
     def owner?
       group.owner?(user)
+    end
+
+    def just_the_organiser?
+      members == [user]
     end
 
     def drawn?

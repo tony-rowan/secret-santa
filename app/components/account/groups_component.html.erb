@@ -8,14 +8,14 @@
       <% end %>
     </ul>
 
-    <%= link_to join_path, class: "button-secondary bg-night-900" do %>
+    <%= link_to new_group_path, class: "button-secondary bg-night-900" do %>
       <%= icon(:plus, size: "size-5", "stroke-width": 2.4) %>
-      Join another group
+      Start a new group
     <% end %>
   <% else %>
     <%= render EmptyStateComponent.new(
       title: "No groups yet",
-      text: "Join with a code from your organiser, or start a group of your own."
+      text: "Start a group of your own, or open the invite link an organiser sent you."
     ) do %>
       <svg width="128" height="96" viewBox="0 0 128 96" fill="none" stroke="#3f8a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M14 20h3M15.5 18.5v3" />
@@ -31,7 +31,6 @@
       </svg>
     <% end %>
 
-    <%= link_to "Join a group", join_path, class: "button min-h-13 text-base" %>
-    <%= link_to "Start a new group", new_group_path, class: "flex items-center justify-center min-h-12 text-[15px] font-medium" %>
+    <%= link_to "Start a new group", new_group_path, class: "button min-h-13 text-base" %>
   <% end %>
 </section>

@@ -50,15 +50,15 @@ module Authentication
     cookies.encrypted[:user_id] = user.id
   end
 
-  # The join code is baked into the link because it may be opened in another browser. An email with
+  # The invite token is baked into the link because it may be opened in another browser. An email with
   # no account gets a link that creates one, so signing in and signing up are the same step.
   def send_sign_in_link(email)
-    join_code = session[:join_code].presence
+    invite_token = session[:invite_token].presence
 
     if (user = User.find_by(email:))
-      SessionMailer.sign_in_link(user, join_code:).deliver_later
+      SessionMailer.sign_in_link(user, invite_token:).deliver_later
     else
-      SessionMailer.sign_up_link(email, join_code:).deliver_later
+      SessionMailer.sign_up_link(email, invite_token:).deliver_later
     end
   end
 end

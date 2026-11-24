@@ -14,6 +14,7 @@
     <div class="order-3"><%= render Dashboard::MembersComponent.new(group:, user:, idea_counts:) %></div>
     <div class="order-3 empty:hidden"><%= render Dashboard::RulesComponent.new(group:, user:) %></div>
     <div class="order-3 empty:hidden"><%= render Dashboard::GroupNameComponent.new(group:, user:) %></div>
+    <div class="order-3 empty:hidden"><%= render Dashboard::ResetDrawComponent.new(group:, user:) %></div>
     <div class="order-3 empty:hidden"><%= render Dashboard::ResetComponent.new(group:, user:) %></div>
   </div>
 

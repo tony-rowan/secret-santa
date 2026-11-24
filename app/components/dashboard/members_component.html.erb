@@ -1,21 +1,44 @@
 <% if owner? %>
   <section aria-labelledby="members-heading" class="card">
     <h2 id="members-heading" class="card-title">Members <span class="font-medium text-lilac-400">(<%= members.size %>)</span></h2>
-    <p class="card-hint">Share this code to invite people.</p>
 
-    <div class="join-code"><%= group.formatted_join_code %></div>
-
-    <%= render Groups::InviteButtonsComponent.new(group:, button_class: "bg-night-900") %>
-
-    <% if drawn? %>
-      <p class="text-sm text-gold">Adding or removing people now means names will need drawing again.</p>
-    <% end %>
-
-    <ul class="flex flex-col gap-2">
-      <% members.each do |member| %>
-        <%= render Dashboard::MemberRowComponent.new(group:, member:, user:, idea_count: idea_counts[member.id].to_i, drawn: drawn?) %>
+    <% if just_the_organiser? %>
+      <%= render EmptyStateComponent.new(
+        title: "It's just you so far",
+        text: "Send the invite link to everyone you're swapping gifts with. They'll show up here as they join."
+      ) do %>
+        <svg width="128" height="96" viewBox="0 0 128 96" fill="none" stroke="#3f8a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 18h3M15.5 16.5v3" />
+          <path d="M112 62h3M113.5 60.5v3" />
+          <circle cx="64" cy="36" r="11" />
+          <path d="M44 82c0-13 9-22 20-22s20 9 20 22" />
+          <g stroke-dasharray="3 5">
+            <circle cx="26" cy="48" r="8" />
+            <path d="M12 82c0-9 6-15 14-15s14 6 14 15" />
+            <circle cx="102" cy="48" r="8" />
+            <path d="M88 82c0-9 6-15 14-15s14 6 14 15" />
+          </g>
+          <path d="M102 16v10M97 21h10" />
+        </svg>
       <% end %>
-    </ul>
+
+      <%= render Groups::InviteComponent.new(group:, primary: true, button_class: "min-h-13 text-base") %>
+    <% else %>
+      <ul class="flex flex-col gap-2">
+        <% members.each do |member| %>
+          <%= render Dashboard::MemberRowComponent.new(group:, member:, user:, idea_count: idea_counts[member.id].to_i, drawn: drawn?) %>
+        <% end %>
+      </ul>
+
+      <% if drawn? %>
+        <div class="flex gap-3 px-4 py-3.5 rounded-2xl bg-night-900 text-sm text-lilac-400">
+          <%= icon(:lock_closed, size: "size-5", class: "shrink-0 text-gold") %>
+          <p>Names are drawn, so no one new can join. Reset names to let people join again.</p>
+        </div>
+      <% else %>
+        <%= render Groups::InviteComponent.new(group:, button_class: "bg-night-900") %>
+      <% end %>
+    <% end %>
   </section>
 <% else %>
   <section aria-labelledby="members-heading" class="card gap-3">

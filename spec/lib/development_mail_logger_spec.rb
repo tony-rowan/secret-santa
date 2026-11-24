@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe DevelopmentMailLogger do
   describe ".delivered_email" do
-    let(:url) { "http://localhost:3000/session/magic_link?token=#{"abc123" * 30}&join_code=XYZ" }
+    let(:url) { "http://localhost:3000/session/magic_link?token=#{"abc123" * 30}&invite_token=XYZ" }
     let(:output) { StringIO.new }
     let(:message) do
       link = url

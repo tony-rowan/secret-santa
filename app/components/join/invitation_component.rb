@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Join
-  # A join link's group, to check before joining: its name, organiser and code
+  # An invite link's group, to check before joining: its name and organiser
   class InvitationComponent < ApplicationComponent
     def initialize(group:, form:)
       @group = group

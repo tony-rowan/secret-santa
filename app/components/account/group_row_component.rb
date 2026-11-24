@@ -32,7 +32,7 @@ module Account
           "Your gift ideas for this group are deleted",
           ("Drawn names are cleared, so they'll need drawing again" if group.pairs.any?)
         ],
-        note: "You can join again with the code."
+        note: "To join again, you'll need a new invite from the organiser."
       }
     end
   end

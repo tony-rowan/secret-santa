@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resource :dashboard, only: %i[show]
 
   get "/join", to: "join#new"
-  get "/join/:join_code", to: "join#new", as: :join_with_code
+  get "/join/:invite_token", to: "join#new", as: :invite
   post "/join", to: "join#create"
 
   resource :session, only: %i[new create destroy] do
@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :memberships, only: :destroy, param: :user_id, controller: :group_memberships
     resources :rules, only: %i[create destroy], controller: :group_rules
     resource :reset, only: :create, controller: :group_resets
+    resource :draw_reset, only: :create, controller: :group_draw_resets
   end
 
   get "up" => "rails/health#show", :as => :rails_health_check

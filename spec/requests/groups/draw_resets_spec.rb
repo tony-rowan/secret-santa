@@ -1,0 +1,41 @@
+require "rails_helper"
+
+RSpec.describe "POST /groups/:group_id/draw_reset" do
+  context "when the authenticated user is the owner" do
+    it "clears the pairings only and redirects to the dashboard" do
+      owner, member, other = create_list(:user, 3)
+      group = create(:group, owner:, users: [owner, member, other])
+      group.assign_partners
+      create(:idea, group:, user: member)
+
+      authenticate(owner)
+      post group_draw_reset_path(group)
+
+      expect(group.pairs.count).to eq(0)
+      expect(group.ideas.count).to eq(1)
+      expect(group.users.count).to eq(3)
+      expect(response).to redirect_to(dashboard_path)
+    end
+  end
+
+  context "when the authenticated user is a non-owner member" do
+    it "clears nothing" do
+      owner, member, other = create_list(:user, 3)
+      group = create(:group, owner:, users: [owner, member, other])
+      group.assign_partners
+
+      authenticate(member)
+      post group_draw_reset_path(group)
+
+      expect(group.pairs.count).to eq(3)
+    end
+  end
+
+  context "when there is no authenticated user" do
+    it "redirects to the sign in flow" do
+      post group_draw_reset_path(create(:group))
+
+      expect(response).to redirect_to(root_path)
+    end
+  end
+end

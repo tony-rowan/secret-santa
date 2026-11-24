@@ -7,7 +7,7 @@ class MagicLinksController < ApplicationController
   def show
     render locals: {
       token:,
-      join_code:
+      invite_token:
     }
   end
 
@@ -19,10 +19,10 @@ class MagicLinksController < ApplicationController
 
     if user.name.nil?
       # Picked back up by the join page once they've chosen a name
-      session[:join_code] = join_code if join_code
+      session[:invite_token] = invite_token if invite_token
       redirect_to(new_display_name_path)
-    elsif join_code
-      redirect_to(join_with_code_path(join_code))
+    elsif invite_token
+      redirect_to(invite_path(invite_token))
     else
       redirect_to(dashboard_path)
     end
@@ -63,7 +63,7 @@ class MagicLinksController < ApplicationController
     params[:token].to_s
   end
 
-  def join_code
-    params[:join_code].presence || session[:join_code].presence
+  def invite_token
+    params[:invite_token].presence || session[:invite_token].presence
   end
 end

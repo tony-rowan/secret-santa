@@ -1,7 +1,0 @@
-<%# locals: (form:, user:) %>
-
-<% content_for :icon, "users" %>
-<% content_for :title, "Join a group" %>
-<% content_for :subtitle, "Enter the code your organiser shared with you." %>
-
-<%= render Join::CodeFormComponent.new(form:, user:) %>

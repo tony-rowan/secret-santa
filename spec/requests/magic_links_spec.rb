@@ -42,13 +42,13 @@ RSpec.describe "Magic links" do
       end
     end
 
-    context "when a join code is given" do
-      it "redirects to the join page" do
+    context "when an invite token is given" do
+      it "redirects to the invitation" do
         user = create(:user)
 
-        post session_magic_link_path, params: {token: user.generate_token_for(:sign_in), join_code: "ABCDEF"}
+        post session_magic_link_path, params: {token: user.generate_token_for(:sign_in), invite_token: "abc123"}
 
-        expect(response).to redirect_to(join_with_code_path("ABCDEF"))
+        expect(response).to redirect_to(invite_path("abc123"))
       end
     end
 
@@ -125,14 +125,14 @@ RSpec.describe "Magic links" do
       end
     end
 
-    context "when a sign-up token comes with a join code" do
-      it "keeps the join code for after the display name" do
+    context "when a sign-up token comes with an invite token" do
+      it "keeps the invite token for after the display name" do
         token = User.generate_sign_up_token("trevor@example.com")
 
-        post session_magic_link_path, params: {token:, join_code: "ABCDEF"}
+        post session_magic_link_path, params: {token:, invite_token: "abc123"}
 
         expect(response).to redirect_to(new_display_name_path)
-        expect(session[:join_code]).to eq("ABCDEF")
+        expect(session[:invite_token]).to eq("abc123")
       end
     end
 

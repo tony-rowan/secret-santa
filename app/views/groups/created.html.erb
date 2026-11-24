@@ -2,12 +2,11 @@
 
 <% content_for :icon, "check" %>
 <% content_for :title, "#{group.name} is ready" %>
-<% content_for :subtitle, "Now invite everyone. Share the code or send the link." %>
+<% content_for :subtitle, "Now invite everyone you're swapping gifts with. They join by opening your invite link." %>
 
-<div class="flex flex-col gap-2.5">
-  <span class="font-semibold">Join code</span>
-  <div class="join-code min-h-19"><%= group.formatted_join_code %></div>
-  <%= render Groups::InviteButtonsComponent.new(group:) %>
+<div class="flex flex-col gap-3">
+  <%= render Groups::InviteComponent.new(group:, primary: true) %>
+  <p class="text-sm text-center text-lilac-400">The link works until you draw names.</p>
 </div>
 
-<%= link_to "Go to your group", dashboard_path, class: "button" %>
+<%= link_to "Go to your group", dashboard_path, class: "button-secondary" %>

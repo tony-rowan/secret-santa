@@ -20,7 +20,7 @@ RSpec.describe SessionMailer do
       params = Rack::Utils.parse_query(url.query)
       expect(url.path).to eq("/session/magic_link")
       expect(User.find_by_token_for(:sign_in, params["token"])).to eq(user)
-      expect(params).not_to have_key("join_code")
+      expect(params).not_to have_key("invite_token")
       expect(mail.html_part.body.decoded).to include("/session/magic_link?token=")
     end
 
@@ -45,12 +45,12 @@ RSpec.describe SessionMailer do
       expect(sources).to all(start_with("http://www.example.com/assets/email/"))
     end
 
-    context "when a join code is given" do
-      it "includes the join code in the link" do
-        mail = described_class.sign_in_link(create(:user), join_code: "ABCDEF")
+    context "when an invite token is given" do
+      it "includes the invite token in the link" do
+        mail = described_class.sign_in_link(create(:user), invite_token: "abc123")
 
-        expect(mail.text_part.body.decoded).to include("join_code=ABCDEF")
-        expect(mail.html_part.body.decoded).to include("join_code=ABCDEF")
+        expect(mail.text_part.body.decoded).to include("invite_token=abc123")
+        expect(mail.html_part.body.decoded).to include("invite_token=abc123")
       end
     end
   end

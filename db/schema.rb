@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_20_213729) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_24_120000) do
   create_table "groups", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "join_code", null: false
-    t.index ["join_code"], name: "index_groups_on_join_code", unique: true
+    t.string "invite_token", null: false
+    t.index ["invite_token"], name: "index_groups_on_invite_token", unique: true
     t.index ["owner_id"], name: "index_groups_on_owner_id"
   end
 

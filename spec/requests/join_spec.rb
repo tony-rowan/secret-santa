@@ -3,13 +3,12 @@ require "rails_helper"
 # What each page shows is covered by the components in spec/components/join
 RSpec.describe "Join" do
   describe "GET /join" do
-    it "asks for a code" do
+    it "sends them to start a group" do
       authenticate(create(:user))
 
       get join_path
 
-      expect(response).to have_http_status(:ok)
-      expect(Capybara.string(response.body)).to have_css("h1", text: "Join a group")
+      expect(response).to redirect_to(new_group_path)
     end
 
     context "when signed out" do
@@ -21,13 +20,13 @@ RSpec.describe "Join" do
     end
   end
 
-  describe "GET /join/:join_code" do
-    context "when the code matches a group" do
+  describe "GET /join/:invite_token" do
+    context "when the token matches a group" do
       it "shows the invitation" do
-        create(:group, name: "Rowans", join_code: "ABCDEF")
+        group = create(:group, name: "Rowans")
         authenticate(create(:user))
 
-        get join_with_code_path("abc-def")
+        get invite_path(group.invite_token)
 
         page = Capybara.string(response.body)
         expect(page).to have_css("h1", text: "You're invited")
@@ -35,13 +34,51 @@ RSpec.describe "Join" do
       end
     end
 
-    context "when the code doesn't match a group" do
-      it "asks for a code" do
+    context "when the user is already a member" do
+      it "shows them the group" do
+        user = create(:user)
+        group = create(:group, users: [user])
+        authenticate(user)
+
+        get invite_path(group.invite_token)
+
+        expect(response).to redirect_to(dashboard_path)
+        expect(session[:group_id]).to eq(group.id)
+      end
+    end
+
+    context "when names have been drawn" do
+      it "says the group isn't taking new members" do
+        group = create(:group)
+        create(:pair, group:, user: group.owner, other: create(:user))
         authenticate(create(:user))
 
-        get join_with_code_path("NOPE")
+        get invite_path(group.invite_token)
 
-        expect(Capybara.string(response.body)).to have_css("h1", text: "Join a group")
+        expect(response).to have_http_status(:forbidden)
+        expect(Capybara.string(response.body)).to have_css("h1", text: "Names have been drawn")
+      end
+    end
+
+    context "when the token doesn't match a group" do
+      it "says the link doesn't work" do
+        authenticate(create(:user))
+
+        get invite_path("NOPE")
+
+        expect(response).to have_http_status(:not_found)
+        expect(Capybara.string(response.body)).to have_css("h1", text: "That invite link doesn't work")
+      end
+    end
+
+    context "when signed out" do
+      it "keeps the token for after signing in" do
+        group = create(:group)
+
+        get invite_path(group.invite_token)
+
+        expect(response).to redirect_to(root_path)
+        expect(session[:invite_token]).to eq(group.invite_token)
       end
     end
   end
@@ -49,23 +86,38 @@ RSpec.describe "Join" do
   describe "POST /join" do
     it "joins the group and shows it" do
       user = create(:user)
-      group = create(:group, join_code: "ABCDEF")
+      group = create(:group)
       authenticate(user)
 
-      post join_path, params: {join_group: {join_code: "abcd-ef"}}
+      post join_path, params: {join_group: {invite_token: group.invite_token}}
 
       expect(group.reload.users).to include(user)
       expect(response).to redirect_to(dashboard_path)
     end
 
-    context "when the code doesn't match a group" do
-      it "re-renders the form as unprocessable" do
+    context "when names have been drawn" do
+      it "doesn't join and says the group isn't taking new members" do
+        user = create(:user)
+        group = create(:group)
+        create(:pair, group:, user: group.owner, other: create(:user))
+        authenticate(user)
+
+        post join_path, params: {join_group: {invite_token: group.invite_token}}
+
+        expect(group.reload.users).not_to include(user)
+        expect(response).to have_http_status(:forbidden)
+        expect(Capybara.string(response.body)).to have_css("h1", text: "Names have been drawn")
+      end
+    end
+
+    context "when the token doesn't match a group" do
+      it "says the link doesn't work" do
         authenticate(create(:user))
 
-        post join_path, params: {join_group: {join_code: "NOPE"}}
+        post join_path, params: {join_group: {invite_token: "NOPE"}}
 
-        expect(response).to have_http_status(:unprocessable_content)
-        expect(Capybara.string(response.body)).to have_css("h1", text: "Join a group")
+        expect(response).to have_http_status(:not_found)
+        expect(Capybara.string(response.body)).to have_css("h1", text: "That invite link doesn't work")
       end
     end
   end
